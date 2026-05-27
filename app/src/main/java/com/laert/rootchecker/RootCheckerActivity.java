@@ -1,4 +1,5 @@
-package com.laert.rootchecker;                             
+package com.laert.rootchecker;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 public class RootCheckerActivity extends Activity {
 
     private LinearLayout resultsLayout;
+    private LinearLayout deviceInfoLayout;
     private TextView summaryTitle;
     private TextView summarySubtitle;
     private LinearLayout summaryCard;
@@ -95,10 +97,7 @@ public class RootCheckerActivity extends Activity {
         summarySubtitle.setPadding(0, dp(6), 0, 0);
         summaryCard.addView(summarySubtitle);
 
-        LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            LinearLayout.LayoutParams.WRAP_CONTENT);
-        root.addView(summaryCard, cardLp);
+        root.addView(summaryCard);
         root.addView(spacer(16));
 
         // Progress container
@@ -133,8 +132,7 @@ public class RootCheckerActivity extends Activity {
         scanButton.setAllCaps(true);
         setRoundedBg(scanButton, TEAL_PRIMARY, 50);
         LinearLayout.LayoutParams btnLp = new LinearLayout.LayoutParams(
-            LinearLayout.LayoutParams.MATCH_PARENT,
-            dp(52));
+            LinearLayout.LayoutParams.MATCH_PARENT, dp(52));
         root.addView(scanButton, btnLp);
         root.addView(spacer(24));
 
@@ -144,32 +142,11 @@ public class RootCheckerActivity extends Activity {
             }
         });
 
-        // Divider
-        LinearLayout dividerRow = new LinearLayout(this);
-        dividerRow.setOrientation(LinearLayout.HORIZONTAL);
-        dividerRow.setGravity(Gravity.CENTER_VERTICAL);
-
-        View divL = new View(this);
-        divL.setBackgroundColor(0xFF1E2F3D);
-        LinearLayout.LayoutParams dlp = new LinearLayout.LayoutParams(0, dp(1), 1f);
-        dividerRow.addView(divL, dlp);
-
-        TextView divLabel = new TextView(this);
-        divLabel.setText("  CHECK RESULTS  ");
-        divLabel.setTextSize(10f);
-        divLabel.setTextColor(TEXT_HINT);
-        divLabel.setTypeface(Typeface.DEFAULT_BOLD);
-        dividerRow.addView(divLabel);
-
-        View divR = new View(this);
-        divR.setBackgroundColor(0xFF1E2F3D);
-        LinearLayout.LayoutParams drp = new LinearLayout.LayoutParams(0, dp(1), 1f);
-        dividerRow.addView(divR, drp);
-
-        root.addView(dividerRow);
+        // Check results divider
+        root.addView(makeDivider("CHECK RESULTS"));
         root.addView(spacer(12));
 
-        // Results
+        // Results layout
         resultsLayout = new LinearLayout(this);
         resultsLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -182,6 +159,20 @@ public class RootCheckerActivity extends Activity {
         resultsLayout.addView(emptyHint);
         root.addView(resultsLayout);
 
+        root.addView(spacer(24));
+
+        // Device info divider
+        root.addView(makeDivider("DEVICE SECURITY INFO"));
+        root.addView(spacer(12));
+
+        // Device info layout
+        deviceInfoLayout = new LinearLayout(this);
+        deviceInfoLayout.setOrientation(LinearLayout.VERTICAL);
+        root.addView(deviceInfoLayout);
+
+        // Load device info immediately
+        loadDeviceInfo();
+
         root.addView(spacer(20));
         TextView footer = new TextView(this);
         footer.setText("All checks run locally. No data sent anywhere.");
@@ -192,6 +183,79 @@ public class RootCheckerActivity extends Activity {
 
         scroll.addView(root);
         setContentView(scroll);
+    }
+
+    private void loadDeviceInfo() {
+        DeviceInfo.InfoItem[] items = DeviceInfo.getDeviceInfo(this);
+        for (int i = 0; i < items.length; i++) {
+            addInfoRow(items[i]);
+        }
+    }
+
+    private void addInfoRow(DeviceInfo.InfoItem item) {
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.HORIZONTAL);
+        card.setPadding(dp(16), dp(12), dp(16), dp(12));
+        card.setGravity(Gravity.CENTER_VERTICAL);
+        setRoundedBg(card, BG_CARD, 14);
+
+        // Warning dot
+        TextView dot = new TextView(this);
+        dot.setText(" \u25cf ");
+        dot.setTextSize(10f);
+        dot.setTextColor(item.isWarning ? ORANGE_WARN : TEAL_PRIMARY);
+        card.addView(dot);
+
+        // Info
+        LinearLayout info = new LinearLayout(this);
+        info.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams infoLp = new LinearLayout.LayoutParams(
+            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        card.addView(info, infoLp);
+
+        TextView label = new TextView(this);
+        label.setText(item.label);
+        label.setTextColor(TEXT_HINT);
+        label.setTextSize(10f);
+        label.setTypeface(Typeface.DEFAULT_BOLD);
+        info.addView(label);
+
+        TextView value = new TextView(this);
+        value.setText(item.value);
+        value.setTextColor(item.isWarning ? ORANGE_WARN : TEXT_PRIMARY);
+        value.setTextSize(12f);
+        info.addView(value);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, dp(8));
+        deviceInfoLayout.addView(card, lp);
+    }
+
+    private LinearLayout makeDivider(String label) {
+        LinearLayout dividerRow = new LinearLayout(this);
+        dividerRow.setOrientation(LinearLayout.HORIZONTAL);
+        dividerRow.setGravity(Gravity.CENTER_VERTICAL);
+
+        View divL = new View(this);
+        divL.setBackgroundColor(0xFF1E2F3D);
+        LinearLayout.LayoutParams dlp = new LinearLayout.LayoutParams(0, dp(1), 1f);
+        dividerRow.addView(divL, dlp);
+
+        TextView divLabel = new TextView(this);
+        divLabel.setText("  " + label + "  ");
+        divLabel.setTextSize(10f);
+        divLabel.setTextColor(TEXT_HINT);
+        divLabel.setTypeface(Typeface.DEFAULT_BOLD);
+        dividerRow.addView(divLabel);
+
+        View divR = new View(this);
+        divR.setBackgroundColor(0xFF1E2F3D);
+        LinearLayout.LayoutParams drp = new LinearLayout.LayoutParams(0, dp(1), 1f);
+        dividerRow.addView(divR, drp);
+
+        return dividerRow;
     }
 
     private void startScan() {
