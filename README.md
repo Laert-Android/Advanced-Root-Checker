@@ -158,6 +158,50 @@ apksigner sign \
 Open your file manager, go to Downloads
 and tap RootChecker.apk to install.
 
+
+### Build on PC (Windows,Linux)
+
+**Requirements:**
+- Java 17 (JDK)
+- Android Studio or Android SDK command line tools
+
+**Step 1 - Clone the project:**
+git clone https://github.com/Laert-Android/Advanced-Root-Checker
+cd Advanced-Root-Checker
+
+**Step 2 - Set your Android SDK path:**
+Create a file called local.properties in the root folder:
+
+Windows:
+sdk.dir=C\:\\Users\\YourName\\AppData\\Local\\Android\\Sdk
+
+Linux:
+sdk.dir=/home/yourname/Android/Sdk
+
+**Step 3 - Build:**
+Windows:
+gradlew.bat assembleDebug
+
+Linux:
+./gradlew assembleDebug
+
+**Step 4 - Find your APK at:**
+app/build/outputs/apk/debug/app-debug.apk
+
+**Step 5 - Install on device:**
+adb install app/build/outputs/apk/debug/app-debug.apk
+
+---
+
+### Build with Android Studio (easiest on PC)
+
+1. Download Android Studio from developer.android.com
+2. Clone the repo or download the zip
+3. Open Android Studio
+4. Click File -> Open -> select the project folder
+5. Wait for Gradle sync to finish
+6. Click Run -> Run app
+7. Android Studio builds, signs and installs automatically
 ---
 
 ## Privacy
