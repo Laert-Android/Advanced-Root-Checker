@@ -142,11 +142,10 @@ public class RootCheckerActivity extends Activity {
             }
         });
 
-        // Check results divider
+        // Check results section
         root.addView(makeDivider("CHECK RESULTS"));
         root.addView(spacer(12));
 
-        // Results layout
         resultsLayout = new LinearLayout(this);
         resultsLayout.setOrientation(LinearLayout.VERTICAL);
 
@@ -158,22 +157,25 @@ public class RootCheckerActivity extends Activity {
         emptyHint.setPadding(0, dp(12), 0, dp(12));
         resultsLayout.addView(emptyHint);
         root.addView(resultsLayout);
-
         root.addView(spacer(24));
 
-        // Device info divider
+        // Device security info section
         root.addView(makeDivider("DEVICE SECURITY INFO"));
         root.addView(spacer(12));
 
-        // Device info layout
         deviceInfoLayout = new LinearLayout(this);
         deviceInfoLayout.setOrientation(LinearLayout.VERTICAL);
         root.addView(deviceInfoLayout);
-
-        // Load device info immediately
         loadDeviceInfo();
+        root.addView(spacer(24));
 
-        root.addView(spacer(20));
+        // Importance of root section
+        root.addView(makeDivider("IMPORTANCE OF ROOT"));
+        root.addView(spacer(12));
+        root.addView(buildImportanceSection());
+        root.addView(spacer(24));
+
+        // Footer
         TextView footer = new TextView(this);
         footer.setText("All checks run locally. No data sent anywhere.");
         footer.setTextColor(TEXT_HINT);
@@ -183,6 +185,107 @@ public class RootCheckerActivity extends Activity {
 
         scroll.addView(root);
         setContentView(scroll);
+    }
+
+    private LinearLayout buildImportanceSection() {
+        LinearLayout section = new LinearLayout(this);
+        section.setOrientation(LinearLayout.VERTICAL);
+
+        // What is root card
+        addImportanceCard(section,
+            "What is Root?",
+            "Rooting gives you full administrator access to your Android device. " +
+            "It allows you to modify system files, remove pre-installed apps, " +
+            "and install powerful tools that require deep system access.",
+            TEAL_PRIMARY, false);
+
+        section.addView(spacer(8));
+
+        // Benefits card
+        addImportanceCard(section,
+            "Benefits of Root",
+            "- Full control over your device\n" +
+            "- Remove bloatware and ads system-wide\n" +
+            "- Advanced backup and restore\n" +
+            "- Custom ROMs and kernels\n" +
+            "- Better performance tweaks\n" +
+            "- Advanced firewall and privacy tools",
+            GREEN_PASS, false);
+
+        section.addView(spacer(8));
+
+        // Risks card
+        addImportanceCard(section,
+            "Risks of Root",
+            "- Security vulnerabilities if misused\n" +
+            "- Malicious apps can gain full system access\n" +
+            "- May void your device warranty\n" +
+            "- Risk of bricking your device\n" +
+            "- Banking and payment apps may not work\n" +
+            "- OTA updates may fail",
+            RED_FAIL, true);
+
+        section.addView(spacer(8));
+
+        // Safety tips card
+        addImportanceCard(section,
+            "Safety Tips",
+            "- Only grant root to apps you trust\n" +
+            "- Use Magisk for systemless root\n" +
+            "- Keep your device updated\n" +
+            "- Use a root firewall to control access\n" +
+            "- Regularly audit which apps have root",
+            ORANGE_WARN, false);
+
+        return section;
+    }
+
+    private void addImportanceCard(LinearLayout parent, String title,
+            String content, int accentColor, boolean isWarning) {
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(dp(16), dp(14), dp(16), dp(14));
+        setRoundedBg(card, BG_CARD, 14);
+
+        // Title row
+        LinearLayout titleRow = new LinearLayout(this);
+        titleRow.setOrientation(LinearLayout.HORIZONTAL);
+        titleRow.setGravity(Gravity.CENTER_VERTICAL);
+
+        TextView dot = new TextView(this);
+        dot.setText("\u25cf  ");
+        dot.setTextColor(accentColor);
+        dot.setTextSize(12f);
+        titleRow.addView(dot);
+
+        TextView titleView = new TextView(this);
+        titleView.setText(title);
+        titleView.setTextColor(accentColor);
+        titleView.setTextSize(14f);
+        titleView.setTypeface(Typeface.DEFAULT_BOLD);
+        titleRow.addView(titleView);
+        card.addView(titleRow);
+
+        // Divider
+        View div = new View(this);
+        div.setBackgroundColor(0xFF1E2F3D);
+        LinearLayout.LayoutParams divLp = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, dp(1));
+        divLp.setMargins(0, dp(8), 0, dp(8));
+        card.addView(div, divLp);
+
+        // Content
+        TextView contentView = new TextView(this);
+        contentView.setText(content);
+        contentView.setTextColor(TEXT_SEC);
+        contentView.setTextSize(12f);
+        contentView.setLineSpacing(dp(3), 1f);
+        card.addView(contentView);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
+        parent.addView(card, lp);
     }
 
     private void loadDeviceInfo() {
@@ -199,14 +302,12 @@ public class RootCheckerActivity extends Activity {
         card.setGravity(Gravity.CENTER_VERTICAL);
         setRoundedBg(card, BG_CARD, 14);
 
-        // Warning dot
         TextView dot = new TextView(this);
         dot.setText(" \u25cf ");
         dot.setTextSize(10f);
         dot.setTextColor(item.isWarning ? ORANGE_WARN : TEAL_PRIMARY);
         card.addView(dot);
 
-        // Info
         LinearLayout info = new LinearLayout(this);
         info.setOrientation(LinearLayout.VERTICAL);
         LinearLayout.LayoutParams infoLp = new LinearLayout.LayoutParams(
@@ -268,7 +369,7 @@ public class RootCheckerActivity extends Activity {
         setRoundedBg(summaryCard, BG_CARD, 24);
         summaryTitle.setText("Scanning...");
         summaryTitle.setTextColor(TEAL_PRIMARY);
-        summarySubtitle.setText("Running all 15 checks on your device");
+        summarySubtitle.setText("Running all checks on your device");
         summarySubtitle.setTextColor(TEXT_SEC);
 
         Thread t = new Thread(new Runnable() {

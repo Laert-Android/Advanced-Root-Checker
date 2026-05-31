@@ -1,4 +1,5 @@
-package com.laert.rootchecker;                             
+package com.laert.rootchecker;
+
 import android.os.Build;
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,6 +29,8 @@ public class RootDetector {
         results.add(checkSuperuserApk());
         results.add(checkMagisk());
         results.add(checkKnownRootApps());
+        results.add(checkPotentiallyDangerousApps());
+        results.add(checkRootCloakingApps());
         results.add(checkBuildTags());
         results.add(checkTestKeys());
         results.add(checkDangerousProps());
@@ -43,9 +46,9 @@ public class RootDetector {
     private CheckResult checkSuBinary() {
         String[] paths = {"/system/bin/su","/system/xbin/su","/sbin/su","/data/local/xbin/su","/data/local/bin/su","/data/local/su","/su/bin/su","/magisk/.core/bin/su"};
         for (int i = 0; i < paths.length; i++) {
-            if (new File(paths[i]).exists()) return new CheckResult("su Binary Found","Found at: "+paths[i],true);
+            if (new File(paths[i]).exists()) return new CheckResult("SuperUser Binary","Found at: "+paths[i],true);
         }
-        return new CheckResult("su Binary","Not found in common paths",false);
+        return new CheckResult("SuperUser Binary","Not found in common paths",false);
     }
 
     private CheckResult checkSuInPath() {
@@ -70,9 +73,9 @@ public class RootDetector {
     private CheckResult checkSuperuserApk() {
         String[] paths = {"/system/app/Superuser.apk","/system/app/SuperSU/SuperSU.apk","/system/app/SuperSU.apk","/system/priv-app/Superuser.apk"};
         for (int i = 0; i < paths.length; i++) {
-            if (new File(paths[i]).exists()) return new CheckResult("SuperUser APK","Found: "+paths[i],true);
+            if (new File(paths[i]).exists()) return new CheckResult("SuperUser Exists","Found: "+paths[i],true);
         }
-        return new CheckResult("SuperUser APK","Not in system",false);
+        return new CheckResult("SuperUser Exists","Not in system",false);
     }
 
     private CheckResult checkMagisk() {
@@ -84,17 +87,81 @@ public class RootDetector {
     }
 
     private CheckResult checkKnownRootApps() {
-        String[] packages = {"com.noshufou.android.su","eu.chainfire.supersu","com.koushikdutta.superuser","com.thirdparty.superuser","com.topjohnwu.magisk","com.kingroot.kinguser","com.kingo.root","com.smedialink.oneclickroot","com.alephzain.framaroot"};
+        String[] packages = {
+            "com.noshufou.android.su",
+            "eu.chainfire.supersu",
+            "com.koushikdutta.superuser",
+            "com.thirdparty.superuser",
+            "com.topjohnwu.magisk",
+            "com.kingroot.kinguser",
+            "com.kingo.root",
+            "com.smedialink.oneclickroot",
+            "com.alephzain.framaroot"
+        };
         for (int i = 0; i < packages.length; i++) {
-            if (new File("/data/data/"+packages[i]).exists()) return new CheckResult("Known Root Apps","Detected: "+packages[i],true);
+            if (new File("/data/data/"+packages[i]).exists())
+                return new CheckResult("Root Management Apps","Detected: "+packages[i],true);
         }
-        return new CheckResult("Known Root Apps","None detected",false);
+        return new CheckResult("Root Management Apps","None detected",false);
+    }
+
+    private CheckResult checkPotentiallyDangerousApps() {
+        String[] packages = {
+            "com.chelpus.lackypatch",
+            "com.dimonvideo.luckypatcher",
+            "com.forpda.lp",
+            "com.android.vending.billing.InAppBillingService.LUCK",
+            "com.android.vending.billing.InAppBillingService.LOCK",
+            "com.android.vending.billing.InAppBillingService.CRAC",
+            "com.android.vending.billing.InAppBillingService.COIN",
+            "com.chelpus.luckypatcher",
+            "com.nicehash.excavator",
+            "com.zhiqupk.root.global",
+            "com.gameguardian.android",
+            "catch_.me_.if_.you_.can_"
+        };
+        for (int i = 0; i < packages.length; i++) {
+            if (new File("/data/data/"+packages[i]).exists())
+                return new CheckResult("Potentially Dangerous Apps","Detected: "+packages[i],true);
+        }
+        return new CheckResult("Potentially Dangerous Apps","None detected",false);
+    }
+
+    private CheckResult checkRootCloakingApps() {
+        String[] packages = {
+            "com.devadvance.rootcloak",
+            "com.devadvance.rootcloakplus",
+            "de.robv.android.xposed.installer",
+            "com.saurik.substrate",
+            "com.zachspong.temprootremovejb",
+            "com.amphoras.hidemyroot",
+            "com.formyhm.hideroot",
+            "com.amphoras.hidemyrootadfree",
+            "com.formyhm.hiderootPremium",
+            "me.phh.superuser"
+        };
+        for (int i = 0; i < packages.length; i++) {
+            if (new File("/data/data/"+packages[i]).exists())
+                return new CheckResult("Root Cloaking Apps","Detected: "+packages[i],true);
+        }
+        // Check for MagiskHide/Shamiko
+        String[] paths = {
+            "/data/adb/modules/shamiko",
+            "/data/adb/modules/MagiskHide",
+            "/data/adb/modules/zygisk_shamiko"
+        };
+        for (int i = 0; i < paths.length; i++) {
+            if (new File(paths[i]).exists())
+                return new CheckResult("Root Cloaking Apps","Shamiko/MagiskHide detected",true);
+        }
+        return new CheckResult("Root Cloaking Apps","None detected",false);
     }
 
     private CheckResult checkBuildTags() {
         String tags = Build.TAGS;
-        if (tags != null && tags.contains("test-keys")) return new CheckResult("Build Tags","Signed with test-keys: "+tags,true);
-        return new CheckResult("Build Tags","Tags: "+(tags!=null?tags:"null"),false);
+        if (tags != null && tags.contains("test-keys"))
+            return new CheckResult("Test Keys","Signed with test-keys: "+tags,true);
+        return new CheckResult("Test Keys","Tags: "+(tags!=null?tags:"null"),false);
     }
 
     private CheckResult checkTestKeys() {
@@ -115,7 +182,11 @@ public class RootDetector {
             String line;
             String found = null;
             while ((line=br.readLine())!=null) {
-                if ((line.contains("ro.debuggable")&&line.contains("[1]"))||(line.contains("ro.secure")&&line.contains("[0]"))||(line.contains("service.adb.root")&&line.contains("[1]"))) { found=line.trim(); break; }
+                if ((line.contains("ro.debuggable")&&line.contains("[1]"))
+                    ||(line.contains("ro.secure")&&line.contains("[0]"))
+                    ||(line.contains("service.adb.root")&&line.contains("[1]"))) {
+                    found=line.trim(); break;
+                }
             }
             br.close(); p.destroy();
             if (found!=null) return new CheckResult("Dangerous Props",found,true);
@@ -132,12 +203,12 @@ public class RootDetector {
                 if (parts.length>=4&&parts[1].equals("/system")) {
                     String opts = parts[3]; br.close();
                     boolean rw = opts.startsWith("rw");
-                    return new CheckResult("/system Mount","Mounted as: "+opts.split(",")[0],rw);
+                    return new CheckResult("Read/Write Paths","Mounted as: "+opts.split(",")[0],rw);
                 }
             }
             br.close();
         } catch (Exception e) {}
-        return new CheckResult("/system Mount","Could not determine (likely read-only)",false);
+        return new CheckResult("Read/Write Paths","Could not determine (likely read-only)",false);
     }
 
     private CheckResult checkSelinuxEnforcing() {
@@ -158,9 +229,10 @@ public class RootDetector {
             Process proc = Runtime.getRuntime().exec(new String[]{"su","-c","id"});
             BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             String output = br.readLine(); br.close(); proc.destroy();
-            if (output!=null&&output.contains("uid=0")) return new CheckResult("su Execution Test",output.substring(0,Math.min(50,output.length())),true);
+            if (output!=null&&output.contains("uid=0"))
+                return new CheckResult("Root Native Test",output.substring(0,Math.min(50,output.length())),true);
         } catch (Exception e) {}
-        return new CheckResult("su Execution Test","su command failed or denied",false);
+        return new CheckResult("Root Native Test","su command failed or denied",false);
     }
 
     private CheckResult checkWritableSystem() {
@@ -175,7 +247,8 @@ public class RootDetector {
     private CheckResult checkHiddenSuBinaries() {
         String[] paths = {"/system/bin/.ext/.su","/system/usr/we-need-root/su-backup","/system/xbin/mu"};
         for (int i = 0; i < paths.length; i++) {
-            if (new File(paths[i]).exists()) return new CheckResult("Hidden su Binaries","Found: "+paths[i],true);
+            if (new File(paths[i]).exists())
+                return new CheckResult("Hidden su Binaries","Found: "+paths[i],true);
         }
         return new CheckResult("Hidden su Binaries","None found",false);
     }
@@ -183,14 +256,16 @@ public class RootDetector {
     private CheckResult checkXposed() {
         String[] paths = {"/system/framework/XposedBridge.jar","/system/lib/libxposed_art.so","/data/data/de.robv.android.xposed.installer"};
         for (int i = 0; i < paths.length; i++) {
-            if (new File(paths[i]).exists()) return new CheckResult("Xposed Framework","Detected: "+paths[i],true);
+            if (new File(paths[i]).exists())
+                return new CheckResult("Xposed Framework","Detected: "+paths[i],true);
         }
         try {
             throw new Exception("probe");
         } catch (Exception e) {
             StackTraceElement[] stack = e.getStackTrace();
             for (int i = 0; i < stack.length; i++) {
-                if (stack[i].getClassName().contains("XposedBridge")) return new CheckResult("Xposed Framework","Found in stack trace",true);
+                if (stack[i].getClassName().contains("XposedBridge"))
+                    return new CheckResult("Xposed Framework","Found in stack trace",true);
             }
         }
         return new CheckResult("Xposed Framework","Not detected",false);
