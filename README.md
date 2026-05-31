@@ -49,12 +49,12 @@ No internet permission. No ads. No tracking.
 
 
 
-![Main Screen](screenshots/main_screen.png)
+![Main Screen](Screenshots/main_screen.png)
 
 
 
 
-![Results](screenshots/results_clean.png)
+![Results](Screenshots/results_clean.png)
 
 
 
