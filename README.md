@@ -1,16 +1,11 @@
 # Advanced Root Checker
 
-[
 
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 ](LICENSE)
-[
 
 ![Version](https://img.shields.io/badge/Version-2.2-teal.svg)
-
-]()
-[
 
 ![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
 
@@ -181,7 +176,6 @@ and tap RootChecker.apk to install.
 
 - [GitHub Releases](https://github.com/Laert-Android/Advanced-Root-Checker/releases)
 - F-Droid (coming soon)
-- APKPure (coming soon)
 
 ---
 
