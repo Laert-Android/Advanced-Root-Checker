@@ -1,0 +1,7 @@
+Version 2.2 - Complete Root Detection
+
+- Added Potentially Dangerous Apps detection
+- Added Root Cloaking Apps detection
+- Added Shamiko and MagiskHide detection
+- Added Importance of Root educational section
+- Shows benefits, risks and safety tips for root
