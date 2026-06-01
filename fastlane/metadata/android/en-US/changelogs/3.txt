@@ -1,0 +1,7 @@
+Version 2.1 - Device Security Info
+
+- Added Device Security Info section
+- Shows Android version and security patch level
+- Shows SELinux status and bootloader status
+- Shows CPU architecture and kernel version
+- Warnings highlighted in orange
