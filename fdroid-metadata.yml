@@ -2,36 +2,37 @@ Categories:
   - Security
 License: GPL-3.0-only
 AuthorName: Laert
-SourceCode: https://github.com/yourusername/AdvancedRootChecker
-IssueTracker: https://github.com/yourusername/AdvancedRootChecker/issues
+SourceCode: https://github.com/Laert-Android/Advanced-Root-Checker
+IssueTracker: https://github.com/Laert-Android/Advanced-Root-Checker/issues
 
 AutoName: Advanced Root Checker
-Summary: Offline, no-tracking root detection for Android
+Summary: Offline root detection, no ads, no tracking
 Description: |-
-  Advanced Root Checker detects common root indicators on your Android device.
-  All checks run entirely locally — no internet connection required, no data sent anywhere.
+  Advanced Root Checker detects root indicators on your
+  Android device. All 17 checks run entirely offline.
+  No internet permission, no ads, no tracking, no analytics.
 
-  Features:
-  * 15 independent root detection checks
-  * Detects su binaries, Magisk, SuperSU, Xposed, BusyBox, and more
-  * Checks build tags, SELinux mode, dangerous system properties
-  * Clear pass/fail display per check
-  * Zero permissions (no Internet, no storage)
-  * No ads, no analytics, no tracking
-  * Compatible with Android 5.0+
+  Detects su binaries, Magisk, SuperSU, BusyBox, Xposed,
+  dangerous apps, root cloaking apps, dangerous system
+  properties, SELinux status and more.
+
+  Also shows device security info and explains the
+  importance of root access with benefits and risks.
+
+  Built with pure Java, no external libraries.
 
 RepoType: git
 Repo: https://github.com/Laert-Android/Advanced-Root-Checker
 
 Builds:
-  - versionName: '2.0'
-    versionCode: 2
-    commit: v2.0
+  - versionName: '2.2'
+    versionCode: 4
+    commit: v2.2
     subdir: app
     gradle:
       - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '2.0'
-CurrentVersionCode: 1
+CurrentVersion: '2.2'
+CurrentVersionCode: 4
