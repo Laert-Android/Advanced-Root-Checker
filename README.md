@@ -218,6 +218,7 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 
 - [GitHub Releases](https://github.com/Laert-Android/Advanced-Root-Checker/releases)
 - F-Droid (coming soon)
+- [SourceForge](https://sourceforge.net/projects/advanced-root-checker)
 
 ---
 
