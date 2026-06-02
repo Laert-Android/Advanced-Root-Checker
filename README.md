@@ -100,65 +100,83 @@ No internet permission. No ads. No tracking.
 
 ## Build from Source
 
-### Requirements
-- Android device with Termux installed (from F-Droid)
-- Or a PC with Java 17 and Android SDK
+### Build on Android with Termux (recommended)
 
-### Build on Android with Termux
+**Step 1 - Install Termux from F-Droid (not Play Store)**
 
-**Step 1 - Install dependencies:**
+**Step 2 - Install dependencies:**
 pkg update && pkg upgrade -y
-pkg install openjdk-17 git aapt2 -y
+pkg install openjdk-17 git aapt2 wget unzip -y
 
-**Step 2 - Set Java path:**
+**Step 3 - Set Java path:**
 export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk
-export PATH=$PATH:$JAVA_HOME/bin
+export PATH=PATH:JAVA_HOME/bin
 
-**Step 3 - Clone the project:**
+**Step 4 - Make it permanent:**
+echo 'export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk' >> ~/.bashrc
+echo 'export PATH=PATH:JAVA_HOME/bin' >> ~/.bashrc
+source ~/.bashrc
+
+**Step 5 - Clone the project:**
 git clone https://github.com/Laert-Android/Advanced-Root-Checker
 cd Advanced-Root-Checker
 
-**Step 4 - Install Android SDK:**
-pkg install wget unzip -y
+**Step 6 - Download Android SDK:**
+cd ~
 wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
 unzip commandlinetools-linux-11076708_latest.zip
 mkdir -p ~/android-sdk/cmdline-tools/latest
 mv cmdline-tools/* ~/android-sdk/cmdline-tools/latest/
-export ANDROID_HOME=~/android-sdk
-export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
+
+**Step 7 - Set SDK environment:**
+export ANDROID_HOME=$HOME/android-sdk
+export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin
+
+
+**Step 8 - Accept licenses and install SDK:**
 yes | sdkmanager --licenses
 sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
-**Step 5 - Configure and build:**
+**Step 9 - Configure project:**
+cd ~/Advanced-Root-Checker
 gradle wrapper
 echo "sdk.dir=$HOME/android-sdk" > local.properties
 echo "android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2" > gradle.properties
+
+**Step 10 - Build the APK:**
 ./gradlew assembleDebug
 
-**Step 6 - Sign the APK:**
-keytool -genkey -noprompt \
-  -keystore ~/my.keystore \
-  -alias mykey \
-  -keyalg RSA \
-  -keysize 2048 \
-  -validity 10000 \
-  -storepass android123 \
-  -keypass android123 \
-  -dname "CN=Dev,OU=Dev,O=Dev,L=City,ST=State,C=US"
+**Step 11 - Generate a signing keystore (only needed once):**
+keytool -genkey -noprompt 
+-keystore ~/my.keystore 
+-alias mykey 
+-keyalg RSA 
+-keysize 2048 
+-validity 10000 
+-storepass android123 
+-keypass android123 
+-dname "CN=Dev,OU=Dev,O=Dev,L=City,ST=State,C=US"
 
-cp app/build/outputs/apk/debug/app-debug.apk /sdcard/Download/RootChecker.apk
+**Step 12 - Copy and sign the APK:**
+cp app/build/outputs/apk/debug/app-debug.apk ~/RootChecker.apk
+apksigner sign 
+--ks ~/my.keystore 
+--ks-pass pass:android123 
+--key-pass pass:android123 
+~/RootChecker.apk
 
-apksigner sign \
-  --ks ~/my.keystore \
-  --ks-pass pass:android123 \
-  --key-pass pass:android123 \
-  /sdcard/Download/RootChecker.apk
+**Step 13 - Copy to Downloads and install:**
+cp ~/RootChecker.apk /sdcard/Download/RootChecker.apk
+Then open your file manager, go to Downloads and tap RootChecker.apk to install.
 
-**Step 7 - Install:**
-Open your file manager, go to Downloads
-and tap RootChecker.apk to install.
+---
 
-
+### Notes
+- Steps 1-8 only need to be done once
+- For future builds just do Steps 9-13
+- If you get SDK location error run Step 9 again
+- If you get JAVA_HOME error run Steps 3-4 again
+- 
 ### Build on PC (Windows,Linux)
 
 **Requirements:**
