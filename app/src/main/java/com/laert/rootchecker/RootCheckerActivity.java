@@ -1,9 +1,11 @@
 package com.laert.rootchecker;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -71,8 +73,12 @@ public class RootCheckerActivity extends Activity {
         appSub.setTextSize(11f);
         appSub.setTextColor(TEXT_HINT);
         appSub.setGravity(Gravity.CENTER);
-        appSub.setPadding(0, dp(4), 0, dp(20));
+        appSub.setPadding(0, dp(4), 0, dp(16));
         root.addView(appSub);
+
+        // Keep Android Open banner
+        root.addView(buildKeepOpenBanner());
+        root.addView(spacer(16));
 
         // Summary card
         summaryCard = new LinearLayout(this);
@@ -187,11 +193,68 @@ public class RootCheckerActivity extends Activity {
         setContentView(scroll);
     }
 
+    private LinearLayout buildKeepOpenBanner() {
+        LinearLayout banner = new LinearLayout(this);
+        banner.setOrientation(LinearLayout.VERTICAL);
+        banner.setPadding(dp(16), dp(14), dp(16), dp(14));
+        setRoundedBg(banner, 0xFF1A1A2E, 16);
+
+        // Orange left border effect
+        LinearLayout inner = new LinearLayout(this);
+        inner.setOrientation(LinearLayout.HORIZONTAL);
+        inner.setGravity(Gravity.CENTER_VERTICAL);
+
+        View accent = new View(this);
+        accent.setBackgroundColor(ORANGE_WARN);
+        LinearLayout.LayoutParams accentLp = new LinearLayout.LayoutParams(dp(4),
+            LinearLayout.LayoutParams.MATCH_PARENT);
+        accentLp.setMargins(0, 0, dp(12), 0);
+        inner.addView(accent, accentLp);
+
+        LinearLayout textArea = new LinearLayout(this);
+        textArea.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams taLp = new LinearLayout.LayoutParams(
+            0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        inner.addView(textArea, taLp);
+
+        TextView bannerTitle = new TextView(this);
+        bannerTitle.setText("Android Freedom at Risk!");
+        bannerTitle.setTextSize(13f);
+        bannerTitle.setTextColor(ORANGE_WARN);
+        bannerTitle.setTypeface(Typeface.DEFAULT_BOLD);
+        textArea.addView(bannerTitle);
+
+        TextView bannerMsg = new TextView(this);
+        bannerMsg.setText("Android is becoming a locked-down platform. " +
+            "Sideloading and open source apps are under threat.");
+        bannerMsg.setTextSize(11f);
+        bannerMsg.setTextColor(TEXT_SEC);
+        bannerMsg.setPadding(0, dp(4), 0, dp(8));
+        textArea.addView(bannerMsg);
+
+        // Clickable learn more button
+        TextView learnMore = new TextView(this);
+        learnMore.setText("Learn more and take action →");
+        learnMore.setTextSize(11f);
+        learnMore.setTextColor(TEAL_PRIMARY);
+        learnMore.setTypeface(Typeface.DEFAULT_BOLD);
+        learnMore.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://keepandroidopen.org/sq/"));
+                startActivity(intent);
+            }
+        });
+        textArea.addView(learnMore);
+
+        banner.addView(inner);
+        return banner;
+    }
+
     private LinearLayout buildImportanceSection() {
         LinearLayout section = new LinearLayout(this);
         section.setOrientation(LinearLayout.VERTICAL);
 
-        // What is root card
         addImportanceCard(section,
             "What is Root?",
             "Rooting gives you full administrator access to your Android device. " +
@@ -201,7 +264,6 @@ public class RootCheckerActivity extends Activity {
 
         section.addView(spacer(8));
 
-        // Benefits card
         addImportanceCard(section,
             "Benefits of Root",
             "- Full control over your device\n" +
@@ -214,7 +276,6 @@ public class RootCheckerActivity extends Activity {
 
         section.addView(spacer(8));
 
-        // Risks card
         addImportanceCard(section,
             "Risks of Root",
             "- Security vulnerabilities if misused\n" +
@@ -227,7 +288,6 @@ public class RootCheckerActivity extends Activity {
 
         section.addView(spacer(8));
 
-        // Safety tips card
         addImportanceCard(section,
             "Safety Tips",
             "- Only grant root to apps you trust\n" +
@@ -247,7 +307,6 @@ public class RootCheckerActivity extends Activity {
         card.setPadding(dp(16), dp(14), dp(16), dp(14));
         setRoundedBg(card, BG_CARD, 14);
 
-        // Title row
         LinearLayout titleRow = new LinearLayout(this);
         titleRow.setOrientation(LinearLayout.HORIZONTAL);
         titleRow.setGravity(Gravity.CENTER_VERTICAL);
@@ -266,7 +325,6 @@ public class RootCheckerActivity extends Activity {
         titleRow.addView(titleView);
         card.addView(titleRow);
 
-        // Divider
         View div = new View(this);
         div.setBackgroundColor(0xFF1E2F3D);
         LinearLayout.LayoutParams divLp = new LinearLayout.LayoutParams(
@@ -274,7 +332,6 @@ public class RootCheckerActivity extends Activity {
         divLp.setMargins(0, dp(8), 0, dp(8));
         card.addView(div, divLp);
 
-        // Content
         TextView contentView = new TextView(this);
         contentView.setText(content);
         contentView.setTextColor(TEXT_SEC);
