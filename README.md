@@ -120,6 +120,7 @@ source ~/.bashrc
 
 **Step 5 - Clone the project:**
 git clone https://github.com/Laert-Android/Advanced-Root-Checker
+
 cd Advanced-Root-Checker
 
 **Step 6 - Download Android SDK:**
