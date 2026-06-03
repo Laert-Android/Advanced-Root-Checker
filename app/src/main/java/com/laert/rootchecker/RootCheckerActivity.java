@@ -563,4 +563,37 @@ public class RootCheckerActivity extends Activity {
     private int dp(int val) {
         return (int)(val * getResources().getDisplayMetrics().density);
     }
+
+    @Override
+    public void onBackPressed() {
+        android.app.AlertDialog.Builder builder =
+            new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Thanks for using Advanced Root Checker!");
+        builder.setMessage(
+            "If you like this app please share my " +
+            "GitHub project with your friends and family!\n\n" +
+            "github.com/Laert-Android/Advanced-Root-Checker\n\n" +
+            "Have a good day!");
+        builder.setPositiveButton("Share", new android.content.DialogInterface.OnClickListener() {
+            public void onClick(android.content.DialogInterface dialog, int which) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Advanced Root Checker");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Check out Advanced Root Checker - free open source " +
+                    "root detection app for Android!\n\n" +
+                    "https://github.com/Laert-Android/Advanced-Root-Checker\n\n" +
+                    "No ads. No tracking. Fully open source!");
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            }
+        });
+        builder.setNegativeButton("Close App", new android.content.DialogInterface.OnClickListener() {
+            public void onClick(android.content.DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
 }
