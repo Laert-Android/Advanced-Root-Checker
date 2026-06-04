@@ -107,7 +107,7 @@ No internet permission. No ads. No tracking.
 **Step 2 - Install dependencies:**
 pkg update && pkg upgrade -y
 
-pkg install openjdk-17 git aapt2 wget unzip -y
+pkg install openjdk-17 git aapt2 wget unzip git -y
 
 **Step 3 - Set Java path:**
 export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk
