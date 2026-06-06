@@ -139,6 +139,7 @@ mv ~/cmdline-tools/* ~/android-sdk/cmdline-tools/latest/
 **Step 7 - Set SDK environment:**
 export ANDROID_HOME=$HOME/android-sdk
 export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin
+export PATH=$PREFIX/bin:$HOME/.local/bin
 
 
 
