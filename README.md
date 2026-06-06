@@ -125,9 +125,13 @@ cd Advanced-Root-Checker
 
 **Step 6 - Download Android SDK:**
 cd ~
+
 wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+
 unzip commandlinetools-linux-11076708_latest.zip
+
 mkdir -p ~/android-sdk/cmdline-tools/latest
+
 mv ~/cmdline-tools/* ~/android-sdk/cmdline-tools/latest/
 
 
