@@ -111,6 +111,7 @@ pkg install openjdk-17 git aapt2 wget unzip git apksigner -y
 
 **Step 3 - Set Java path:**
 export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk
+
 export PATH=$PREFIX/bin:$PATH
 
 **Step 4 - Make it permanent:**
