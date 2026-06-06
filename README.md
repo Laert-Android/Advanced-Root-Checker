@@ -184,6 +184,7 @@ Then open your file manager, go to Downloads and tap RootChecker.apk to install.
 ---
 
 ### Notes
+- Type the commands one by one to avoid errors
 - Steps 1-8 only need to be done once
 - For future builds just do Steps 9-13
 - If you get SDK location error run Step 9 again
