@@ -107,7 +107,7 @@ No internet permission. No ads. No tracking.
 **Step 2 - Install dependencies:**
 pkg update && pkg upgrade -y
 
-pkg install openjdk-17 git aapt2 wget unzip git -y
+pkg install openjdk-17 git aapt2 wget unzip git  apksigner-y
 
 **Step 3 - Set Java path:**
 export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk
@@ -144,7 +144,9 @@ sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
 **Step 9 - Configure project:**
 cd ~/Advanced-Root-Checker
+
 gradle wrapper
+
 echo "sdk.dir=$HOME/android-sdk" > local.properties
 echo "android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2" > gradle.properties
 
@@ -164,6 +166,7 @@ keytool -genkey -noprompt
 
 **Step 12 - Copy and sign the APK:**
 cp app/build/outputs/apk/debug/app-debug.apk ~/RootChecker.apk
+
 apksigner sign 
 --ks ~/my.keystore 
 --ks-pass pass:android123 
