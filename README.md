@@ -114,8 +114,8 @@ export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk
 export PATH=PATH:JAVA_HOME/bin
 
 **Step 4 - Make it permanent:**
-echo 'export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk' >> ~/.bashrc
-echo 'export PATH=PATH:JAVA_HOME/bin' >> ~/.bashrc
+echo 'export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk' > ~/.bashrc
+echo 'export PATH=PREFIX/bin:HOME/.local/bin:$JAVA_HOME/bin' >> ~/.bashrc
 source ~/.bashrc
 
 **Step 5 - Clone the project:**
@@ -128,15 +128,18 @@ cd ~
 wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
 unzip commandlinetools-linux-11076708_latest.zip
 mkdir -p ~/android-sdk/cmdline-tools/latest
-mv cmdline-tools/* ~/android-sdk/cmdline-tools/latest/
+mv ~/cmdline-tools/* ~/android-sdk/cmdline-tools/latest/
+
 
 **Step 7 - Set SDK environment:**
 export ANDROID_HOME=$HOME/android-sdk
 export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin
 
 
+
 **Step 8 - Accept licenses and install SDK:**
 yes | sdkmanager --licenses
+
 sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
 **Step 9 - Configure project:**
