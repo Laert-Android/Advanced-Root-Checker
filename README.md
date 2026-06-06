@@ -107,7 +107,7 @@ No internet permission. No ads. No tracking.
 **Step 2 - Install dependencies:**
 pkg update && pkg upgrade -y
 
-pkg install openjdk-17 git aapt2 wget unzip git apksigner -y
+pkg install openjdk-17 git aapt2 wget unzip git apksigner gradle -y
 
 **Step 3 - Set Java path:**
 export JAVA_HOME=$PREFIX/lib/jvm/java-17-openjdk
@@ -137,9 +137,9 @@ mv ~/cmdline-tools/* ~/android-sdk/cmdline-tools/latest/
 
 
 **Step 7 - Set SDK environment:**
-export ANDROID_HOME=$HOME/android-sdk
-export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin
-export PATH=$PREFIX/bin:$HOME/.local/bin
+echo 'export ANDROID_HOME=$HOME/android-sdk' >> ~/.bashrc
+echo 'export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin' >> ~/.bashrc
+source ~/.bashrc
 
 
 
