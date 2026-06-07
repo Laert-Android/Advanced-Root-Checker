@@ -1,15 +1,18 @@
 Advanced Root Checker detects root indicators on your
-Android device. All 17 checks run entirely offline.
+Android device. All 28 checks run entirely offline.
 No internet connection required, no data sent anywhere.
 
 WHAT IT DETECTS:
 - su binaries in common and hidden paths
-- Magisk and Magisk modules
+- Magisk, Magisk Modules and Magisk DenyList
+- Zygisk framework and Zygisk modules
+- KernelSU root solution
+- APatch root solution
 - SuperSU and SuperUser APKs
 - BusyBox binary
 - Xposed Framework
 - Known root manager apps
-- Potentially dangerous apps
+- Potentially dangerous apps (Lucky Patcher etc)
 - Root cloaking apps (Shamiko, MagiskHide)
 - Dangerous system properties
 - Read-write /system mount
@@ -18,6 +21,11 @@ WHAT IT DETECTS:
 - Test-keys build signature
 - Suspicious build fingerprint
 - Root native test
+- Play Integrity check
+- Emulator detection
+- ADB status
+- Developer options check
+- OTA updates status
 
 DEVICE SECURITY INFO:
 - Android version and API level
@@ -35,11 +43,16 @@ IMPORTANCE OF ROOT:
 - Risks and warnings
 - Safety tips for rooted devices
 
+KEEP ANDROID OPEN:
+- Banner linking to keepandroidopen.org
+- Raising awareness about Android freedom
+
 PRIVACY:
 - No internet permission
 - No ads or ad SDKs
 - No analytics or tracking
 - No data collection of any kind
+- All checks run locally on device
 
 OPEN SOURCE:
 Full source code on GitHub under GPL-3.0.
