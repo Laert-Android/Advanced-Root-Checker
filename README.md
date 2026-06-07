@@ -15,9 +15,23 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 2.2
+## Latest Version: 2.3
 
 ### Changelog
+
+**Version 2.3**
+- Added Zygisk detection
+- Added Zygisk Modules detection
+- Added Magisk Modules count
+- Added Magisk DenyList detection
+- Added KernelSU detection
+- Added APatch detection
+- Added Play Integrity check
+- Added Emulator detection
+- Added ADB Status check
+- Added Developer Options check
+- Added OTA Updates check
+- Total checks increased from 17 to 28
 
 **Version 2.2**
 - Added Potentially Dangerous Apps detection
@@ -41,7 +55,7 @@ No internet permission. No ads. No tracking.
 
 **Version 1.0**
 - Initial release
-- 15 root detection checks
+  - 28 root detection checks
 
 ---
 
@@ -62,7 +76,7 @@ No internet permission. No ads. No tracking.
 
 ## Features
 
-- 17 root detection checks
+- 28 root detection checks
 - Device Security Info section
 - Importance of Root educational section
 - Material You dark teal design
@@ -95,7 +109,17 @@ No internet permission. No ads. No tracking.
 | Writable /system | Tests /system write access |
 | Hidden su Binaries | Finds hidden su binaries |
 | Xposed Framework | Detects Xposed installation |
-
+| Zygisk | Detects Zygisk framework |
+| Zygisk Modules | Detects modules with Zygisk support |
+| Magisk Modules | Counts installed Magisk modules |
+| Magisk DenyList | Detects DenyList database |
+| KernelSU | Detects KernelSU root solution |
+| APatch | Detects APatch root solution |
+| Play Integrity | Checks if device would pass Play Integrity |
+| Emulator Detection | Detects if running on emulator |
+| ADB Status | Checks if ADB is enabled |
+| Developer Options | Checks USB ADB configuration |
+| OTA Updates | Checks if OTA updates are disabled |
 ---
 
 ## Build from Source
