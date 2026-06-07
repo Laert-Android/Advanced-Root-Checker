@@ -72,6 +72,17 @@ No internet permission. No ads. No tracking.
 
 
 
+
+![Results](Screenshots/results_clean1.png)
+
+
+
+
+![Results](Screenshots/results_clean2.png)
+
+
+
+
 ---
 
 ## Features
