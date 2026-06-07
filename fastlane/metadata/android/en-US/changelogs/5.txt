@@ -1,0 +1,7 @@
+Version 2.3 - Advanced Detection
+
+Added 11 new checks bringing total to 28:
+Zygisk, Zygisk Modules, Magisk Modules,
+Magisk DenyList, KernelSU, APatch,
+Play Integrity, Emulator Detection,
+ADB Status, Developer Options, OTA Updates.
