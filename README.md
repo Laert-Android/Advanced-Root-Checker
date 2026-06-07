@@ -250,10 +250,14 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 ## Download
 
 - [GitHub Releases](https://github.com/Laert-Android/Advanced-Root-Checker/releases)
-- F-Droid (coming soon)
 - [SourceForge](https://sourceforge.net/projects/advanced-root-checker)
+- [XDA Forums](https://xdaforums.com/t/advanced-root-checker-free-open-source-root-detection-app-no-ads-no-tracking-17-checks.4791052/)
+- F-Droid (submission pending)
 
----
+## Community
+
+- [XDA Forums Thread](https://xdaforums.com/t/advanced-root-checker-free-open-source-root-detection-app-no-ads-no-tracking-17-checks.4791052/)
+- [GitHub Issues](https://github.com/Laert-Android/Advanced-Root-Checker/issues)
 
 ## License
 
