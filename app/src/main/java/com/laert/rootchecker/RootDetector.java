@@ -23,11 +23,14 @@ public class RootDetector {
 
     public CheckResult[] runAllChecks() {
         List results = new ArrayList();
+        // Original checks
         results.add(checkSuBinary());
         results.add(checkSuInPath());
         results.add(checkBusybox());
         results.add(checkSuperuserApk());
         results.add(checkMagisk());
+        results.add(checkZygisk());
+        results.add(checkMagiskModules());
         results.add(checkKnownRootApps());
         results.add(checkPotentiallyDangerousApps());
         results.add(checkRootCloakingApps());
@@ -40,6 +43,16 @@ public class RootDetector {
         results.add(checkWritableSystem());
         results.add(checkHiddenSuBinaries());
         results.add(checkXposed());
+        // New advanced checks
+        results.add(checkPlayIntegrity());
+        results.add(checkEmulator());
+        results.add(checkAdbEnabled());
+        results.add(checkDeveloperOptions());
+        results.add(checkOTADisabled());
+        results.add(checkMagiskDenyList());
+        results.add(checkZygiskModules());
+        results.add(checkKernelSU());
+        results.add(checkAPatch());
         return (CheckResult[]) results.toArray(new CheckResult[results.size()]);
     }
 
@@ -79,11 +92,50 @@ public class RootDetector {
     }
 
     private CheckResult checkMagisk() {
-        String[] paths = {"/sbin/.magisk","/sbin/.core/mirror","/sbin/.core/img","/data/adb/magisk","/data/adb/modules","/magisk"};
+        String[] paths = {
+            "/sbin/.magisk","/sbin/.core/mirror",
+            "/sbin/.core/img","/data/adb/magisk",
+            "/data/adb/magisk.db","/magisk",
+            "/data/adb/magisk/busybox"
+        };
         for (int i = 0; i < paths.length; i++) {
             if (new File(paths[i]).exists()) return new CheckResult("Magisk","Detected: "+paths[i],true);
         }
         return new CheckResult("Magisk","No Magisk artifacts found",false);
+    }
+
+    private CheckResult checkZygisk() {
+        String[] paths = {
+            "/data/adb/modules/.zygisk",
+            "/dev/.magisk/zygisk",
+            "/system/lib/libzygisk.so",
+            "/system/lib64/libzygisk.so"
+        };
+        for (int i = 0; i < paths.length; i++) {
+            if (new File(paths[i]).exists()) return new CheckResult("Zygisk","Detected: "+paths[i],true);
+        }
+        // Check prop
+        try {
+            Process p = Runtime.getRuntime().exec(new String[]{"/system/bin/getprop","persist.sys.zygisk"});
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String val = br.readLine(); br.close(); p.destroy();
+            if ("true".equals(val != null ? val.trim() : "")) {
+                return new CheckResult("Zygisk","persist.sys.zygisk=true",true);
+            }
+        } catch (Exception e) {}
+        return new CheckResult("Zygisk","Not detected",false);
+    }
+
+    private CheckResult checkMagiskModules() {
+        File modulesDir = new File("/data/adb/modules");
+        if (modulesDir.exists() && modulesDir.isDirectory()) {
+            String[] modules = modulesDir.list();
+            if (modules != null && modules.length > 0) {
+                return new CheckResult("Magisk Modules",
+                    modules.length + " module(s) installed", true);
+            }
+        }
+        return new CheckResult("Magisk Modules","No modules found",false);
     }
 
     private CheckResult checkKnownRootApps() {
@@ -110,15 +162,11 @@ public class RootDetector {
             "com.chelpus.lackypatch",
             "com.dimonvideo.luckypatcher",
             "com.forpda.lp",
-            "com.android.vending.billing.InAppBillingService.LUCK",
-            "com.android.vending.billing.InAppBillingService.LOCK",
-            "com.android.vending.billing.InAppBillingService.CRAC",
-            "com.android.vending.billing.InAppBillingService.COIN",
             "com.chelpus.luckypatcher",
-            "com.nicehash.excavator",
-            "com.zhiqupk.root.global",
             "com.gameguardian.android",
-            "catch_.me_.if_.you_.can_"
+            "catch_.me_.if_.you_.can_",
+            "com.android.vending.billing.InAppBillingService.LUCK",
+            "com.android.vending.billing.InAppBillingService.LOCK"
         };
         for (int i = 0; i < packages.length; i++) {
             if (new File("/data/data/"+packages[i]).exists())
@@ -133,18 +181,14 @@ public class RootDetector {
             "com.devadvance.rootcloakplus",
             "de.robv.android.xposed.installer",
             "com.saurik.substrate",
-            "com.zachspong.temprootremovejb",
             "com.amphoras.hidemyroot",
             "com.formyhm.hideroot",
-            "com.amphoras.hidemyrootadfree",
-            "com.formyhm.hiderootPremium",
             "me.phh.superuser"
         };
         for (int i = 0; i < packages.length; i++) {
             if (new File("/data/data/"+packages[i]).exists())
                 return new CheckResult("Root Cloaking Apps","Detected: "+packages[i],true);
         }
-        // Check for MagiskHide/Shamiko
         String[] paths = {
             "/data/adb/modules/shamiko",
             "/data/adb/modules/MagiskHide",
@@ -269,5 +313,153 @@ public class RootDetector {
             }
         }
         return new CheckResult("Xposed Framework","Not detected",false);
+    }
+
+    private CheckResult checkPlayIntegrity() {
+        // Check for indicators that Play Integrity would fail
+        String tags = Build.TAGS;
+        String fp = Build.FINGERPRINT;
+        String type = Build.TYPE;
+        boolean fail = false;
+        String reason = "";
+        if (tags != null && tags.contains("test-keys")) {
+            fail = true; reason = "test-keys build";
+        } else if ("eng".equals(type) || "userdebug".equals(type)) {
+            fail = true; reason = "Build type: " + type;
+        } else if (fp != null && (fp.contains("generic") || fp.contains("unknown"))) {
+            fail = true; reason = "Generic fingerprint";
+        } else if (new File("/data/adb/magisk").exists()) {
+            fail = true; reason = "Magisk detected";
+        }
+        if (fail) {
+            return new CheckResult("Play Integrity","Likely FAILS: " + reason, true);
+        }
+        return new CheckResult("Play Integrity","Likely passes (basic check only)", false);
+    }
+
+    private CheckResult checkEmulator() {
+        boolean isEmulator = false;
+        String reason = "";
+        if (Build.FINGERPRINT != null && Build.FINGERPRINT.contains("generic")) {
+            isEmulator = true; reason = "Generic fingerprint";
+        } else if ("goldfish".equals(Build.HARDWARE) || "ranchu".equals(Build.HARDWARE)) {
+            isEmulator = true; reason = "Hardware: " + Build.HARDWARE;
+        } else if (Build.MODEL.contains("Emulator") || Build.MODEL.contains("Android SDK")) {
+            isEmulator = true; reason = "Model: " + Build.MODEL;
+        } else if (new File("/dev/socket/qemud").exists()) {
+            isEmulator = true; reason = "QEMU socket found";
+        } else if (new File("/dev/qemu_pipe").exists()) {
+            isEmulator = true; reason = "QEMU pipe found";
+        }
+        return new CheckResult("Emulator Detection",
+            isEmulator ? reason : "Real device detected", isEmulator);
+    }
+
+    private CheckResult checkAdbEnabled() {
+        try {
+            Process p = Runtime.getRuntime().exec(
+                new String[]{"/system/bin/getprop","persist.service.adb.enable"});
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String val = br.readLine(); br.close(); p.destroy();
+            if ("1".equals(val != null ? val.trim() : "")) {
+                return new CheckResult("ADB Status","ADB is enabled",true);
+            }
+        } catch (Exception e) {}
+        return new CheckResult("ADB Status","ADB not enabled via prop",false);
+    }
+
+    private CheckResult checkDeveloperOptions() {
+        try {
+            Process p = Runtime.getRuntime().exec(
+                new String[]{"/system/bin/getprop","persist.sys.usb.config"});
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String val = br.readLine(); br.close(); p.destroy();
+            if (val != null && val.contains("adb")) {
+                return new CheckResult("Developer Options","USB config: "+val.trim(),true);
+            }
+        } catch (Exception e) {}
+        return new CheckResult("Developer Options","ADB not in USB config",false);
+    }
+
+    private CheckResult checkOTADisabled() {
+        String[] paths = {
+            "/cache/recovery",
+            "/data/cache/recovery"
+        };
+        try {
+            Process p = Runtime.getRuntime().exec(
+                new String[]{"/system/bin/getprop","ro.ota.disable"});
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String val = br.readLine(); br.close(); p.destroy();
+            if ("1".equals(val != null ? val.trim() : "") ||
+                "true".equals(val != null ? val.trim() : "")) {
+                return new CheckResult("OTA Updates","OTA updates disabled",true);
+            }
+        } catch (Exception e) {}
+        return new CheckResult("OTA Updates","OTA updates enabled",false);
+    }
+
+    private CheckResult checkMagiskDenyList() {
+        File denyList = new File("/data/adb/magisk/deny");
+        if (denyList.exists()) {
+            return new CheckResult("Magisk DenyList","DenyList database found",true);
+        }
+        File denyDb = new File("/data/adb/magisk/denylist.db");
+        if (denyDb.exists()) {
+            return new CheckResult("Magisk DenyList","DenyList enabled",true);
+        }
+        return new CheckResult("Magisk DenyList","Not detected",false);
+    }
+
+    private CheckResult checkZygiskModules() {
+        File zygiskDir = new File("/data/adb/modules");
+        if (zygiskDir.exists() && zygiskDir.isDirectory()) {
+            File[] modules = zygiskDir.listFiles();
+            if (modules != null) {
+                for (int i = 0; i < modules.length; i++) {
+                    File zygisk = new File(modules[i], "zygisk");
+                    if (zygisk.exists()) {
+                        return new CheckResult("Zygisk Modules",
+                            "Zygisk module: " + modules[i].getName(), true);
+                    }
+                }
+            }
+        }
+        return new CheckResult("Zygisk Modules","No Zygisk modules found",false);
+    }
+
+    private CheckResult checkKernelSU() {
+        String[] paths = {
+            "/data/adb/ksud",
+            "/data/adb/ksu",
+            "/system/bin/ksud"
+        };
+        for (int i = 0; i < paths.length; i++) {
+            if (new File(paths[i]).exists())
+                return new CheckResult("KernelSU","Detected: "+paths[i],true);
+        }
+        try {
+            Process p = Runtime.getRuntime().exec(
+                new String[]{"/system/bin/getprop","persist.sys.kernelsu"});
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            String val = br.readLine(); br.close(); p.destroy();
+            if (val != null && !val.trim().isEmpty()) {
+                return new CheckResult("KernelSU","KernelSU prop detected",true);
+            }
+        } catch (Exception e) {}
+        return new CheckResult("KernelSU","Not detected",false);
+    }
+
+    private CheckResult checkAPatch() {
+        String[] paths = {
+            "/data/adb/ap",
+            "/data/adb/apatch",
+            "/data/adb/apatch/apatchd"
+        };
+        for (int i = 0; i < paths.length; i++) {
+            if (new File(paths[i]).exists())
+                return new CheckResult("APatch","Detected: "+paths[i],true);
+        }
+        return new CheckResult("APatch","Not detected",false);
     }
 }
