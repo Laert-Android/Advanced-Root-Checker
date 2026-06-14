@@ -1,7 +1,11 @@
 package com.laert.rootchecker;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -24,14 +28,17 @@ public class RootCheckerActivity extends Activity {
 
     private LinearLayout resultsLayout;
     private LinearLayout deviceInfoLayout;
+    private LinearLayout historyLayout;
     private TextView summaryTitle;
     private TextView summarySubtitle;
+    private TextView scoreText;
     private LinearLayout summaryCard;
     private Button scanButton;
     private ProgressBar progressBar;
     private TextView progressText;
     private LinearLayout progressContainer;
     private Handler mainHandler;
+    private SharedPreferences prefs;
 
     private static final int BG_PRIMARY   = 0xFF0F1923;
     private static final int BG_CARD      = 0xFF1A2733;
@@ -47,6 +54,7 @@ public class RootCheckerActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainHandler = new Handler(Looper.getMainLooper());
+        prefs = getSharedPreferences("scan_history", Context.MODE_PRIVATE);
         buildUI();
     }
 
@@ -103,6 +111,15 @@ public class RootCheckerActivity extends Activity {
         summarySubtitle.setPadding(0, dp(6), 0, 0);
         summaryCard.addView(summarySubtitle);
 
+        // Risk score
+        scoreText = new TextView(this);
+        scoreText.setText("");
+        scoreText.setTextSize(36f);
+        scoreText.setTypeface(Typeface.DEFAULT_BOLD);
+        scoreText.setGravity(Gravity.CENTER);
+        scoreText.setPadding(0, dp(8), 0, 0);
+        summaryCard.addView(scoreText);
+
         root.addView(summaryCard);
         root.addView(spacer(16));
 
@@ -148,9 +165,26 @@ public class RootCheckerActivity extends Activity {
             }
         });
 
+        // Scan history section
+        root.addView(makeDivider("SCAN HISTORY"));
+        root.addView(spacer(12));
+        historyLayout = new LinearLayout(this);
+        historyLayout.setOrientation(LinearLayout.VERTICAL);
+        root.addView(historyLayout);
+        loadHistory();
+        root.addView(spacer(24));
+
         // Check results section
         root.addView(makeDivider("CHECK RESULTS"));
-        root.addView(spacer(12));
+        root.addView(spacer(8));
+
+        TextView tapHint = new TextView(this);
+        tapHint.setText("Tap any result to learn more");
+        tapHint.setTextSize(11f);
+        tapHint.setTextColor(TEXT_HINT);
+        tapHint.setGravity(Gravity.CENTER);
+        root.addView(tapHint);
+        root.addView(spacer(8));
 
         resultsLayout = new LinearLayout(this);
         resultsLayout.setOrientation(LinearLayout.VERTICAL);
@@ -168,7 +202,6 @@ public class RootCheckerActivity extends Activity {
         // Device security info section
         root.addView(makeDivider("DEVICE SECURITY INFO"));
         root.addView(spacer(12));
-
         deviceInfoLayout = new LinearLayout(this);
         deviceInfoLayout.setOrientation(LinearLayout.VERTICAL);
         root.addView(deviceInfoLayout);
@@ -183,7 +216,7 @@ public class RootCheckerActivity extends Activity {
 
         // Footer
         TextView footer = new TextView(this);
-        footer.setText("All checks run locally. No data sent anywhere.");
+        footer.setText("All checks run locally. No data sent anywhere.\nv3.0");
         footer.setTextColor(TEXT_HINT);
         footer.setTextSize(10f);
         footer.setGravity(Gravity.CENTER);
@@ -193,13 +226,65 @@ public class RootCheckerActivity extends Activity {
         setContentView(scroll);
     }
 
+    private void loadHistory() {
+        historyLayout.removeAllViews();
+        String h1 = prefs.getString("scan_1", "");
+        String h2 = prefs.getString("scan_2", "");
+        String h3 = prefs.getString("scan_3", "");
+
+        if (h1.isEmpty() && h2.isEmpty() && h3.isEmpty()) {
+            TextView empty = new TextView(this);
+            empty.setText("No previous scans yet.");
+            empty.setTextColor(TEXT_HINT);
+            empty.setTextSize(12f);
+            empty.setGravity(Gravity.CENTER);
+            historyLayout.addView(empty);
+            return;
+        }
+
+        if (!h3.isEmpty()) addHistoryRow(h3);
+        if (!h2.isEmpty()) addHistoryRow(h2);
+        if (!h1.isEmpty()) addHistoryRow(h1);
+    }
+
+    private void addHistoryRow(String entry) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setPadding(dp(16), dp(10), dp(16), dp(10));
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        setRoundedBg(row, BG_CARD, 12);
+
+        TextView text = new TextView(this);
+        text.setText(entry);
+        text.setTextColor(TEXT_SEC);
+        text.setTextSize(12f);
+        row.addView(text);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, dp(6));
+        historyLayout.addView(row, lp);
+    }
+
+    private void saveHistory(int detected, int total, int score) {
+        String h1 = prefs.getString("scan_1", "");
+        String h2 = prefs.getString("scan_2", "");
+        String now = new java.util.Date().toString().substring(0, 19);
+        String entry = now + " | " + detected + "/" + total + " flags | Score: " + score + "/100";
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("scan_3", h2);
+        editor.putString("scan_2", h1);
+        editor.putString("scan_1", entry);
+        editor.apply();
+    }
+
     private LinearLayout buildKeepOpenBanner() {
         LinearLayout banner = new LinearLayout(this);
         banner.setOrientation(LinearLayout.VERTICAL);
         banner.setPadding(dp(16), dp(14), dp(16), dp(14));
         setRoundedBg(banner, 0xFF1A1A2E, 16);
 
-        // Orange left border effect
         LinearLayout inner = new LinearLayout(this);
         inner.setOrientation(LinearLayout.HORIZONTAL);
         inner.setGravity(Gravity.CENTER_VERTICAL);
@@ -232,9 +317,8 @@ public class RootCheckerActivity extends Activity {
         bannerMsg.setPadding(0, dp(4), 0, dp(8));
         textArea.addView(bannerMsg);
 
-        // Clickable learn more button
         TextView learnMore = new TextView(this);
-        learnMore.setText("Learn more and take action →");
+        learnMore.setText("Learn more and take action \u2192");
         learnMore.setTextSize(11f);
         learnMore.setTextColor(TEAL_PRIMARY);
         learnMore.setTypeface(Typeface.DEFAULT_BOLD);
@@ -246,7 +330,6 @@ public class RootCheckerActivity extends Activity {
             }
         });
         textArea.addView(learnMore);
-
         banner.addView(inner);
         return banner;
     }
@@ -255,17 +338,14 @@ public class RootCheckerActivity extends Activity {
         LinearLayout section = new LinearLayout(this);
         section.setOrientation(LinearLayout.VERTICAL);
 
-        addImportanceCard(section,
-            "What is Root?",
+        addImportanceCard(section, "What is Root?",
             "Rooting gives you full administrator access to your Android device. " +
             "It allows you to modify system files, remove pre-installed apps, " +
             "and install powerful tools that require deep system access.",
             TEAL_PRIMARY, false);
-
         section.addView(spacer(8));
 
-        addImportanceCard(section,
-            "Benefits of Root",
+        addImportanceCard(section, "Benefits of Root",
             "- Full control over your device\n" +
             "- Remove bloatware and ads system-wide\n" +
             "- Advanced backup and restore\n" +
@@ -273,11 +353,9 @@ public class RootCheckerActivity extends Activity {
             "- Better performance tweaks\n" +
             "- Advanced firewall and privacy tools",
             GREEN_PASS, false);
-
         section.addView(spacer(8));
 
-        addImportanceCard(section,
-            "Risks of Root",
+        addImportanceCard(section, "Risks of Root",
             "- Security vulnerabilities if misused\n" +
             "- Malicious apps can gain full system access\n" +
             "- May void your device warranty\n" +
@@ -285,11 +363,9 @@ public class RootCheckerActivity extends Activity {
             "- Banking and payment apps may not work\n" +
             "- OTA updates may fail",
             RED_FAIL, true);
-
         section.addView(spacer(8));
 
-        addImportanceCard(section,
-            "Safety Tips",
+        addImportanceCard(section, "Safety Tips",
             "- Only grant root to apps you trust\n" +
             "- Use Magisk for systemless root\n" +
             "- Keep your device updated\n" +
@@ -428,6 +504,7 @@ public class RootCheckerActivity extends Activity {
         summaryTitle.setTextColor(TEAL_PRIMARY);
         summarySubtitle.setText("Running all checks on your device");
         summarySubtitle.setTextColor(TEXT_SEC);
+        scoreText.setText("");
 
         Thread t = new Thread(new Runnable() {
             public void run() {
@@ -453,13 +530,16 @@ public class RootCheckerActivity extends Activity {
                 }
 
                 final int detected = rootCount;
+                final int score = detector.calculateRiskScore(checks);
                 mainHandler.post(new Runnable() {
                     public void run() {
                         progressContainer.setVisibility(View.GONE);
                         scanButton.setEnabled(true);
                         setRoundedBg(scanButton, TEAL_PRIMARY, 50);
                         scanButton.setText("SCAN AGAIN");
-                        updateSummary(detected, total);
+                        updateSummary(detected, total, score);
+                        saveHistory(detected, total, score);
+                        loadHistory();
                     }
                 });
             }
@@ -467,7 +547,7 @@ public class RootCheckerActivity extends Activity {
         t.start();
     }
 
-    private void addResultRow(RootDetector.CheckResult check) {
+    private void addResultRow(final RootDetector.CheckResult check) {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.HORIZONTAL);
         card.setPadding(dp(16), dp(12), dp(16), dp(12));
@@ -507,6 +587,21 @@ public class RootCheckerActivity extends Activity {
         detail.setTextSize(11f);
         info.addView(detail);
 
+        // Info icon for explanation
+        TextView infoIcon = new TextView(this);
+        infoIcon.setText(" ? ");
+        infoIcon.setTextSize(12f);
+        infoIcon.setTextColor(TEAL_PRIMARY);
+        infoIcon.setTypeface(Typeface.DEFAULT_BOLD);
+        card.addView(infoIcon);
+
+        // Click to show explanation
+        card.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                showExplanation(check);
+            }
+        });
+
         AlphaAnimation anim = new AlphaAnimation(0f, 1f);
         anim.setDuration(200);
         card.startAnimation(anim);
@@ -518,7 +613,23 @@ public class RootCheckerActivity extends Activity {
         resultsLayout.addView(card, lp);
     }
 
-    private void updateSummary(int detected, int total) {
+    private void showExplanation(RootDetector.CheckResult check) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(check.name);
+        builder.setMessage(
+            "Status: " + (check.detected ? "DETECTED" : "NOT DETECTED") + "\n\n" +
+            "Detail: " + check.detail + "\n\n" +
+            "What this means:\n" + check.explanation
+        );
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    private void updateSummary(int detected, int total, int score) {
         ScaleAnimation scale = new ScaleAnimation(
             0.95f, 1f, 0.95f, 1f,
             Animation.RELATIVE_TO_SELF, 0.5f,
@@ -526,25 +637,62 @@ public class RootCheckerActivity extends Activity {
         scale.setDuration(300);
         summaryCard.startAnimation(scale);
 
+        scoreText.setText(score + "/100");
+
         if (detected == 0) {
             setRoundedBg(summaryCard, 0xFF0D2B1A, 24);
             summaryTitle.setText("Device is Clean");
             summaryTitle.setTextColor(GREEN_PASS);
-            summarySubtitle.setText("All "+total+" checks passed - No root indicators found");
+            summarySubtitle.setText("All "+total+" checks passed");
             summarySubtitle.setTextColor(0xFF81C784);
-        } else if (detected <= 2) {
+            scoreText.setTextColor(GREEN_PASS);
+        } else if (detected <= 3) {
             setRoundedBg(summaryCard, 0xFF2B1F0D, 24);
             summaryTitle.setText("Possible Root");
             summaryTitle.setTextColor(ORANGE_WARN);
             summarySubtitle.setText(detected+" of "+total+" checks flagged");
             summarySubtitle.setTextColor(0xFFFFCC80);
+            scoreText.setTextColor(ORANGE_WARN);
         } else {
             setRoundedBg(summaryCard, 0xFF2B0D0D, 24);
             summaryTitle.setText("Root Detected!");
             summaryTitle.setTextColor(RED_FAIL);
             summarySubtitle.setText(detected+" of "+total+" checks flagged");
             summarySubtitle.setTextColor(0xFFEF9A9A);
+            scoreText.setTextColor(RED_FAIL);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thanks for using Advanced Root Checker!");
+        builder.setMessage(
+            "If you like this app please share my " +
+            "GitHub project with your friends and family!\n\n" +
+            "github.com/Laert-Android/Advanced-Root-Checker\n\n" +
+            "Have a good day!");
+        builder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Advanced Root Checker");
+                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Check out Advanced Root Checker - free open source " +
+                    "root detection app for Android!\n\n" +
+                    "https://github.com/Laert-Android/Advanced-Root-Checker\n\n" +
+                    "No ads. No tracking. Fully open source!");
+                startActivity(Intent.createChooser(shareIntent, "Share via"));
+            }
+        });
+        builder.setNegativeButton("Close App", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 
     private void setRoundedBg(View view, int color, int radiusDp) {
@@ -562,38 +710,5 @@ public class RootCheckerActivity extends Activity {
 
     private int dp(int val) {
         return (int)(val * getResources().getDisplayMetrics().density);
-    }
-
-    @Override
-    public void onBackPressed() {
-        android.app.AlertDialog.Builder builder =
-            new android.app.AlertDialog.Builder(this);
-        builder.setTitle("Thanks for using Advanced Root Checker!");
-        builder.setMessage(
-            "If you like this app please share my " +
-            "GitHub project with your friends and family!\n\n" +
-            "github.com/Laert-Android/Advanced-Root-Checker\n\n" +
-            "Have a good day!");
-        builder.setPositiveButton("Share", new android.content.DialogInterface.OnClickListener() {
-            public void onClick(android.content.DialogInterface dialog, int which) {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                shareIntent.setType("text/plain");
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Advanced Root Checker");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Check out Advanced Root Checker - free open source " +
-                    "root detection app for Android!\n\n" +
-                    "https://github.com/Laert-Android/Advanced-Root-Checker\n\n" +
-                    "No ads. No tracking. Fully open source!");
-                startActivity(Intent.createChooser(shareIntent, "Share via"));
-            }
-        });
-        builder.setNegativeButton("Close App", new android.content.DialogInterface.OnClickListener() {
-            public void onClick(android.content.DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        });
-        builder.setCancelable(false);
-        builder.show();
     }
 }
