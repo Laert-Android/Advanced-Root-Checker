@@ -19,6 +19,22 @@ No internet permission. No ads. No tracking.
 
 ### Changelog
 
+Version 3.0 - Major Update
+
+NEW FEATURES:
+- Risk Score (0-100 security rating)
+- Scan History (last 3 scans saved)
+- Check Explanations (tap any result)
+
+NEW CHECKS (33 total):
+- Verified Boot status
+- Knox status (Samsung)
+- Anti-rollback protection
+- Treble support
+- Native capability check
+
+No ads. No tracking. GPL-3.0.
+
 **Version 2.3**
 - Added Zygisk detection
 - Added Zygisk Modules detection
