@@ -27,7 +27,7 @@ Repo: https://github.com/Laert-Android/Advanced-Root-Checker
 
 Builds:
   - versionName: '3.0'
-    versionCode: 6
+    versionCode: 3
     commit: v3.0
     subdir: app
     gradle:
@@ -36,4 +36,4 @@ Builds:
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
 CurrentVersion: '3.0'
-CurrentVersionCode: 6
+CurrentVersionCode: 3
