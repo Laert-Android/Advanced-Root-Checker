@@ -15,9 +15,21 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 2.3
+## Latest Version: 3.0
 
 ### Changelog
+
+**Version 3.0**
+Risk Score (0-100 security rating)
+Scan History (last 3 scans saved)
+Check Explanations (tap any result)
+NEW CHECKS (33 total):
+
+Verified Boot status
+Knox status (Samsung)
+Anti-rollback protection
+Treble support
+Native capability check
 
 **Version 2.3**
 - Added Zygisk detection
@@ -63,22 +75,22 @@ No internet permission. No ads. No tracking.
 
 
 
-![Main Screen](Screenshots/main_screen.png)
+![Main Screen](fastlane/metadata/android/en-US/images/phoneScreenshots/main_screen.png)
 
 
 
 
-![Results](Screenshots/results_clean.png)
+![Results](fastlane/metadata/android/en-US/images/phoneScreenshots/results_clean.png)
 
 
 
 
-![Results](Screenshots/results_clean1.png)
+![Results](fastlane/metadata/android/en-US/images/phoneScreenshots/results_clean1.png)
 
 
 
 
-![Results](Screenshots/results_clean2.png)
+![Results](fastlane/metadata/android/en-US/images/phoneScreenshots/results_clean2.png)
 
 
 
@@ -87,7 +99,7 @@ No internet permission. No ads. No tracking.
 
 ## Features
 
-- 28 root detection checks
+- 33 root detection checks
 - Device Security Info section
 - Importance of Root educational section
 - Material You dark teal design
