@@ -1,5 +1,5 @@
 Advanced Root Checker detects root indicators on your
-Android device. All 28 checks run entirely offline.
+Android device. All 33 checks run entirely offline.
 No internet connection required, no data sent anywhere.
 
 WHAT IT DETECTS:
@@ -21,7 +21,7 @@ WHAT IT DETECTS:
 - Test-keys build signature
 - Suspicious build fingerprint
 - Root native test
-- Play Integrity check
+- Play Integrity heuristics (offline approximation only, not a real Google API verdict)
 - Emulator detection
 - ADB status
 - Developer options check
@@ -31,17 +31,6 @@ WHAT IT DETECTS:
 - Anti-rollback protection
 - Treble support
 - Native capability check
-- Zygisk detection
-- Zygisk Modules detection
-- Magisk Modules count
-- Magisk DenyList detection
-- KernelSU detection
-- APatch detection
-- Play Integrity check
-- Emulator detection
-- ADB Status check
-- Developer Options check
-- OTA Updates check
 
 DEVICE SECURITY INFO:
 - Android version and API level
