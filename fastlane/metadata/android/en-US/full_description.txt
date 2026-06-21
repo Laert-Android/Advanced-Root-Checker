@@ -26,6 +26,22 @@ WHAT IT DETECTS:
 - ADB status
 - Developer options check
 - OTA updates status
+- Verified Boot status
+- Knox status (Samsung)
+- Anti-rollback protection
+- Treble support
+- Native capability check
+- Zygisk detection
+- Zygisk Modules detection
+- Magisk Modules count
+- Magisk DenyList detection
+- KernelSU detection
+- APatch detection
+- Play Integrity check
+- Emulator detection
+- ADB Status check
+- Developer Options check
+- OTA Updates check
 
 DEVICE SECURITY INFO:
 - Android version and API level
