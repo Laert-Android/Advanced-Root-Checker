@@ -1,10 +1,10 @@
-# Advanced Root Checker
++# Advanced Root Checker
 
 
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 
-![Version](https://img.shields.io/badge/Version-2.2-teal.svg)
+![Version](https://img.shields.io/badge/Version-3.0-teal.svg)
 
 ![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
 
@@ -138,7 +138,7 @@ Native capability check
 | Magisk DenyList | Detects DenyList database |
 | KernelSU | Detects KernelSU root solution |
 | APatch | Detects APatch root solution |
-| Play Integrity | Checks if device would pass Play Integrity |
+| Play Integrity Heuristics (Offline) | Approximates a Play Integrity result using local build signals only — not a real API call to Google |
 | Emulator Detection | Detects if running on emulator |
 | ADB Status | Checks if ADB is enabled |
 | Developer Options | Checks USB ADB configuration |
