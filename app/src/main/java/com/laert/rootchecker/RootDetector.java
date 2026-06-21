@@ -424,10 +424,13 @@ public class RootDetector {
         } else if (new File("/data/adb/magisk").exists()) {
             fail = true; reason = "Magisk detected";
         }
-        return new CheckResult("Play Integrity",
-            fail ? "Likely FAILS: " + reason : "Likely passes (basic check only)",
-            "Play Integrity API is used by banking apps and games to verify device integrity.",
-            fail, 7);
+        return new CheckResult("Play Integrity Heuristics (Offline)",
+                fail ? "Local signals suggest FAIL: " + reason : "No local red flags found",
+                "This is NOT a real Play Integrity API verdict. The real Play Integrity API requires " +
+                        "an internet connection to verify with Google's servers, which this app intentionally " +
+                        "does not use. This check only approximates the result using local build signals " +
+                        "(test-keys, build type, fingerprint, Magisk presence) and can be wrong in either direction.",
+                fail, 7);
     }
 
     private CheckResult checkEmulator() {

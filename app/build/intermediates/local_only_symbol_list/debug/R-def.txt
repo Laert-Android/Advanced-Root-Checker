@@ -1,0 +1,11 @@
+R_DEF: Internal format may change without notice
+local
+color ic_launcher_background
+color ic_launcher_monochrome_color
+drawable ic_launcher_foreground
+drawable ic_launcher_monochrome
+mipmap ic_launcher
+string app_name
+string no_root
+string root_detected
+string scan_button

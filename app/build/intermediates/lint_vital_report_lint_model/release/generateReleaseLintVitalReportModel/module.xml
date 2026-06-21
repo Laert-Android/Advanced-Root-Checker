@@ -1,0 +1,19 @@
+<lint-module
+    format="1"
+    dir="C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app"
+    name=":app"
+    type="APP"
+    maven="AdvancedRootChecker:app:"
+    agpVersion="8.2.2"
+    buildFolder="build"
+    bootClassPath="C:\Users\laert\AppData\Local\Android\Sdk\platforms\android-34\android.jar;C:\Users\laert\AppData\Local\Android\Sdk\build-tools\34.0.0\core-lambda-stubs.jar"
+    javaSourceLevel="11"
+    compileTarget="android-34"
+    neverShrinking="true">
+  <lintOptions
+      abortOnError="true"
+      absolutePaths="true"
+      checkReleaseBuilds="true"
+      explainIssues="true"/>
+  <variant name="release"/>
+</lint-module>

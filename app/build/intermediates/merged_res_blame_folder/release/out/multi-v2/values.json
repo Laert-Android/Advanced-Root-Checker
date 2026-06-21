@@ -1,0 +1,43 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.laert.rootchecker.app-mergeReleaseResources-2:/values/values.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\laert\\AndroidStudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "57,115",
+                        "endColumns": "56,62",
+                        "endOffsets": "109,173"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,112",
+                        "endColumns": "56,62",
+                        "endOffsets": "107,170"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\laert\\AndroidStudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "2,4,5,3",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "57,163,217,108",
+                        "endColumns": "49,52,56,53",
+                        "endOffsets": "102,211,269,157"
+                    },
+                    "to": {
+                        "startLines": "4,5,6,7",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "175,225,278,335",
+                        "endColumns": "49,52,56,53",
+                        "endOffsets": "220,273,330,384"
+                    }
+                }
+            ]
+        }
+    ]
+}

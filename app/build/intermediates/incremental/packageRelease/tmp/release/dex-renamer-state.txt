@@ -1,0 +1,4 @@
+#Fri Jun 19 20:19:50 CEST 2026
+base.0=C\:\\Users\\laert\\AndroidStudioProjects\\Advanced-Root-Checker\\app\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
