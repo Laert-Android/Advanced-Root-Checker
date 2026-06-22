@@ -309,3 +309,7 @@ adb install app/build/outputs/apk/debug/app-debug.apk
 ## License
 
 GNU General Public License v3.0 - see [LICENSE](LICENSE)
+
+## Author
+
+Made by [Laert](https://github.com/Laert-Android)
