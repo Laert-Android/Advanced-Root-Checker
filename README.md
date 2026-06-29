@@ -193,13 +193,7 @@ source ~/.bashrc
 **Step 8 - Set SDK environment permanently:**
 export ANDROID_HOME=$HOME/android-sdk
 
-export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin
-
-echo 'export ANDROID_HOME=$HOME/android-sdk' >> ~/.bashrc
-
-echo 'export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin' >> ~/.bashrc
-
-source ~/.bashrc
+export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin
 
 yes | sdkmanager --licenses
 
