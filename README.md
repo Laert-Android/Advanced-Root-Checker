@@ -190,10 +190,22 @@ source ~/.bashrc
 
 
 
-**Step 8 - Accept licenses and install SDK:**
+**Step 8 - Set SDK environment permanently:**
+export ANDROID_HOME=$HOME/android-sdk
+
+export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin
+
+echo 'export ANDROID_HOME=$HOME/android-sdk' >> ~/.bashrc
+
+echo 'export PATH=PATH:ANDROID_HOME/cmdline-tools/latest/bin' >> ~/.bashrc
+
+source ~/.bashrc
+
 yes | sdkmanager --licenses
 
-sdkmanager "platforms;android-34" "build-tools;34.0.0"
+sdkmanager "platforms;android-34"
+
+sdkmanager "build-tools;34.0.0"
 
 **Step 9 - Configure project:**
 cd ~/Advanced-Root-Checker
@@ -238,6 +250,7 @@ Then open your file manager, go to Downloads and tap RootChecker.apk to install.
 - For future builds just do Steps 9-13
 - If you get SDK location error run Step 9 again
 - If you get JAVA_HOME error run Steps 3-4 again
+- If you get 'sdkmanager: command not found' run Steps 6 and 7 again before Step 8. The SDK path must be set before running sdkmanager.
 - 
 ### Build on PC (Windows,Linux)
 
