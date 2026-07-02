@@ -15,9 +15,25 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 3.0
+## Latest Version: 3.1
 
 ### Changelog
+
+**Version 3.1**
+Detailed Device Info
+New device information fields:
+- Manufacturer
+- Brand
+- Model
+- Board
+- Hardware
+- Android ID
+- Bootloader
+- User
+- Host
+- Display
+- Device codename
+
 
 **Version 3.0**
 Risk Score (0-100 security rating)
