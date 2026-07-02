@@ -20,7 +20,6 @@ No internet permission. No ads. No tracking.
 ### Changelog
 
 **Version 3.1**
-Detailed Device Info
 
 New device information fields:
 - Manufacturer
@@ -34,9 +33,7 @@ New device information fields:
 - Host
 - Display
 - Device codename
-
-
-
+- 
 **Version 3.0**
 Risk Score (0-100 security rating)
 Scan History (last 3 scans saved)
