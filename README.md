@@ -245,6 +245,7 @@ Then open your file manager, go to Downloads and tap RootChecker.apk to install.
 - If you get SDK location error run Step 9 again
 - If you get JAVA_HOME error run Steps 3-4 again
 - If you get 'sdkmanager: command not found' run Steps 6 and 7 again before Step 8. The SDK path must be set before running sdkmanager.
+- If the build fails in the last step type echo "android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2" > ~/Advanced-Root-Checker/gradle.properties and try again.
 
 ## Build on PC (Windows,Linux)
 
