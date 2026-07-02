@@ -41,6 +41,16 @@ DEVICE SECURITY INFO:
 - SELinux status
 - CPU architecture
 - Kernel version
+- Manufacturer
+- Brand
+- Model
+- Board
+- Hardware
+- Android ID
+- User
+- Host
+- Display
+- Device codename
 
 IMPORTANCE OF ROOT:
 - What is root explained
