@@ -33,7 +33,8 @@ New device information fields:
 - Host
 - Display
 - Device codename
-- 
+
+
 **Version 3.0**
 Risk Score (0-100 security rating)
 Scan History (last 3 scans saved)
