@@ -1,0 +1,14 @@
+Version 3.0
+
+NEW FEATURES:
+
+Risk Score (0-100 security rating)
+Scan History (last 3 scans saved)
+Check Explanations (tap any result)
+NEW CHECKS (33 total):
+
+Verified Boot status
+Knox status (Samsung)
+Anti-rollback protection
+Treble support
+Native capability check
