@@ -22,28 +22,116 @@ public class DeviceInfo {
     }
 
     public static InfoItem[] getDeviceInfo(Context ctx) {
-        InfoItem[] items = new InfoItem[10];
-        items[0] = getDeviceModel();
-        items[1] = getAndroidVersion();
-        items[2] = getSecurityPatch();
-        items[3] = getBuildType();
-        items[4] = getBootloader();
-        items[5] = getScreenLock(ctx);
-        items[6] = getSelinux();
-        items[7] = getCpuArch();
-        items[8] = getKernelVersion();
-        items[9] = getFingerprint();
+        InfoItem[] items = new InfoItem[20];
+        items[0] = getManufacturer();
+        items[1] = getBrand();
+        items[2] = getModel();
+        items[3] = getBoard();
+        items[4] = getHardware();
+        items[5] = getAndroidID(ctx);
+        items[6] = getBootloader();
+        items[7] = getUserHost();
+        items[8] = getAndroidVersion();
+        items[9] = getSecurityPatch();
+        items[10] = getBuildType();
+        items[11] = getScreenLock(ctx);
+        items[12] = getSelinux();
+        items[13] = getCpuArch();
+        items[14] = getKernelVersion();
+        items[15] = getFingerprint();
+        items[16] = getUser();
+        items[17] = getHost();
+        items[18] = getDisplay();
+        items[19] = getDevice();
         return items;
     }
 
-    private static InfoItem getDeviceModel() {
-        String model = Build.MANUFACTURER + " " + Build.MODEL;
-        return new InfoItem("Device", model, false);
+    private static InfoItem getManufacturer() {
+        String val = Build.MANUFACTURER;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        return new InfoItem("Manufacturer", val, false);
+    }
+
+    private static InfoItem getBrand() {
+        String val = Build.BRAND;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        return new InfoItem("Brand", val, false);
+    }
+
+    private static InfoItem getModel() {
+        String val = Build.MODEL;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        return new InfoItem("Model", val, false);
+    }
+
+    private static InfoItem getBoard() {
+        String val = Build.BOARD;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        return new InfoItem("Board", val, false);
+    }
+
+    private static InfoItem getHardware() {
+        String val = Build.HARDWARE;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        boolean warn = "goldfish".equals(val) || "ranchu".equals(val);
+        return new InfoItem("Hardware", val, warn);
+    }
+
+    private static InfoItem getAndroidID(Context ctx) {
+        String val = "Unknown";
+        try {
+            val = android.provider.Settings.Secure.getString(
+                    ctx.getContentResolver(),
+                    android.provider.Settings.Secure.ANDROID_ID);
+            if (val == null || val.isEmpty()) val = "Unknown";
+        } catch (Exception e) {}
+        return new InfoItem("Android ID", val, false);
+    }
+
+    private static InfoItem getBootloader() {
+        String val = Build.BOOTLOADER;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        boolean warn = val.toLowerCase().contains("unlocked");
+        return new InfoItem("Bootloader", val, warn);
+    }
+
+    private static InfoItem getUserHost() {
+        String user = Build.USER;
+        String host = Build.HOST;
+        if (user == null) user = "Unknown";
+        if (host == null) host = "Unknown";
+        boolean warn = "root".equals(user) || user.contains("android-build") == false;
+        return new InfoItem("User @ Host", user + " @ " + host, warn);
+    }
+
+    private static InfoItem getUser() {
+        String val = Build.USER;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        boolean warn = "root".equals(val);
+        return new InfoItem("User", val, warn);
+    }
+
+    private static InfoItem getHost() {
+        String val = Build.HOST;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        return new InfoItem("Host", val, false);
+    }
+
+    private static InfoItem getDisplay() {
+        String val = Build.DISPLAY;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        return new InfoItem("Display", val, false);
+    }
+
+    private static InfoItem getDevice() {
+        String val = Build.DEVICE;
+        if (val == null || val.isEmpty()) val = "Unknown";
+        return new InfoItem("Device", val, false);
     }
 
     private static InfoItem getAndroidVersion() {
         String ver = "Android " + Build.VERSION.RELEASE +
-            " (API " + Build.VERSION.SDK_INT + ")";
+                " (API " + Build.VERSION.SDK_INT + ")";
         boolean old = Build.VERSION.SDK_INT < 29;
         return new InfoItem("Android Version", ver, old);
     }
@@ -67,19 +155,18 @@ public class DeviceInfo {
         return new InfoItem("Build Type", type, warn);
     }
 
-    private static InfoItem getBootloader() {
-        String bl = Build.BOOTLOADER;
-        if (bl == null || bl.isEmpty()) bl = "Unknown";
-        boolean warn = bl.toLowerCase().contains("unlocked");
-        return new InfoItem("Bootloader", bl, warn);
-    }
-
     private static InfoItem getScreenLock(Context ctx) {
         try {
             KeyguardManager km = (KeyguardManager)
-                ctx.getSystemService(Context.KEYGUARD_SERVICE);
-            boolean secure = km != null && km.isDeviceSecure();
-            return new InfoItem("Screen Lock", secure ? "Enabled" : "Not set", !secure);
+                    ctx.getSystemService(Context.KEYGUARD_SERVICE);
+            boolean secure = false;
+            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                secure = km != null && km.isDeviceSecure();
+            } else {
+                secure = km != null && km.isKeyguardSecure();
+            }
+            return new InfoItem("Screen Lock",
+                    secure ? "Enabled" : "Not set", !secure);
         } catch (Exception e) {}
         return new InfoItem("Screen Lock", "Unknown", false);
     }
@@ -93,7 +180,7 @@ public class DeviceInfo {
                 br.close();
                 boolean enforcing = "1".equals(val != null ? val.trim() : "0");
                 return new InfoItem("SELinux",
-                    enforcing ? "Enforcing" : "Permissive", !enforcing);
+                        enforcing ? "Enforcing" : "Permissive", !enforcing);
             }
         } catch (Exception e) {}
         return new InfoItem("SELinux", "Unknown", false);
@@ -108,7 +195,7 @@ public class DeviceInfo {
     private static InfoItem getKernelVersion() {
         try {
             BufferedReader br = new BufferedReader(
-                new FileReader("/proc/version"));
+                    new FileReader("/proc/version"));
             String line = br.readLine();
             br.close();
             if (line != null && line.length() > 45) {
@@ -123,8 +210,8 @@ public class DeviceInfo {
         String fp = Build.FINGERPRINT;
         if (fp == null) fp = "Unknown";
         boolean warn = fp.contains("test-keys") ||
-            fp.contains("generic") ||
-            fp.toLowerCase().contains("debug");
+                fp.contains("generic") ||
+                fp.toLowerCase().contains("debug");
         if (fp.length() > 45) fp = fp.substring(0, 45) + "...";
         return new InfoItem("Build Fingerprint", fp, warn);
     }

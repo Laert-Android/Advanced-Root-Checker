@@ -1,7 +1,7 @@
 {
   "version": 3,
   "artifactType": {
-    "type": "PROCESSED_RES",
+    "type": "APK",
     "kind": "Directory"
   },
   "applicationId": "com.laert.rootchecker",
@@ -13,7 +13,7 @@
       "attributes": [],
       "versionCode": 7,
       "versionName": "3.1",
-      "outputFile": "resources-release.ap_"
+      "outputFile": "app-release.apk"
     }
   ],
   "elementType": "File"
