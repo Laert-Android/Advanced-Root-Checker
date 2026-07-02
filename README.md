@@ -4,7 +4,7 @@ Advanced Root Checker
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 
-![Version](https://img.shields.io/badge/Version-3.0-teal.svg)
+![Version](https://img.shields.io/badge/Version-3.1-teal.svg)
 
 ![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
 
@@ -34,6 +34,7 @@ New device information fields:
 - Host
 - Display
 - Device codename
+
 
 
 **Version 3.0**
