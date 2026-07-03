@@ -28,7 +28,6 @@ New device information fields:
 - Board
 - Hardware
 - Android ID
-- Bootloader
 - User
 - Host
 - Display
