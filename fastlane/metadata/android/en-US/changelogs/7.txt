@@ -1,14 +1,6 @@
-Version 3.1
+Version 3.1 - Detailed Device Info
 
-New device information fields:
-- Manufacturer
-- Brand
-- Model
-- Board
-- Hardware
-- Android ID
-- Bootloader
-- User
-- Host
-- Display
-- Device codename
+New device information fields added:
+Manufacturer, Brand, Model, Board,
+Hardware, Android ID,
+User, Host, Display, Device codename.
