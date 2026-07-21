@@ -4,24 +4,7 @@
             "outputFile": "com.laert.rootchecker.app-mergeReleaseResources-2:/values/values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\laert\\AndroidStudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "57,115",
-                        "endColumns": "56,62",
-                        "endOffsets": "109,173"
-                    },
-                    "to": {
-                        "startLines": "2,3",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,112",
-                        "endColumns": "56,62",
-                        "endOffsets": "107,170"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\laert\\AndroidStudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "C:\\Users\\Laert\\StudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\strings.xml",
                     "from": {
                         "startLines": "2,4,5,3",
                         "startColumns": "4,4,4,4",
@@ -35,6 +18,23 @@
                         "startOffsets": "175,225,278,335",
                         "endColumns": "49,52,56,53",
                         "endOffsets": "220,273,330,384"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Laert\\StudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "57,115",
+                        "endColumns": "56,62",
+                        "endOffsets": "109,173"
+                    },
+                    "to": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,112",
+                        "endColumns": "56,62",
+                        "endOffsets": "107,170"
                     }
                 }
             ]

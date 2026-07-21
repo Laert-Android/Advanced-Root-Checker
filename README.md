@@ -4,7 +4,7 @@ Advanced Root Checker
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 
-![Version](https://img.shields.io/badge/Version-3.1-teal.svg)
+![Version](https://img.shields.io/badge/Version-3.2-teal.svg)
 
 ![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
 
@@ -15,9 +15,32 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 3.1
+## Latest Version: 3.2
 
 ### Changelog
+
+**Version 3.2**
+
+NEW - Anti-Tamper Section:
+- Xposed hook detection in process
+- Frida detection in process maps
+- Suspicious library detection
+- Stack trace hook analysis
+- APK signature verification
+- Package name verification
+- Debugger detection
+- Process trace detection
+- Hooking framework detection
+- Frida port detection
+
+NEW - System Path Scan:
+- Scans 90+ system paths
+- Detects su, Magisk, KernelSU, APatch
+- Detects Xposed, LSPosed, Riru
+- Detects root cloaking modules
+- Detects dangerous apps
+
+No ads. No tracking. GPL-3.0.
 
 **Version 3.1**
 
@@ -114,7 +137,7 @@ Native capability check
 
 ## Features
 
-- 33 root detection checks
+- 34 root detection checks
 - Device Security Info section
 - Importance of Root educational section
 - Material You dark teal design
@@ -308,7 +331,7 @@ Connect your Android phone via USB with USB debugging enabled, then click the gr
 - [GitHub Releases](https://github.com/Laert-Android/Advanced-Root-Checker/releases)
 - [SourceForge](https://sourceforge.net/projects/advanced-root-checker)
 - [XDA Forums](https://xdaforums.com/t/advanced-root-checker-free-open-source-root-detection-app-no-ads-no-tracking-17-checks.4791052/)
-- [Appteka](https://appteka.store/apps/3afr300468?from=search&q=Advanced%20Root%20Checker)
+- [Appteka](https://appteka.store/app/bebr302430)
 - F-Droid (submission pending)
 
 ## Community

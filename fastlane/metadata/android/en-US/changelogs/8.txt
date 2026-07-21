@@ -1,0 +1,9 @@
+Version 3.2 - Anti-Tamper and System Path Scan
+
+New Anti-Tamper section with 10 checks:
+Xposed/Frida/hook detection, APK signature
+verification, debugger and process trace detection.
+
+New System Path Scan checks 90+ paths for
+root artifacts including Magisk, KernelSU,
+APatch, Xposed, LSPosed and more.

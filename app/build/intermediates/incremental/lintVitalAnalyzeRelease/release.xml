@@ -6,7 +6,7 @@
     mergedManifest="build\intermediates\merged_manifest\release\AndroidManifest.xml"
     proguardFiles="build\intermediates\default_proguard_files\global\proguard-android.txt-8.2.2"
     partialResultsDir="build\intermediates\lint_vital_partial_results\release\out"
-    desugaredMethodsFiles="C:\Users\laert\.gradle\caches\transforms-4\fb282d5150a60f5c92f9d10bde1eefea\transformed\D8BackportedDesugaredMethods.txt">
+    desugaredMethodsFiles="C:\Users\Laert\.gradle\caches\transforms-4\fb282d5150a60f5c92f9d10bde1eefea\transformed\D8BackportedDesugaredMethods.txt">
   <buildFeatures
       namespacing="REQUIRED"/>
   <sourceProviders>
@@ -26,6 +26,6 @@
       applicationId="com.laert.rootchecker"
       generatedSourceFolders="build\generated\ap_generated_sources\release\out"
       generatedResourceFolders="build\generated\res\resValues\release"
-      desugaredMethodsFiles="C:\Users\laert\.gradle\caches\transforms-4\fb282d5150a60f5c92f9d10bde1eefea\transformed\D8BackportedDesugaredMethods.txt">
+      desugaredMethodsFiles="C:\Users\Laert\.gradle\caches\transforms-4\fb282d5150a60f5c92f9d10bde1eefea\transformed\D8BackportedDesugaredMethods.txt">
   </artifact>
 </variant>
