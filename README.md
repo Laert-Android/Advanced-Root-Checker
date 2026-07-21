@@ -155,7 +155,6 @@ Native capability check
 |---|---|
 | SuperUser Binary | Looks for su in common paths |
 | su in PATH | Checks environment PATH for su |
-| Scans 90+ system paths |
 | BusyBox Binary | Detects BusyBox presence |
 | SuperUser Exists | Finds SuperUser/SuperSU APKs |
 | Magisk | Detects Magisk directories |
