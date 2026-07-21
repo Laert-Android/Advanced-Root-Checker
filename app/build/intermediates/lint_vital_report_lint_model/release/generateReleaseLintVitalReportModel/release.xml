@@ -26,6 +26,6 @@
       applicationId="com.laert.rootchecker"
       generatedSourceFolders="build\generated\ap_generated_sources\release\out"
       generatedResourceFolders="build\generated\res\resValues\release"
-      desugaredMethodsFiles="C:\Users\laert\.gradle\caches\transforms-4\fb282d5150a60f5c92f9d10bde1eefea\transformed\D8BackportedDesugaredMethods.txt">
+      desugaredMethodsFiles="C:\Users\Laert\.gradle\caches\transforms-4\fb282d5150a60f5c92f9d10bde1eefea\transformed\D8BackportedDesugaredMethods.txt">
   </artifact>
 </variant>

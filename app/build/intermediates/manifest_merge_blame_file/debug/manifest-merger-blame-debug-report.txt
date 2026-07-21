@@ -1,48 +1,48 @@
 1<?xml version="1.0" encoding="utf-8"?>
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.laert.rootchecker"
-4    android:versionCode="3"
-5    android:versionName="3.0" >
+4    android:versionCode="7"
+5    android:versionName="3.1" >
 6
 7    <uses-sdk
-7-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:6:5-8:41
+7-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:6:5-8:41
 8        android:minSdkVersion="21"
-8-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:7:9-35
+8-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:7:9-35
 9        android:targetSdkVersion="34" />
-9-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:8:9-38
+9-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:8:9-38
 10
 11    <application
-11-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:9:5-24:19
+11-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:9:5-24:19
 12        android:allowBackup="false"
-12-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:13:9-36
+12-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:13:9-36
 13        android:debuggable="true"
 14        android:extractNativeLibs="true"
 15        android:icon="@mipmap/ic_launcher"
-15-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:11:9-43
+15-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:11:9-43
 16        android:label="Advanced Root Checker"
-16-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:10:9-46
+16-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:10:9-46
 17        android:roundIcon="@mipmap/ic_launcher"
-17-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:12:9-48
+17-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:12:9-48
 18        android:supportsRtl="true"
-18-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:14:9-35
+18-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:14:9-35
 19        android:testOnly="true" >
 20        <activity
-20-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:15:9-23:20
+20-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:15:9-23:20
 21            android:name="com.laert.rootchecker.RootCheckerActivity"
-21-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:16:13-48
+21-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:16:13-48
 22            android:exported="true"
-22-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:17:13-36
+22-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:17:13-36
 23            android:windowSoftInputMode="stateHidden" >
-23-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:18:13-54
+23-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:18:13-54
 24            <intent-filter>
-24-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:19:13-22:29
+24-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:19:13-22:29
 25                <action android:name="android.intent.action.MAIN" />
-25-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:17-69
-25-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:25-66
+25-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:17-69
+25-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:25-66
 26
 27                <category android:name="android.intent.category.LAUNCHER" />
-27-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:17-77
-27-->C:\Users\laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:27-74
+27-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:17-77
+27-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:27-74
 28            </intent-filter>
 29        </activity>
 30    </application>

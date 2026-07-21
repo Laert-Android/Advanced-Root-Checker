@@ -1,6 +1,6 @@
-#Thu Jul 02 20:52:45 CEST 2026
-base.0=C\:\\Users\\laert\\AndroidStudioProjects\\Advanced-Root-Checker\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
-base.1=C\:\\Users\\laert\\AndroidStudioProjects\\Advanced-Root-Checker\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\5\\classes.dex
+#Mon Jul 20 19:56:23 CEST 2026
+base.0=C\:\\Users\\Laert\\StudioProjects\\Advanced-Root-Checker\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\0\\classes.dex
+base.1=C\:\\Users\\Laert\\StudioProjects\\Advanced-Root-Checker\\app\\build\\intermediates\\dex\\debug\\mergeProjectDexDebug\\5\\classes.dex
 path.0=0/classes.dex
 path.1=5/classes.dex
 renamed.0=classes.dex

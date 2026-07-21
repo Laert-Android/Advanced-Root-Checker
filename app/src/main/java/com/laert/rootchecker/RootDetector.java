@@ -30,6 +30,7 @@ public class RootDetector {
         List results = new ArrayList();
         results.add(checkSuBinary());
         results.add(checkSuInPath());
+        results.add(checkSystemPaths());
         results.add(checkBusybox());
         results.add(checkSuperuserApk());
         results.add(checkMagisk());
@@ -108,6 +109,155 @@ public class RootDetector {
         return new CheckResult("su in PATH","Not found in PATH",
             "If 'su' is in PATH, any app can easily request root access.",
             false, 8);
+    }
+
+    private CheckResult checkSystemPaths() {
+        String[] paths = {
+                // su binaries
+                "/system/bin/su",
+                "/system/xbin/su",
+                "/system/sbin/su",
+                "/sbin/su",
+                "/vendor/bin/su",
+                "/su/bin/su",
+                "/magisk/.core/bin/su",
+                "/data/local/su",
+                "/data/local/bin/su",
+                "/data/local/xbin/su",
+                "/system/bin/.ext/.su",
+                "/system/usr/we-need-root/su-backup",
+                "/system/xbin/mu",
+
+                // Magisk
+                "/sbin/.magisk",
+                "/sbin/.core/mirror",
+                "/sbin/.core/img",
+                "/sbin/.core/db-0/magisk.db",
+                "/data/adb/magisk",
+                "/data/adb/magisk.db",
+                "/data/adb/magisk.img",
+                "/data/adb/modules",
+                "/data/adb/post-fs-data.d",
+                "/data/adb/service.d",
+                "/cache/.disable_magisk",
+                "/dev/magisk",
+                "/magisk",
+                "/magisk/.core/bin",
+
+                // KernelSU
+                "/data/adb/ksud",
+                "/data/adb/ksu",
+                "/data/adb/ksu/bin",
+                "/system/bin/ksud",
+                "/data/adb/modules/.ksu",
+
+                // APatch
+                "/data/adb/ap",
+                "/data/adb/apatch",
+                "/data/adb/apatch/apatchd",
+                "/data/adb/apatch/bin",
+
+                // SuperSU
+                "/system/app/SuperSU.apk",
+                "/system/app/SuperSU/SuperSU.apk",
+                "/system/priv-app/SuperSU.apk",
+                "/system/priv-app/SuperSU/SuperSU.apk",
+                "/system/app/Superuser.apk",
+                "/system/priv-app/Superuser.apk",
+                "/system/xbin/daemonsu",
+                "/system/etc/init.d/99SuperSUDaemon",
+                "/system/bin/.ext",
+                "/system/etc/.installed_su_daemon",
+
+                // BusyBox
+                "/system/bin/busybox",
+                "/system/xbin/busybox",
+                "/sbin/busybox",
+                "/su/xbin/busybox",
+                "/vendor/bin/busybox",
+                "/data/local/busybox",
+
+                // Xposed
+                "/system/framework/XposedBridge.jar",
+                "/system/lib/libxposed_art.so",
+                "/system/lib64/libxposed_art.so",
+                "/system/xposed.prop",
+                "/data/data/de.robv.android.xposed.installer",
+                "/data/app/de.robv.android.xposed.installer",
+
+                // LSPosed
+                "/data/adb/modules/lsposed",
+                "/data/adb/modules/riru-lsposed",
+                "/data/adb/modules/zygisk_lsposed",
+                "/data/data/org.lsposed.manager",
+
+                // Riru
+                "/data/adb/modules/riru-core",
+                "/system/lib/librirud.so",
+                "/system/lib64/librirud.so",
+
+                // Root cloaking
+                "/data/adb/modules/shamiko",
+                "/data/adb/modules/zygisk_shamiko",
+                "/data/adb/modules/MagiskHide",
+                "/data/adb/modules/MagiskHidePropsConf",
+
+                // Zygisk
+                "/data/adb/modules/.zygisk",
+                "/dev/.magisk/zygisk",
+
+                // Root apps data
+                "/data/data/com.topjohnwu.magisk",
+                "/data/data/eu.chainfire.supersu",
+                "/data/data/com.noshufou.android.su",
+                "/data/data/com.koushikdutta.superuser",
+                "/data/data/me.phh.superuser",
+                "/data/data/com.kingroot.kinguser",
+                "/data/data/com.kingo.root",
+                "/data/data/com.alephzain.framaroot",
+
+                // Dangerous apps
+                "/data/data/com.chelpus.luckypatcher",
+                "/data/data/com.dimonvideo.luckypatcher",
+                "/data/data/com.gameguardian.android",
+
+                // Custom recovery
+                "/cache/recovery",
+                "/cache/recovery/command",
+                "/etc/recovery.fstab",
+                "/system/bin/recovery",
+
+                // Other root indicators
+                "/proc/sys/fs/selinux",
+                "/system/etc/superuser.conf",
+                "/system/etc/su.conf",
+                "/data/property/persist.sys.root_access",
+                "/system/bin/rootfs"
+        };
+
+        List found = new ArrayList();
+        for (int i = 0; i < paths.length; i++) {
+            if (new File(paths[i]).exists()) {
+                found.add(paths[i]);
+            }
+        }
+
+        if (found.size() > 0) {
+            String first = (String) found.get(0);
+            return new CheckResult(
+                    "System Path Scan",
+                    found.size() + " suspicious path(s) found. First: " +
+                            first.substring(0, Math.min(45, first.length())),
+                    "Scans 90+ system paths for root artifacts including " +
+                            "su binaries, Magisk, KernelSU, APatch, Xposed and more.",
+                    true, 10);
+        }
+        return new CheckResult(
+                "System Path Scan",
+                "No suspicious paths found (90+ paths checked)",
+                "Scans 90+ system paths for root artifacts including " +
+                        "su binaries, Magisk, KernelSU, APatch, Xposed and more.",
+                false, 10);
     }
 
     private CheckResult checkBusybox() {

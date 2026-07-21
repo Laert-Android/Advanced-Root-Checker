@@ -199,6 +199,31 @@ public class RootCheckerActivity extends Activity {
         root.addView(resultsLayout);
         root.addView(spacer(24));
 
+        // Anti-tamper section
+        root.addView(makeDivider("ANTI-TAMPER CHECKS"));
+        root.addView(spacer(12));
+
+// Show anti tamper hint
+        TextView tamperHint = new TextView(this);
+        tamperHint.setText("Checks if this app is being hooked or modified");
+        tamperHint.setTextSize(11f);
+        tamperHint.setTextColor(TEXT_HINT);
+        tamperHint.setGravity(Gravity.CENTER);
+        root.addView(tamperHint);
+        root.addView(spacer(8));
+
+        LinearLayout tamperLayout = new LinearLayout(this);
+        tamperLayout.setOrientation(LinearLayout.VERTICAL);
+        root.addView(tamperLayout);
+
+// Run anti tamper checks
+        AntiTamper antiTamper = new AntiTamper();
+        AntiTamper.TamperResult[] tamperResults = antiTamper.runAllChecks(this);
+        for (int i = 0; i < tamperResults.length; i++) {
+            final AntiTamper.TamperResult result = tamperResults[i];
+            addTamperRow(tamperLayout, result);
+        }
+
         // Device security info section
         root.addView(makeDivider("DEVICE SECURITY INFO"));
         root.addView(spacer(12));
@@ -216,7 +241,7 @@ public class RootCheckerActivity extends Activity {
 
         // Footer
         TextView footer = new TextView(this);
-        footer.setText("All checks run locally. No data sent anywhere.\nv3.1");
+        footer.setText("All checks run locally. No data sent anywhere.\nv3.2");
         footer.setTextColor(TEXT_HINT);
         footer.setTextSize(10f);
         footer.setGravity(Gravity.CENTER);
@@ -711,4 +736,53 @@ public class RootCheckerActivity extends Activity {
     private int dp(int val) {
         return (int)(val * getResources().getDisplayMetrics().density);
     }
+
+    private void addTamperRow(LinearLayout parent,
+                              final AntiTamper.TamperResult result) {
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.HORIZONTAL);
+        card.setPadding(dp(16), dp(12), dp(16), dp(12));
+        card.setGravity(Gravity.CENTER_VERTICAL);
+        setRoundedBg(card, BG_CARD, 14);
+
+        TextView pill = new TextView(this);
+        pill.setText(result.detected ? " WARN " : " SAFE ");
+        pill.setTextSize(9f);
+        pill.setTypeface(Typeface.DEFAULT_BOLD);
+        pill.setTextColor(Color.WHITE);
+        pill.setGravity(Gravity.CENTER);
+        setRoundedBg(pill, result.detected ? ORANGE_WARN : GREEN_PASS, 20);
+        pill.setPadding(dp(6), dp(3), dp(6), dp(3));
+        LinearLayout.LayoutParams pillLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        pillLp.setMargins(0, 0, dp(10), 0);
+        card.addView(pill, pillLp);
+
+        LinearLayout info = new LinearLayout(this);
+        info.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams infoLp = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        card.addView(info, infoLp);
+
+        TextView name = new TextView(this);
+        name.setText(result.name);
+        name.setTextColor(TEXT_PRIMARY);
+        name.setTextSize(13f);
+        name.setTypeface(Typeface.DEFAULT_BOLD);
+        info.addView(name);
+
+        TextView detail = new TextView(this);
+        detail.setText(result.detail);
+        detail.setTextColor(TEXT_SEC);
+        detail.setTextSize(11f);
+        info.addView(detail);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, 0, 0, dp(8));
+        parent.addView(card, lp);
+    }
+
 }
