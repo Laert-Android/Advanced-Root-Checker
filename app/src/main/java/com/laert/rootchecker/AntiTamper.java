@@ -26,8 +26,6 @@ public class AntiTamper {
         }
     }
 
-    // Your app's expected SHA-256 signature
-    // Replace this with your actual signature after first build
     private static final String EXPECTED_SIGNATURE = "177D0B6AC00A4D5DD3FE8269EC86951FCFFA134EAD8CBB13B6AE227AD03B4078";
     public TamperResult[] runAllChecks(Context ctx) {
         List results = new ArrayList();
@@ -45,7 +43,7 @@ public class AntiTamper {
                 new TamperResult[results.size()]);
     }
 
-    // Check 1 - Xposed in our process
+    // Check 1 - Xposed in the process
     private TamperResult checkXposedInProcess() {
         try {
             throw new Exception("hook_probe");
@@ -287,7 +285,6 @@ public class AntiTamper {
                 "No Frida server ports open", false);
     }
 
-    // Get app signature for first run
     public static String getAppSignature(Context ctx) {
         try {
             PackageInfo info = ctx.getPackageManager().getPackageInfo(

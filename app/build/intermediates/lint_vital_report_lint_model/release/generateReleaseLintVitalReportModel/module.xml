@@ -1,6 +1,6 @@
 <lint-module
     format="1"
-    dir="C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app"
+    dir="C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app"
     name=":app"
     type="APP"
     maven="AdvancedRootChecker:app:"

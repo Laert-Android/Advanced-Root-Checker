@@ -28,6 +28,18 @@
           <option name="screenY" value="1280" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
+          <option name="api" value="33" />
+          <option name="brand" value="Infinix" />
+          <option name="codename" value="Infinix-X6525" />
+          <option name="id" value="Infinix-X6525" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="INFINIX MOBILITY LIMITED" />
+          <option name="name" value="Infinix SMART 8" />
+          <option name="screenDensity" value="320" />
+          <option name="screenX" value="720" />
+          <option name="screenY" value="1612" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
           <option name="api" value="34" />
           <option name="brand" value="OnePlus" />
           <option name="codename" value="OP535DL1" />
@@ -160,6 +172,18 @@
           <option name="screenY" value="1612" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
+          <option name="api" value="31" />
+          <option name="brand" value="TECNO" />
+          <option name="codename" value="TECNO-BF7" />
+          <option name="id" value="TECNO-BF7" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="TECNO" />
+          <option name="name" value="TECNO" />
+          <option name="screenDensity" value="320" />
+          <option name="screenX" value="720" />
+          <option name="screenY" value="1612" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
           <option name="api" value="33" />
           <option name="brand" value="TECNO" />
           <option name="codename" value="TECNO-BG6" />
@@ -266,6 +290,42 @@
           <option name="screenDensity" value="300" />
           <option name="screenX" value="720" />
           <option name="screenY" value="1600" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="34" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="a14m" />
+          <option name="id" value="a14m" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy A14" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2408" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="35" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="a14xmsq" />
+          <option name="id" value="a14xmsq" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy A14 5G" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2408" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="35" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="a14xmtfn" />
+          <option name="id" value="a14xmtfn" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy A14 5G" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2408" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
           <option name="api" value="34" />
@@ -498,6 +558,18 @@
         <PersistentDeviceSelectionData>
           <option name="api" value="36" />
           <option name="brand" value="samsung" />
+          <option name="codename" value="a54xue" />
+          <option name="id" value="a54xue" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy A54 5G" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2340" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="samsung" />
           <option name="codename" value="a55xzh" />
           <option name="id" value="a55xzh" />
           <option name="labId" value="google" />
@@ -618,6 +690,18 @@
         <PersistentDeviceSelectionData>
           <option name="api" value="36" />
           <option name="brand" value="samsung" />
+          <option name="codename" value="b0qxxx" />
+          <option name="id" value="b0qxxx" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy S22 Ultra" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2316" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="samsung" />
           <option name="codename" value="b4qsqw" />
           <option name="id" value="b4qsqw" />
           <option name="labId" value="google" />
@@ -632,6 +716,18 @@
           <option name="brand" value="samsung" />
           <option name="codename" value="b5qsqw" />
           <option name="id" value="b5qsqw" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy Z Flip5" />
+          <option name="screenDensity" value="340" />
+          <option name="screenX" value="748" />
+          <option name="screenY" value="720" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="b5qxeea" />
+          <option name="id" value="b5qxeea" />
           <option name="labId" value="google" />
           <option name="manufacturer" value="Samsung" />
           <option name="name" value="Galaxy Z Flip5" />
@@ -764,6 +860,18 @@
           <option name="screenDensity" value="360" />
           <option name="screenX" value="960" />
           <option name="screenY" value="2142" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="34" />
+          <option name="brand" value="motorola" />
+          <option name="codename" value="cancun" />
+          <option name="id" value="cancun" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Motorola" />
+          <option name="name" value="moto g14" />
+          <option name="screenDensity" value="400" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2400" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
           <option name="api" value="34" />
@@ -958,6 +1066,18 @@
           <option name="screenY" value="2340" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="e2sksx" />
+          <option name="id" value="e2sksx" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy S24+" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2340" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
           <option name="api" value="34" />
           <option name="brand" value="samsung" />
           <option name="codename" value="e3q" />
@@ -1076,6 +1196,18 @@
           <option name="screenDensity" value="280" />
           <option name="screenX" value="720" />
           <option name="screenY" value="1600" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="34" />
+          <option name="brand" value="motorola" />
+          <option name="codename" value="fogorow" />
+          <option name="id" value="fogorow" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Motorola" />
+          <option name="name" value="moto g24" />
+          <option name="screenDensity" value="280" />
+          <option name="screenX" value="720" />
+          <option name="screenY" value="1612" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
           <option name="api" value="34" />
@@ -1291,23 +1423,6 @@
           <option name="screenY" value="1600" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="36" />
-          <option name="brand" value="HONOR" />
-          <option name="codename" value="honor_lab_hnmbhx" />
-          <option name="id" value="honor_lab_hnmbhx" />
-          <option name="labId" value="honor" />
-          <option name="manufacturer" value="HONOR" />
-          <option name="name" value="Magic V5" />
-          <option name="screenDensity" value="480" />
-          <option name="screenX" value="2172" />
-          <option name="screenY" value="2352" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
           <option name="api" value="34" />
           <option name="brand" value="google" />
           <option name="codename" value="husky" />
@@ -1452,6 +1567,18 @@
           <option name="screenY" value="2340" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="motorola" />
+          <option name="codename" value="malmo" />
+          <option name="id" value="malmo" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Motorola" />
+          <option name="name" value="moto g85 5G" />
+          <option name="screenDensity" value="400" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2400" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
           <option name="api" value="34" />
           <option name="brand" value="motorola" />
           <option name="codename" value="manaus" />
@@ -1518,72 +1645,16 @@
           <option name="screenY" value="2400" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="34" />
-          <option name="brand" value="OPPO" />
-          <option name="codename" value="oplus_lab_op574fl1" />
-          <option name="id" value="oplus_lab_op574fl1" />
-          <option name="labId" value="oppo" />
-          <option name="manufacturer" value="OPPO" />
-          <option name="name" value="A58" />
+          <option name="api" value="35" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="o1s" />
+          <option name="id" value="o1s" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy S21 5G" />
           <option name="screenDensity" value="480" />
           <option name="screenX" value="1080" />
           <option name="screenY" value="2400" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="OnePlus" />
-          <option name="codename" value="oplus_lab_op5961l1" />
-          <option name="id" value="oplus_lab_op5961l1" />
-          <option name="labId" value="oneplus" />
-          <option name="manufacturer" value="OnePlus" />
-          <option name="name" value="11R 5G" />
-          <option name="screenDensity" value="560" />
-          <option name="screenX" value="1240" />
-          <option name="screenY" value="2772" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="34" />
-          <option name="brand" value="OPPO" />
-          <option name="codename" value="oplus_lab_op5abfl1" />
-          <option name="id" value="oplus_lab_op5abfl1" />
-          <option name="labId" value="oppo" />
-          <option name="manufacturer" value="OPPO" />
-          <option name="name" value="Reno11 5G" />
-          <option name="screenDensity" value="480" />
-          <option name="screenX" value="1080" />
-          <option name="screenY" value="2412" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="34" />
-          <option name="brand" value="OPPO" />
-          <option name="codename" value="oplus_lab_op5b05l1" />
-          <option name="id" value="oplus_lab_op5b05l1" />
-          <option name="labId" value="oppo" />
-          <option name="manufacturer" value="OPPO" />
-          <option name="name" value="A3 Pro 5G" />
-          <option name="screenDensity" value="320" />
-          <option name="screenX" value="720" />
-          <option name="screenY" value="1604" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
           <option name="api" value="31" />
@@ -1638,6 +1709,18 @@
           <option name="brand" value="samsung" />
           <option name="codename" value="pa2q" />
           <option name="id" value="pa2q" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy S25+" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2340" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="pa2qxxx" />
+          <option name="id" value="pa2qxxx" />
           <option name="labId" value="google" />
           <option name="manufacturer" value="Samsung" />
           <option name="name" value="Galaxy S25+" />
@@ -1804,6 +1887,18 @@
         <PersistentDeviceSelectionData>
           <option name="api" value="36" />
           <option name="brand" value="samsung" />
+          <option name="codename" value="r0qcsx" />
+          <option name="id" value="r0qcsx" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy S22" />
+          <option name="screenDensity" value="480" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2340" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="samsung" />
           <option name="codename" value="r0qksx" />
           <option name="id" value="r0qksx" />
           <option name="labId" value="google" />
@@ -1832,6 +1927,18 @@
           <option name="brand" value="samsung" />
           <option name="codename" value="r11q" />
           <option name="id" value="r11q" />
+          <option name="labId" value="google" />
+          <option name="manufacturer" value="Samsung" />
+          <option name="name" value="Galaxy S23 FE" />
+          <option name="screenDensity" value="450" />
+          <option name="screenX" value="1080" />
+          <option name="screenY" value="2340" />
+        </PersistentDeviceSelectionData>
+        <PersistentDeviceSelectionData>
+          <option name="api" value="36" />
+          <option name="brand" value="samsung" />
+          <option name="codename" value="r11qcs" />
+          <option name="id" value="r11qcs" />
           <option name="labId" value="google" />
           <option name="manufacturer" value="Samsung" />
           <option name="name" value="Galaxy S23 FE" />
@@ -2081,108 +2188,6 @@
           <option name="screenY" value="2424" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="Infinix" />
-          <option name="codename" value="transsion_lab_infinix-x6856" />
-          <option name="id" value="transsion_lab_infinix-x6856" />
-          <option name="labId" value="transsion" />
-          <option name="manufacturer" value="INFINIX" />
-          <option name="name" value="NOTE 50 Pro+" />
-          <option name="screenDensity" value="440" />
-          <option name="screenX" value="1080" />
-          <option name="screenY" value="2436" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="TECNO" />
-          <option name="codename" value="transsion_lab_tecno-km4" />
-          <option name="id" value="transsion_lab_tecno-km4" />
-          <option name="labId" value="transsion" />
-          <option name="manufacturer" value="TECNO" />
-          <option name="name" value="Spark Go 2" />
-          <option name="screenDensity" value="280" />
-          <option name="screenX" value="720" />
-          <option name="screenY" value="1600" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="TECNO" />
-          <option name="codename" value="transsion_lab_tecno-lj7" />
-          <option name="id" value="transsion_lab_tecno-lj7" />
-          <option name="labId" value="transsion" />
-          <option name="manufacturer" value="TECNO" />
-          <option name="name" value="POVA 7" />
-          <option name="screenDensity" value="440" />
-          <option name="screenX" value="1080" />
-          <option name="screenY" value="2460" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="TECNO" />
-          <option name="codename" value="transsion_lab_tecno-lj9" />
-          <option name="id" value="transsion_lab_tecno-lj9" />
-          <option name="labId" value="transsion" />
-          <option name="manufacturer" value="TECNO" />
-          <option name="name" value="POVA 7 Ultra" />
-          <option name="screenDensity" value="440" />
-          <option name="screenX" value="1080" />
-          <option name="screenY" value="2400" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="vivo" />
-          <option name="codename" value="vivo_lab_v2342" />
-          <option name="id" value="vivo_lab_v2342" />
-          <option name="labId" value="vivo" />
-          <option name="manufacturer" value="vivo" />
-          <option name="name" value="V40 Lite" />
-          <option name="screenDensity" value="440" />
-          <option name="screenX" value="1080" />
-          <option name="screenY" value="2400" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="vivo" />
-          <option name="codename" value="vivo_lab_v2348" />
-          <option name="id" value="vivo_lab_v2348" />
-          <option name="labId" value="vivo" />
-          <option name="manufacturer" value="vivo" />
-          <option name="name" value="V40" />
-          <option name="screenDensity" value="420" />
-          <option name="screenX" value="1080" />
-          <option name="screenY" value="2400" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
           <option name="api" value="34" />
           <option name="brand" value="samsung" />
           <option name="codename" value="xcover7" />
@@ -2193,76 +2198,6 @@
           <option name="screenDensity" value="450" />
           <option name="screenX" value="1080" />
           <option name="screenY" value="2408" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="34" />
-          <option name="brand" value="Xiaomi" />
-          <option name="codename" value="xiaomi_lab_garnet" />
-          <option name="id" value="xiaomi_lab_garnet" />
-          <option name="labId" value="xiaomi" />
-          <option name="manufacturer" value="Xiaomi" />
-          <option name="name" value="Redmi Note 13 Pro 5G" />
-          <option name="screenDensity" value="480" />
-          <option name="screenX" value="1220" />
-          <option name="screenY" value="2712" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="34" />
-          <option name="brand" value="Xiaomi" />
-          <option name="codename" value="xiaomi_lab_pipa" />
-          <option name="formFactor" value="Tablet" />
-          <option name="id" value="xiaomi_lab_pipa" />
-          <option name="labId" value="xiaomi" />
-          <option name="manufacturer" value="Xiaomi" />
-          <option name="name" value="Pad 6" />
-          <option name="screenDensity" value="480" />
-          <option name="screenX" value="1220" />
-          <option name="screenY" value="2712" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="Xiaomi" />
-          <option name="codename" value="xiaomi_lab_ruyi" />
-          <option name="id" value="xiaomi_lab_ruyi" />
-          <option name="labId" value="xiaomi" />
-          <option name="manufacturer" value="Xiaomi" />
-          <option name="name" value="MIX Flip" />
-          <option name="screenDensity" value="520" />
-          <option name="screenX" value="1224" />
-          <option name="screenY" value="2912" />
-        </PersistentDeviceSelectionData>
-        <PersistentDeviceSelectionData>
-          <option name="accessStatus">
-            <list>
-              <option value="EULA_NOT_ACCEPTED" />
-            </list>
-          </option>
-          <option name="api" value="35" />
-          <option name="brand" value="Xiaomi" />
-          <option name="codename" value="xiaomi_lab_sheng" />
-          <option name="formFactor" value="Tablet" />
-          <option name="id" value="xiaomi_lab_sheng" />
-          <option name="labId" value="xiaomi" />
-          <option name="manufacturer" value="Xiaomi" />
-          <option name="name" value="Pad 6S Pro 12.4" />
-          <option name="screenDensity" value="400" />
-          <option name="screenX" value="2032" />
-          <option name="screenY" value="3048" />
         </PersistentDeviceSelectionData>
         <PersistentDeviceSelectionData>
           <option name="api" value="33" />

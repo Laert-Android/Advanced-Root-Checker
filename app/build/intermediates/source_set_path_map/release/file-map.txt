@@ -1,7 +1,7 @@
-com.laert.rootchecker.app-pngs-0 C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\build\generated\res\pngs\release
-com.laert.rootchecker.app-resValues-1 C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\build\generated\res\resValues\release
-com.laert.rootchecker.app-packageReleaseResources-2 C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
-com.laert.rootchecker.app-packageReleaseResources-3 C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
-com.laert.rootchecker.app-merged_res-4 C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\build\intermediates\merged_res\release
-com.laert.rootchecker.app-main-5 C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\res
-com.laert.rootchecker.app-release-6 C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\release\res
+com.laert.rootchecker.app-pngs-0 C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\build\generated\res\pngs\release
+com.laert.rootchecker.app-resValues-1 C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\build\generated\res\resValues\release
+com.laert.rootchecker.app-packageReleaseResources-2 C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\build\intermediates\incremental\release\packageReleaseResources\merged.dir
+com.laert.rootchecker.app-packageReleaseResources-3 C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\build\intermediates\incremental\release\packageReleaseResources\stripped.dir
+com.laert.rootchecker.app-merged_res-4 C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\build\intermediates\merged_res\release
+com.laert.rootchecker.app-main-5 C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\res
+com.laert.rootchecker.app-release-6 C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\release\res

@@ -5,42 +5,42 @@
 5    android:versionName="3.2" >
 6
 7    <uses-sdk
-7-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:6:5-8:41
+7-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:6:5-8:41
 8        android:minSdkVersion="21"
-8-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:7:9-35
+8-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:7:9-35
 9        android:targetSdkVersion="34" />
-9-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:8:9-38
+9-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:8:9-38
 10
 11    <application
-11-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:9:5-24:19
+11-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:9:5-24:19
 12        android:allowBackup="false"
-12-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:13:9-36
+12-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:13:9-36
 13        android:extractNativeLibs="true"
 14        android:icon="@mipmap/ic_launcher"
-14-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:11:9-43
+14-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:11:9-43
 15        android:label="Advanced Root Checker"
-15-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:10:9-46
+15-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:10:9-46
 16        android:roundIcon="@mipmap/ic_launcher"
-16-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:12:9-48
+16-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:12:9-48
 17        android:supportsRtl="true" >
-17-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:14:9-35
+17-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:14:9-35
 18        <activity
-18-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:15:9-23:20
+18-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:15:9-23:20
 19            android:name="com.laert.rootchecker.RootCheckerActivity"
-19-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:16:13-48
+19-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:16:13-48
 20            android:exported="true"
-20-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:17:13-36
+20-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:17:13-36
 21            android:windowSoftInputMode="stateHidden" >
-21-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:18:13-54
+21-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:18:13-54
 22            <intent-filter>
-22-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:19:13-22:29
+22-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:19:13-22:29
 23                <action android:name="android.intent.action.MAIN" />
-23-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:17-69
-23-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:25-66
+23-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:20:17-69
+23-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:20:25-66
 24
 25                <category android:name="android.intent.category.LAUNCHER" />
-25-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:17-77
-25-->C:\Users\Laert\StudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:27-74
+25-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:21:17-77
+25-->C:\Users\Laert\Android Studio Projects\Advanced Root Checker\app\src\main\AndroidManifest.xml:21:27-74
 26            </intent-filter>
 27        </activity>
 28    </application>

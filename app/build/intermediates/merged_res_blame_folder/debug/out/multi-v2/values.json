@@ -4,7 +4,7 @@
             "outputFile": "com.laert.rootchecker.app-mergeDebugResources-2:/values/values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Laert\\StudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\strings.xml",
+                    "source": "C:\\Users\\Laert\\Android Studio Projects\\Advanced Root Checker\\app\\src\\main\\res\\values\\strings.xml",
                     "from": {
                         "startLines": "2,4,5,3",
                         "startColumns": "4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Laert\\StudioProjects\\Advanced-Root-Checker\\app\\src\\main\\res\\values\\colors.xml",
+                    "source": "C:\\Users\\Laert\\Android Studio Projects\\Advanced Root Checker\\app\\src\\main\\res\\values\\colors.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",

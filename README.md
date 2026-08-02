@@ -6,6 +6,7 @@ Advanced Root Checker
 
 ![Version](https://img.shields.io/badge/Version-3.2-teal.svg)
 
+
 ![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
 
 
@@ -61,7 +62,7 @@ New device information fields:
 Risk Score (0-100 security rating)
 Scan History (last 3 scans saved)
 Check Explanations (tap any result)
-NEW CHECKS (33 total):
+NEW CHECKS (34 total):
 
 Verified Boot status
 Knox status (Samsung)
@@ -81,7 +82,7 @@ Native capability check
 - Added ADB Status check
 - Added Developer Options check
 - Added OTA Updates check
-- Total checks increased from 17 to 28
+- Total checks increased from 17 to 34
 
 **Version 2.2**
 - Added Potentially Dangerous Apps detection
@@ -105,7 +106,7 @@ Native capability check
 
 **Version 1.0**
 - Initial release
-  - 28 root detection checks
+  - 34 root detection checks
 
 ---
 
