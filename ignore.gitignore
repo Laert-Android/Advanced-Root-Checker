@@ -4,7 +4,12 @@ gradle.propertis
 app/build/
 build/
 .apk
+.abb
 .keystore
 .jks
 .idsig
 gradlew
+.idea/
+*.iml
+**/build/
+app/release/
