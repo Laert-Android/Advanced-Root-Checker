@@ -4,7 +4,7 @@ Advanced Root Checker
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 
-![Version](https://img.shields.io/badge/Version-3.2-teal.svg)
+![Version](https://img.shields.io/badge/Version-3.3-teal.svg)
 
 
 ![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
@@ -16,9 +16,38 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 3.2
+## Latest Version: 3.3
 
 ### Changelog
+
+**Version 3.3**
+
+In this version, improvements have been made regarding anti-tampering, application integrity check, and detection of Android hooking frameworks.
+
+New Features
+Anti-Tamper
+Improved APK signature validation using SigningInfo API for Android 9+.
+Introduced application integrity validation.
+Improved package name validation.
+Improved debugger validation.
+Improved process tracer validation.
+Hooking Framework Validation
+Improved Xposed validation.
+Improved LSPosed validation.
+Introduced LSPatch validation.
+Improved Frida validation by performing:
+Process memory mapping check
+Detection of suspicious native libraries
+Detection of default port used by Frida.
+Added ClassLoader validation.
+Added AppComponentFactory validation.
+Improved detection of other hooking frameworks at runtime.
+Other Security Improvements
+Improved detection of runtime tampering.
+Improved detection performance and reliability.
+
+Notes
+This version makes significant improvement in terms of integrity validation and detection of well-known Android hooking frameworks.
 
 **Version 3.2**
 
