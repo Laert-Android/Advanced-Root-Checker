@@ -9,7 +9,7 @@ AutoName: Advanced Root Checker
 Summary: Offline root detection, no ads, no tracking
 Description: |-
   Advanced Root Checker detects root indicators on your
-  Android device. All 33 checks run entirely offline.
+  Android device. All 34 checks run entirely offline.
   No internet permission, no ads, no tracking, no analytics.
 
   Detects su binaries, Magisk, SuperSU, BusyBox, Xposed,
@@ -26,14 +26,14 @@ RepoType: git
 Repo: https://github.com/Laert-Android/Advanced-Root-Checker
 
 Builds:
-  - versionName: '3.2'
-    versionCode: 8
-    commit: v3.2
+  - versionName: '3.3'
+    versionCode: 9
+    commit: v3.3
     subdir: app
     gradle:
       - yes
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '3.2'
-CurrentVersionCode: 8
+CurrentVersion: '3.3'
+CurrentVersionCode: 9
