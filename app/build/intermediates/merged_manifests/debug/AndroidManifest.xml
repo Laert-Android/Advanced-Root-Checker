@@ -12,10 +12,11 @@
         android:allowBackup="false"
         android:debuggable="true"
         android:extractNativeLibs="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher_foreground"
         android:label="Advanced Root Checker"
         android:roundIcon="@mipmap/ic_launcher"
-        android:supportsRtl="true" >
+        android:supportsRtl="true"
+        android:testOnly="true" >
         <activity
             android:name="com.laert.rootchecker.RootCheckerActivity"
             android:exported="true"

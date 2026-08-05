@@ -241,7 +241,7 @@ public class RootCheckerActivity extends Activity {
 
         // Footer
         TextView footer = new TextView(this);
-        footer.setText("All checks run locally. No data sent anywhere.\nv3.2");
+        footer.setText("All checks run locally. No data sent anywhere.\nv3.3");
         footer.setTextColor(TEXT_HINT);
         footer.setTextSize(10f);
         footer.setGravity(Gravity.CENTER);

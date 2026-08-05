@@ -1,34 +1,45 @@
 package com.laert.rootchecker;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.content.pm.SigningInfo;
+import android.os.Build;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AntiTamper {
 
+    private static final String EXPECTED_SIGNATURE =
+            "177D0B6AC00A4D5DD3FE8269EC86951FCFFA134EAD8CBB13B6AE227AD03B4078";
+
     public static class TamperResult {
+
         public final String name;
         public final String detail;
         public final boolean detected;
 
-        public TamperResult(String name, String detail, boolean detected) {
+        public TamperResult(String name,
+                            String detail,
+                            boolean detected) {
+
             this.name = name;
             this.detail = detail;
             this.detected = detected;
         }
     }
 
-    private static final String EXPECTED_SIGNATURE = "177D0B6AC00A4D5DD3FE8269EC86951FCFFA134EAD8CBB13B6AE227AD03B4078";
     public TamperResult[] runAllChecks(Context ctx) {
-        List results = new ArrayList();
+
+        List<TamperResult> results = new ArrayList<>();
+
         results.add(checkXposedInProcess());
         results.add(checkFridaInProcess());
         results.add(checkSuspiciousLibraries());
@@ -39,69 +50,200 @@ public class AntiTamper {
         results.add(checkEmulatorProcess());
         results.add(checkHookingFrameworks());
         results.add(checkFridaPorts());
-        return (TamperResult[]) results.toArray(
-                new TamperResult[results.size()]);
+        results.add(checkLSPatch());
+        results.add(checkManifestIntegrity(ctx));
+        results.add(checkClassLoader());
+        results.add(checkAppComponentFactory(ctx));
+
+        return results.toArray(new TamperResult[0]);
+    }
+
+    private TamperResult checkAppSignature(Context ctx) {
+
+        try {
+
+            PackageManager pm = ctx.getPackageManager();
+
+            PackageInfo packageInfo;
+
+            Signature[] signatures;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+                packageInfo = pm.getPackageInfo(
+                        ctx.getPackageName(),
+                        PackageManager.GET_SIGNING_CERTIFICATES
+                );
+
+                SigningInfo signingInfo = packageInfo.signingInfo;
+
+                if (signingInfo == null) {
+                    return new TamperResult(
+                            "APK Signature",
+                            "SigningInfo is null",
+                            true
+                    );
+                }
+
+                if (signingInfo.hasMultipleSigners()) {
+                    signatures = signingInfo.getApkContentsSigners();
+                } else {
+                    signatures = signingInfo.getSigningCertificateHistory();
+                }
+
+            } else {
+
+                packageInfo = pm.getPackageInfo(
+                        ctx.getPackageName(),
+                        PackageManager.GET_SIGNATURES
+                );
+
+                signatures = packageInfo.signatures;
+            }
+
+            if (signatures == null || signatures.length == 0) {
+
+                return new TamperResult(
+                        "APK Signature",
+                        "No signatures found",
+                        true
+                );
+            }
+
+            MessageDigest md =
+                    MessageDigest.getInstance("SHA-256");
+
+            byte[] digest =
+                    md.digest(signatures[0].toByteArray());
+
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : digest) {
+                sb.append(String.format("%02X", b));
+            }
+
+            String currentSignature = sb.toString();
+
+            if (!EXPECTED_SIGNATURE.equals(currentSignature)) {
+
+                return new TamperResult(
+                        "APK Signature",
+                        "Signature mismatch",
+                        true
+                );
+            }
+
+            return new TamperResult(
+                    "APK Signature",
+                    "Signature verified",
+                    false
+            );
+
+        } catch (Exception e) {
+
+            return new TamperResult(
+                    "APK Signature",
+                    e.toString(),
+                    true
+            );
+        }
     }
 
     // Check 1 - Xposed in the process
     private TamperResult checkXposedInProcess() {
+
         try {
+
             throw new Exception("hook_probe");
+
         } catch (Exception e) {
-            StackTraceElement[] stack = e.getStackTrace();
-            for (int i = 0; i < stack.length; i++) {
-                String cls = stack[i].getClassName();
+
+            for (StackTraceElement element : e.getStackTrace()) {
+
+                String cls = element.getClassName();
+
                 if (cls.contains("XposedBridge") ||
                         cls.contains("XC_MethodHook") ||
                         cls.contains("de.robv.android.xposed")) {
-                    return new TamperResult("Xposed Hook Detected",
-                            "Xposed is hooking this app: " + cls, true);
+
+                    return new TamperResult(
+                            "Xposed Hook Detected",
+                            "Xposed is hooking this app: " + cls,
+                            true
+                    );
                 }
             }
         }
-        // Check for Xposed in loaded classes
+
         try {
             Class.forName("de.robv.android.xposed.XposedBridge");
-            return new TamperResult("Xposed Hook Detected",
-                    "XposedBridge class found in process", true);
-        } catch (ClassNotFoundException e) {}
+
+            return new TamperResult(
+                    "Xposed Hook Detected",
+                    "XposedBridge class found",
+                    true
+            );
+
+        } catch (ClassNotFoundException ignored) {
+        }
+
         try {
             Class.forName("de.robv.android.xposed.XposedHelpers");
-            return new TamperResult("Xposed Hook Detected",
-                    "XposedHelpers class found in process", true);
-        } catch (ClassNotFoundException e) {}
-        return new TamperResult("Xposed Hook",
-                "Not detected in this process", false);
+
+            return new TamperResult(
+                    "Xposed Hook Detected",
+                    "XposedHelpers class found",
+                    true
+            );
+
+        } catch (ClassNotFoundException ignored) {
+        }
+
+        return new TamperResult(
+                "Xposed Hook",
+                "Not detected",
+                false
+        );
     }
 
     // Check 2 - Frida detection
     private TamperResult checkFridaInProcess() {
-        // Check for Frida agent in maps
-        try {
-            BufferedReader br = new BufferedReader(
-                    new FileReader("/proc/self/maps"));
+
+        try (BufferedReader br =
+                     new BufferedReader(
+                             new FileReader("/proc/self/maps"))) {
+
             String line;
+
             while ((line = br.readLine()) != null) {
+
                 if (line.contains("frida") ||
                         line.contains("gum-js-loop") ||
                         line.contains("gmain") ||
                         line.contains("linjector") ||
                         line.contains("frida-agent")) {
-                    br.close();
-                    return new TamperResult("Frida Detected",
-                            "Frida found in process maps: " +
-                                    line.substring(0, Math.min(50, line.length())),
-                            true);
+
+                    return new TamperResult(
+                            "Frida Detected",
+                            "Found in process maps",
+                            true
+                    );
                 }
             }
-            br.close();
-        } catch (Exception e) {}
-        return new TamperResult("Frida Hook",
-                "Not detected in process maps", false);
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "Frida Hook",
+                "Not detected",
+                false
+        );
     }
 
-    // Check 3 - Suspicious libraries loaded
+    // Check 3 - Suspicious libraries
     private TamperResult checkSuspiciousLibraries() {
+
         String[] suspicious = {
                 "frida-agent",
                 "frida-gadget",
@@ -115,190 +257,601 @@ public class AntiTamper {
                 "yahfa",
                 "sandhook",
                 "epic_hook",
+                "whale.so",
+                "lspatch",
+                "lspd",
+                "zygisk",
+                "magisk",
+                "shamiko",
+                "kernelsu",
+                "apatch",
+                "frida-agent",
+                "frida-gadget",
+                "gum-js-loop",
+                "xposed",
+                "lsposed",
+                "lspatch",
+                "lspd",
+                "riru",
+                "zygisk",
+                "zygisk_loader",
+                "libzygisk",
+                "magisk",
+                "shamiko",
+                "kernelsu",
+                "apatch",
+                "substrate",
+                "cydia",
+                "yahfa",
+                "lsplant",
+                "sandhook",
+                "epic_hook",
                 "whale.so"
         };
-        try {
-            BufferedReader br = new BufferedReader(
-                    new FileReader("/proc/self/maps"));
+
+        try (BufferedReader br =
+                     new BufferedReader(
+                             new FileReader("/proc/self/maps"))) {
+
             String line;
+
             while ((line = br.readLine()) != null) {
-                String lineLower = line.toLowerCase();
-                for (int i = 0; i < suspicious.length; i++) {
-                    if (lineLower.contains(suspicious[i])) {
-                        br.close();
+
+                String lower = line.toLowerCase();
+
+                for (String lib : suspicious) {
+
+                    if (lower.contains(lib)) {
+
                         return new TamperResult(
                                 "Suspicious Library",
-                                "Found: " + suspicious[i] +
-                                        " in loaded libraries", true);
+                                "Found: " + lib,
+                                true
+                        );
                     }
                 }
             }
-            br.close();
-        } catch (Exception e) {}
-        return new TamperResult("Suspicious Libraries",
-                "None found in process", false);
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "Suspicious Libraries",
+                "None detected",
+                false
+        );
     }
 
-    // Check 4 - Stack trace analysis
+    // Check 4 - Stack trace
     private TamperResult checkStackTrace() {
-        String[] hookIndicators = {
-                "XposedBridge", "XC_MethodHook",
-                "LSPosed", "EdXposed",
-                "yahfa", "lsplant",
-                "substrate", "cydia"
+
+        String[] indicators = {
+                "XposedBridge",
+                "XC_MethodHook",
+                "LSPosed",
+                "EdXposed",
+                "yahfa",
+                "lsplant",
+                "substrate",
+                "cydia"
         };
-        StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-        for (int i = 0; i < stack.length; i++) {
-            String cls = stack[i].getClassName();
-            for (int j = 0; j < hookIndicators.length; j++) {
-                if (cls.contains(hookIndicators[j])) {
-                    return new TamperResult("Stack Trace Hook",
-                            "Hook found in stack: " + cls, true);
+
+        StackTraceElement[] stack =
+                Thread.currentThread().getStackTrace();
+
+        for (StackTraceElement element : stack) {
+
+            String cls = element.getClassName();
+
+            for (String indicator : indicators) {
+
+                if (cls.contains(indicator)) {
+
+                    return new TamperResult(
+                            "Stack Trace Hook",
+                            "Hook found: " + cls,
+                            true
+                    );
                 }
             }
         }
-        return new TamperResult("Stack Trace",
-                "No hooks found in call stack", false);
+
+        return new TamperResult(
+                "Stack Trace",
+                "No hooks detected",
+                false
+        );
     }
 
-    // Check 5 - APK signature verification
-    private TamperResult checkAppSignature(Context ctx) {
-        try {
-            PackageInfo info = ctx.getPackageManager().getPackageInfo(
-                    ctx.getPackageName(),
-                    PackageManager.GET_SIGNATURES);
-            Signature[] signatures = info.signatures;
-            if (signatures == null || signatures.length == 0) {
-                return new TamperResult("APK Signature",
-                        "No signatures found - app may be tampered!", true);
-            }
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] digest = md.digest(signatures[0].toByteArray());
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < digest.length; i++) {
-                sb.append(String.format("%02X", digest[i]));
-            }
-            String currentSig = sb.toString();
-
-            if (!EXPECTED_SIGNATURE.equals("YOUR_SIGNATURE_HERE") &&
-                    !EXPECTED_SIGNATURE.equals(currentSig)) {
-                return new TamperResult("APK Signature",
-                        "Signature mismatch! App may be repackaged.", true);
-            }
-            return new TamperResult("APK Signature",
-                    "Signature: " + currentSig.substring(0, 16) + "...",
-                    false);
-        } catch (Exception e) {
-            return new TamperResult("APK Signature",
-                    "Could not verify: " + e.getMessage(), true);
-        }
-    }
-
-    // Check 6 - Package name check
+    // Check 5 - Package name
     private TamperResult checkPackageName(Context ctx) {
-        String expected = "com.laert.rootchecker";
-        String actual = ctx.getPackageName();
-        boolean tampered = !expected.equals(actual);
-        return new TamperResult("Package Name",
-                "Package: " + actual,
-                tampered);
-    }
 
-    // Check 7 - Debugger attached
-    private TamperResult checkDebugger() {
-        boolean debugging = android.os.Debug.isDebuggerConnected();
-        if (!debugging) {
-            debugging = android.os.Debug.waitingForDebugger();
+        final String expectedPackage = "com.laert.rootchecker";
+        String actualPackage = ctx.getPackageName();
+
+        if (!expectedPackage.equals(actualPackage)) {
+
+            return new TamperResult(
+                    "Package Name",
+                    "Package name mismatch: " + actualPackage,
+                    true
+            );
         }
-        return new TamperResult("Debugger",
-                debugging ? "Debugger is attached!" : "No debugger attached",
-                debugging);
+
+        return new TamperResult(
+                "Package Name",
+                actualPackage,
+                false
+        );
     }
 
-    // Check 8 - Emulator process check
+    // Check 6 - Debugger
+    private TamperResult checkDebugger() {
+
+        boolean debugger =
+                android.os.Debug.isDebuggerConnected() ||
+                        android.os.Debug.waitingForDebugger();
+
+        return new TamperResult(
+                "Debugger",
+                debugger ? "Debugger detected" : "No debugger",
+                debugger
+        );
+    }
+
+    // Check 7 - Process tracing
     private TamperResult checkEmulatorProcess() {
-        try {
-            BufferedReader br = new BufferedReader(
-                    new FileReader("/proc/self/status"));
+
+        try (BufferedReader br =
+                     new BufferedReader(
+                             new FileReader("/proc/self/status"))) {
+
             String line;
+
             while ((line = br.readLine()) != null) {
+
                 if (line.startsWith("TracerPid:")) {
-                    String[] parts = line.split(":");
-                    if (parts.length > 1) {
-                        int tracerPid = Integer.parseInt(parts[1].trim());
-                        br.close();
-                        if (tracerPid != 0) {
-                            return new TamperResult("Process Trace",
-                                    "Process is being traced! PID: " + tracerPid,
-                                    true);
-                        }
+
+                    int tracerPid =
+                            Integer.parseInt(
+                                    line.split(":")[1].trim());
+
+                    if (tracerPid != 0) {
+
+                        return new TamperResult(
+                                "Process Trace",
+                                "Tracer PID: " + tracerPid,
+                                true
+                        );
                     }
+
                     break;
                 }
             }
-            br.close();
-        } catch (Exception e) {}
-        return new TamperResult("Process Trace",
-                "No process tracing detected", false);
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "Process Trace",
+                "No tracing detected",
+                false
+        );
     }
 
-    // Check 9 - Hooking frameworks
+    // Check 8 - Hooking frameworks
     private TamperResult checkHookingFrameworks() {
-        String[] frameworks = {
-                "/data/data/de.robv.android.xposed.installer",
-                "/data/data/org.lsposed.manager",
-                "/data/data/com.elderdrivers.riru.edxp",
-                "/data/app/de.robv.android.xposed.installer",
+
+        String[] paths = {
+
                 "/system/framework/XposedBridge.jar",
+
                 "/system/lib/libsubstrate.so",
                 "/system/lib64/libsubstrate.so",
+
                 "/data/adb/modules/lsposed",
                 "/data/adb/modules/riru-lsposed",
-                "/data/adb/modules/zygisk_lsposed"
+                "/data/adb/modules/zygisk_lsposed",
+
+                "/data/adb/modules/magisk",
+                "/data/adb/modules/shamiko",
+                "/data/adb/modules/zygisk",
+                "/data/adb/modules/playintegrityfix",
+
+                "/data/data/de.robv.android.xposed.installer",
+                "/data/data/org.lsposed.manager",
+                "/data/data/com.topjohnwu.magisk",
+                "/data/adb/lspd",
+                "/data/adb/modules/lspatch",
+                "/data/adb/modules/lspatch-core",
+                "/data/adb/modules/zygisk_next",
+                "/data/adb/modules/zygisknext",
+                "/data/adb/lspd",
+                "/data/adb/lspd/log",
+                "/data/adb/modules/lspd",
+                "/data/adb/modules/lspatch",
+                "/data/adb/modules/lspatch-core",
+                "/data/adb/modules/zygisk",
+                "/data/adb/modules/zygisk_next",
+                "/data/adb/modules/zygisknext",
+                "/data/adb/modules/shamiko",
+                "/data/adb/modules/playintegrityfix",
+                "/data/adb/modules/kernelsu",
+                "/data/adb/ksu",
+                "/data/adb/ap"
+
         };
-        for (int i = 0; i < frameworks.length; i++) {
-            if (new File(frameworks[i]).exists()) {
-                return new TamperResult("Hooking Framework",
-                        "Found: " + frameworks[i], true);
+
+        for (String path : paths) {
+
+            if (new File(path).exists()) {
+
+                return new TamperResult(
+                        "Hooking Framework",
+                        "Found: " + path,
+                        true
+                );
             }
         }
-        return new TamperResult("Hooking Frameworks",
-                "None detected", false);
+
+        return new TamperResult(
+                "Hooking Frameworks",
+                "None detected",
+                false
+        );
     }
 
-    // Check 10 - Frida ports
-    private TamperResult checkFridaPorts() {
-        // Frida default ports
-        int[] ports = {27042, 27043};
-        for (int i = 0; i < ports.length; i++) {
+    private TamperResult checkLSPatch() {
+
+        // Kontrollo klasa karakteristike të LSPatch
+        String[] classNames = {
+                "org.lsposed.lspatch.LSPAppComponentFactory",
+                "org.lsposed.lspatch.LSPApplication",
+                "org.lsposed.lspatch.LSPatch"
+        };
+
+        for (String cls : classNames) {
             try {
-                java.net.Socket socket = new java.net.Socket();
-                socket.connect(
-                        new java.net.InetSocketAddress("127.0.0.1", ports[i]),
-                        50);
-                socket.close();
-                return new TamperResult("Frida Port",
-                        "Frida server detected on port " + ports[i], true);
-            } catch (Exception e) {}
+                Class.forName(cls);
+
+                return new TamperResult(
+                        "LSPatch",
+                        "Detected class: " + cls,
+                        true
+                );
+
+            } catch (ClassNotFoundException ignored) {
+            }
         }
-        return new TamperResult("Frida Port",
-                "No Frida server ports open", false);
+
+        // Kontrollo emrin e ClassLoader
+        try {
+
+            ClassLoader loader = getClass().getClassLoader();
+
+            if (loader != null) {
+
+                String loaderName = loader.getClass().getName().toLowerCase();
+
+                if (loaderName.contains("lspatch") ||
+                        loaderName.contains("lsposed")) {
+
+                    return new TamperResult(
+                            "LSPatch",
+                            "Suspicious ClassLoader: " + loaderName,
+                            true
+                    );
+                }
+            }
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "LSPatch",
+                "Not detected",
+                false
+        );
+    }
+
+    // Check 9 - Frida default ports
+    private TamperResult checkFridaPorts() {
+
+        final int[] ports = {27042, 27043};
+
+        for (int port : ports) {
+
+            try (java.net.Socket socket = new java.net.Socket()) {
+
+                socket.connect(
+                        new java.net.InetSocketAddress(
+                                "127.0.0.1",
+                                port),
+                        100
+                );
+
+                return new TamperResult(
+                        "Frida Port",
+                        "Frida server detected on port " + port,
+                        true
+                );
+
+            } catch (Exception ignored) {
+            }
+        }
+
+        return new TamperResult(
+                "Frida Port",
+                "No Frida ports detected",
+                false
+        );
     }
 
     public static String getAppSignature(Context ctx) {
+
         try {
-            PackageInfo info = ctx.getPackageManager().getPackageInfo(
-                    ctx.getPackageName(),
-                    PackageManager.GET_SIGNATURES);
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] digest = md.digest(info.signatures[0].toByteArray());
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < digest.length; i++) {
-                sb.append(String.format("%02X", digest[i]));
+
+            PackageManager pm = ctx.getPackageManager();
+
+            PackageInfo packageInfo;
+
+            Signature[] signatures;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+                packageInfo = pm.getPackageInfo(
+                        ctx.getPackageName(),
+                        PackageManager.GET_SIGNING_CERTIFICATES
+                );
+
+                SigningInfo signingInfo =
+                        packageInfo.signingInfo;
+
+                if (signingInfo == null) {
+                    return "ERROR";
+                }
+
+                if (signingInfo.hasMultipleSigners()) {
+                    signatures =
+                            signingInfo.getApkContentsSigners();
+                } else {
+                    signatures =
+                            signingInfo.getSigningCertificateHistory();
+                }
+
+            } else {
+
+                packageInfo = pm.getPackageInfo(
+                        ctx.getPackageName(),
+                        PackageManager.GET_SIGNATURES
+                );
+
+                signatures = packageInfo.signatures;
             }
+
+            if (signatures == null || signatures.length == 0) {
+                return "ERROR";
+            }
+
+            MessageDigest md =
+                    MessageDigest.getInstance("SHA-256");
+
+            byte[] digest =
+                    md.digest(signatures[0].toByteArray());
+
+            StringBuilder sb =
+                    new StringBuilder();
+
+            for (byte b : digest) {
+                sb.append(String.format("%02X", b));
+            }
+
             return sb.toString();
+
         } catch (Exception e) {
+
             return "ERROR: " + e.getMessage();
+
         }
+
+    }
+
+    private TamperResult checkClassesDexHash(Context ctx) {
+
+        try {
+
+            java.util.zip.ZipFile zip =
+                    new java.util.zip.ZipFile(ctx.getPackageCodePath());
+
+            java.util.zip.ZipEntry entry =
+                    zip.getEntry("classes.dex");
+
+            if (entry == null) {
+
+                zip.close();
+
+                return new TamperResult(
+                        "classes.dex",
+                        "classes.dex not found",
+                        true
+                );
+            }
+
+            java.io.InputStream is =
+                    zip.getInputStream(entry);
+
+            MessageDigest md =
+                    MessageDigest.getInstance("SHA-256");
+
+            byte[] buffer = new byte[8192];
+
+            int read;
+
+            while ((read = is.read(buffer)) != -1) {
+                md.update(buffer, 0, read);
+            }
+
+            is.close();
+            zip.close();
+
+            byte[] digest = md.digest();
+
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : digest) {
+                sb.append(String.format("%02X", b));
+            }
+
+            String currentHash = sb.toString();
+
+            String expectedHash =
+                    "PUT_CLASSES_DEX_HASH_HERE";
+
+            if (!expectedHash.equals(currentHash)) {
+
+                return new TamperResult(
+                        "classes.dex",
+                        "Hash mismatch",
+                        true
+                );
+            }
+
+            return new TamperResult(
+                    "classes.dex",
+                    "Verified",
+                    false
+            );
+
+        } catch (Exception e) {
+
+            return new TamperResult(
+                    "classes.dex",
+                    e.toString(),
+                    true
+            );
+        }
+    }
+
+    private TamperResult checkManifestIntegrity(Context ctx) {
+
+        try {
+
+            android.content.pm.ApplicationInfo appInfo =
+                    ctx.getApplicationInfo();
+
+            PackageInfo packageInfo =
+                    ctx.getPackageManager().getPackageInfo(
+                            ctx.getPackageName(),
+                            0
+                    );
+
+            // Kontrollo package name
+            if (!"com.laert.rootchecker".equals(packageInfo.packageName)) {
+
+                return new TamperResult(
+                        "Manifest Integrity",
+                        "Package name modified",
+                        true
+                );
+            }
+
+            // Kontrollo që aplikacioni nuk është debuggable
+            if ((appInfo.flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+
+                return new TamperResult(
+                        "Manifest Integrity",
+                        "Application is debuggable",
+                        true
+                );
+            }
+
+            // Kontrollo allowBackup
+            if ((appInfo.flags & android.content.pm.ApplicationInfo.FLAG_ALLOW_BACKUP) != 0) {
+
+                return new TamperResult(
+                        "Manifest Integrity",
+                        "allowBackup is enabled",
+                        true
+                );
+            }
+
+            return new TamperResult(
+                    "Manifest Integrity",
+                    "Verified",
+                    false
+            );
+
+        } catch (Exception e) {
+
+            return new TamperResult(
+                    "Manifest Integrity",
+                    e.toString(),
+                    true
+            );
+        }
+    }
+    private TamperResult checkClassLoader() {
+
+        try {
+
+            ClassLoader loader = getClass().getClassLoader();
+
+            while (loader != null) {
+
+                String name = loader.getClass().getName().toLowerCase();
+
+                if (name.contains("lsposed") ||
+                        name.contains("lspatch") ||
+                        name.contains("xposed") ||
+                        name.contains("zygisk")) {
+
+                    return new TamperResult(
+                            "ClassLoader",
+                            "Suspicious: " + name,
+                            true
+                    );
+                }
+
+                loader = loader.getParent();
+            }
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "ClassLoader",
+                "Normal",
+                false
+        );
+    }
+    private TamperResult checkAppComponentFactory(Context ctx) {
+
+        try {
+
+            ApplicationInfo ai = ctx.getApplicationInfo();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+                String factory = ai.appComponentFactory;
+
+                if (factory != null &&
+                        factory.toLowerCase().contains("lspatch")) {
+
+                    return new TamperResult(
+                            "AppComponentFactory",
+                            factory,
+                            true
+                    );
+                }
+            }
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "AppComponentFactory",
+                "Normal",
+                false
+        );
     }
 }
