@@ -1,0 +1,30 @@
+Advanced Root Checker v3.4
+
+New Detections
+Added Billing Hijack Check: detects Lucky Patcher and similar
+tools intercepting Google Play in-app purchase intents.
+Expanded memory signature scan with GameGuardian and
+Cheat Engine indicators.
+Added Virtual/Cloned Environment check for apps run inside
+app-cloning sandboxes (used by some no-root cheat tools).
+
+Reliability Improvements
+Root Management/Dangerous/Cloaking App checks now use
+PackageManager in addition to filesystem checks, which is
+more reliable on modern Android where reading other apps'
+private folders isn't possible.
+System-property checks (ADB, Developer Options, OTA, Verified
+Boot, Knox, Anti-Rollback, Treble, Dangerous Props) now
+distinguish "restricted by Android" from "checked and clean"
+instead of counting restricted reads as a pass.
+Fixed a false-positive warning in the User/Host device info
+field that flagged most non-Google-built devices.
+
+Performance
+Anti-Tamper and Device Info checks now run on a background
+thread instead of blocking app startup.
+
+Other
+Minimum supported Android version lowered to API 19.
+Fixed a release build failure related to the monochrome
+themed app icon.

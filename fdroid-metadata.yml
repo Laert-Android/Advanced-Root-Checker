@@ -1,39 +1,30 @@
 Categories:
-  - Security
+ - Security
 License: GPL-3.0-only
 AuthorName: Laert
-SourceCode: https://github.com/Laert-Android/Advanced-Root-Checker
-IssueTracker: https://github.com/Laert-Android/Advanced-Root-Checker/issues
+SourceCode:
+  https://github.com/Laert-Android/Advanced-Root-Checker
+IssueTracker:
+  https://github.com/Laert-Android/Advanced-Root-Checker/issues
 
 AutoName: Advanced Root Checker
-Summary: Offline root detection, no ads, no tracking
-Description: |-
-  Advanced Root Checker detects root indicators on your
-  Android device. All 34 checks run entirely offline.
-  No internet permission, no ads, no tracking, no analytics.
-
-  Detects su binaries, Magisk, SuperSU, BusyBox, Xposed,
-  dangerous apps, root cloaking apps, dangerous system
-  properties, SELinux status Zygisk detection, Zygisk Modules detection, Magisk Modules count, Magisk DenyList detection, KernelSU detection
-  APatch detection, Play Integrity check, Emulator detection, ADB Status check, Developer Options check, OTA Updates check.
-
-  Also shows device security info and explains the
-  importance of root access with benefits and risks.
-
-  Built with pure Java, no external libraries.
 
 RepoType: git
 Repo: https://github.com/Laert-Android/Advanced-Root-Checker
+Binaries:
+  - https://github.com/Laert-Android/Advanced-Root-Checker/releases/download/v%v/Advanced.Root.Checker_v%v.apk
 
-Builds:
-  - versionName: '3.3'
-    versionCode: 9
-    commit: v3.3
+Builds: 
+  - versionName: '3.4'
+    versionCode: 10
+    commit: 1d51dc6c0c7092e36a2192461d1a94b5c8065e51
     subdir: app
-    gradle:
+    gradle: 
       - yes
+
+AllowedAPKSigningKeys: 177d0b6ac00a4d5dd3fe8269ec86951fcffa134ead8cbb13b6ae227ad03b4078
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: '3.3'
-CurrentVersionCode: 9
+CurrentVersion: '3.4'
+CurrentVersionCode: 10

@@ -1,5 +1,9 @@
 package com.laert.rootchecker;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Build;
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +13,49 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RootDetector {
+
+    private final Context context;
+
+    public RootDetector() {
+        this.context = null;
+    }
+
+    public RootDetector(Context context) {
+        this.context = context == null ? null : context.getApplicationContext();
+    }
+
+    private boolean isPackageInstalled(String packageName) {
+        if (context == null) return false;
+        try {
+            context.getPackageManager().getPackageInfo(packageName, 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        } catch (Exception e) {
+            // Permission/visibility issue (e.g. missing <queries> entry) - fall back
+            // to the caller also checking the filesystem, don't crash the scan.
+            return false;
+        }
+    }
+
+    private String getPropValue(String prop) {
+        Process proc = null;
+        BufferedReader reader = null;
+        try {
+            proc = Runtime.getRuntime().exec(new String[]{"/system/bin/getprop", prop});
+            reader = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+            String line = reader.readLine();
+            proc.waitFor();
+            return line == null ? "" : line.trim();
+        } catch (Exception e) {
+            // getprop could not be executed at all - restricted by SELinux/policy.
+            // Distinct from a successfully-read empty value.
+            return null;
+        } finally {
+            try { if (reader != null) reader.close(); } catch (Exception ignored) {}
+            if (proc != null) proc.destroy();
+        }
+    }
 
     public static class CheckResult {
         public final String name;
@@ -39,6 +86,7 @@ public class RootDetector {
         results.add(checkKnownRootApps());
         results.add(checkPotentiallyDangerousApps());
         results.add(checkRootCloakingApps());
+        results.add(checkBillingHijack());
         results.add(checkBuildTags());
         results.add(checkTestKeys());
         results.add(checkDangerousProps());
@@ -352,7 +400,7 @@ public class RootDetector {
             "com.kingo.root","com.smedialink.oneclickroot",
             "com.alephzain.framaroot"};
         for (int i = 0; i < packages.length; i++) {
-            if (new File("/data/data/"+packages[i]).exists())
+            if (isPackageInstalled(packages[i]) || new File("/data/data/"+packages[i]).exists())
                 return new CheckResult("Root Management Apps","Detected: "+packages[i],
                     "Root management apps control which apps get root access on your device.",
                     true, 9);
@@ -370,7 +418,7 @@ public class RootDetector {
             "com.android.vending.billing.InAppBillingService.LUCK",
             "com.android.vending.billing.InAppBillingService.LOCK"};
         for (int i = 0; i < packages.length; i++) {
-            if (new File("/data/data/"+packages[i]).exists())
+            if (isPackageInstalled(packages[i]) || new File("/data/data/"+packages[i]).exists())
                 return new CheckResult("Potentially Dangerous Apps","Detected: "+packages[i],
                     "Apps like Lucky Patcher can bypass in-app purchases and modify other apps.",
                     true, 7);
@@ -384,9 +432,10 @@ public class RootDetector {
         String[] packages = {
             "com.devadvance.rootcloak","com.devadvance.rootcloakplus",
             "de.robv.android.xposed.installer","com.saurik.substrate",
-            "com.amphoras.hidemyroot","com.formyhm.hideroot","me.phh.superuser"};
+            "com.amphoras.hidemyroot","com.formyhm.hideroot","me.phh.superuser",
+            "org.lsposed.manager"};
         for (int i = 0; i < packages.length; i++) {
-            if (new File("/data/data/"+packages[i]).exists())
+            if (isPackageInstalled(packages[i]) || new File("/data/data/"+packages[i]).exists())
                 return new CheckResult("Root Cloaking Apps","Detected: "+packages[i],
                     "Root cloaking apps hide root from other apps like banking apps and game anti-cheat.",
                     true, 8);
@@ -402,6 +451,37 @@ public class RootDetector {
         return new CheckResult("Root Cloaking Apps","None detected",
             "Root cloaking apps hide root from other apps like banking apps and game anti-cheat.",
             false, 8);
+    }
+
+    private CheckResult checkBillingHijack() {
+        if (context == null)
+            return new CheckResult("Billing Hijack Check","Could not determine (no context)",
+                "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
+                false, 0);
+        try {
+            Intent intent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
+            List<ResolveInfo> resolved = context.getPackageManager().queryIntentServices(intent, 0);
+            List<String> hijackers = new ArrayList<>();
+            for (int i = 0; i < resolved.size(); i++) {
+                ResolveInfo ri = resolved.get(i);
+                String pkg = (ri != null && ri.serviceInfo != null) ? ri.serviceInfo.packageName : null;
+                if (pkg != null && !"com.android.vending".equals(pkg)) {
+                    hijackers.add(pkg);
+                }
+            }
+            if (!hijackers.isEmpty())
+                return new CheckResult("Billing Hijack Check",
+                    "Non-Play app(s) registered to handle billing: " + hijackers,
+                    "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
+                    true, 8);
+            return new CheckResult("Billing Hijack Check","Only Google Play resolves the billing intent",
+                "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
+                false, 8);
+        } catch (Exception e) {
+            return new CheckResult("Billing Hijack Check","Could not determine",
+                "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
+                false, 0);
+        }
     }
 
     private CheckResult checkBuildTags() {
@@ -445,7 +525,11 @@ public class RootDetector {
                 return new CheckResult("Dangerous Props",found,
                     "System properties like ro.debuggable=1 indicate a debug build that is easier to exploit.",
                     true, 8);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+            return new CheckResult("Dangerous Props","Could not determine (restricted on this Android version)",
+                "System properties like ro.debuggable=1 indicate a debug build that is easier to exploit.",
+                false, 0);
+        }
         return new CheckResult("Dangerous Props","No dangerous system properties",
             "System properties like ro.debuggable=1 indicate a debug build that is easier to exploit.",
             false, 8);
@@ -498,11 +582,11 @@ public class RootDetector {
             if (output!=null&&output.contains("uid=0"))
                 return new CheckResult("Root Native Test",
                     output.substring(0,Math.min(50,output.length())),
-                    "This test actually executes su to check if root commands work on this device.",
+                    "This test actually executes su to check if root commands work on this device. On a device with Magisk or similar, this may show a one-time root grant prompt.",
                     true, 10);
         } catch (Exception e) {}
         return new CheckResult("Root Native Test","su command failed or denied",
-            "This test actually executes su to check if root commands work on this device.",
+            "This test actually executes su to check if root commands work on this device. On a device with Magisk or similar, this may show a one-time root grant prompt.",
             false, 10);
     }
 
@@ -600,48 +684,45 @@ public class RootDetector {
     }
 
     private CheckResult checkAdbEnabled() {
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","persist.service.adb.enable"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            if ("1".equals(val != null ? val.trim() : ""))
-                return new CheckResult("ADB Status","ADB is enabled",
-                    "ADB allows full device access from a computer. Should be disabled for security.",
-                    true, 4);
-        } catch (Exception e) {}
+        String val = getPropValue("persist.service.adb.enable");
+        if (val == null)
+            return new CheckResult("ADB Status","Could not determine (restricted on this Android version)",
+                "ADB allows full device access from a computer. Should be disabled for security.",
+                false, 0);
+        if ("1".equals(val))
+            return new CheckResult("ADB Status","ADB is enabled",
+                "ADB allows full device access from a computer. Should be disabled for security.",
+                true, 4);
         return new CheckResult("ADB Status","ADB not enabled via prop",
             "ADB allows full device access from a computer. Should be disabled for security.",
             false, 4);
     }
 
     private CheckResult checkDeveloperOptions() {
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","persist.sys.usb.config"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            if (val != null && val.contains("adb"))
-                return new CheckResult("Developer Options","USB config: "+val.trim(),
-                    "Developer options enable debugging features that can be used to access device data.",
-                    true, 4);
-        } catch (Exception e) {}
+        String val = getPropValue("persist.sys.usb.config");
+        if (val == null)
+            return new CheckResult("Developer Options","Could not determine (restricted on this Android version)",
+                "Developer options enable debugging features that can be used to access device data.",
+                false, 0);
+        if (val.contains("adb"))
+            return new CheckResult("Developer Options","USB config: "+val,
+                "Developer options enable debugging features that can be used to access device data.",
+                true, 4);
         return new CheckResult("Developer Options","ADB not in USB config",
             "Developer options enable debugging features that can be used to access device data.",
             false, 4);
     }
 
     private CheckResult checkOTADisabled() {
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","ro.ota.disable"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            if ("1".equals(val!=null?val.trim():"") || "true".equals(val!=null?val.trim():""))
-                return new CheckResult("OTA Updates","OTA updates disabled",
-                    "Disabled OTA updates means the device cannot receive security patches automatically.",
-                    true, 5);
-        } catch (Exception e) {}
+        String val = getPropValue("ro.ota.disable");
+        if (val == null)
+            return new CheckResult("OTA Updates","Could not determine (restricted on this Android version)",
+                "OTA updates deliver important security patches. Keeping them enabled is recommended.",
+                false, 0);
+        if ("1".equals(val) || "true".equals(val))
+            return new CheckResult("OTA Updates","OTA updates disabled",
+                "Disabled OTA updates means the device cannot receive security patches automatically.",
+                true, 5);
         return new CheckResult("OTA Updates","OTA updates enabled",
             "OTA updates deliver important security patches. Keeping them enabled is recommended.",
             false, 5);
@@ -704,82 +785,61 @@ public class RootDetector {
     }
 
     private CheckResult checkVerifiedBoot() {
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","ro.boot.verifiedbootstate"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            if (val != null) {
-                val = val.trim();
-                boolean warn = "orange".equals(val) || "red".equals(val) || "yellow".equals(val);
-                return new CheckResult("Verified Boot","State: "+val,
-                    "Verified Boot ensures the OS hasn't been tampered with. Orange/Red means modified.",
-                    warn, 9);
-            }
-        } catch (Exception e) {}
-        return new CheckResult("Verified Boot","Could not determine",
+        String val = getPropValue("ro.boot.verifiedbootstate");
+        if (val == null || val.isEmpty())
+            return new CheckResult("Verified Boot","Could not determine (restricted on this Android version)",
+                "Verified Boot ensures the OS hasn't been tampered with. Orange/Red means modified.",
+                false, 0);
+        boolean warn = "orange".equals(val) || "red".equals(val) || "yellow".equals(val);
+        return new CheckResult("Verified Boot","State: "+val,
             "Verified Boot ensures the OS hasn't been tampered with. Orange/Red means modified.",
-            false, 9);
+            warn, 9);
     }
 
     private CheckResult checkKnox() {
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","ro.boot.warranty_bit"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            if ("0x1".equals(val!=null?val.trim():"") || "1".equals(val!=null?val.trim():""))
-                return new CheckResult("Knox Status","Knox warranty void: "+val.trim(),
-                    "Samsung Knox warranty bit is tripped when root is attempted. Cannot be reset.",
-                    true, 8);
-        } catch (Exception e) {}
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","ro.knox.fuse_status"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            if (val != null && !val.trim().isEmpty() && !"0".equals(val.trim()))
-                return new CheckResult("Knox Status","Knox fuse: "+val.trim(),
-                    "Samsung Knox warranty bit is tripped when root is attempted. Cannot be reset.",
-                    true, 8);
-        } catch (Exception e) {}
+        String warranty = getPropValue("ro.boot.warranty_bit");
+        if (warranty != null && ("0x1".equals(warranty) || "1".equals(warranty)))
+            return new CheckResult("Knox Status","Knox warranty void: "+warranty,
+                "Samsung Knox warranty bit is tripped when root is attempted. Cannot be reset.",
+                true, 8);
+        String fuse = getPropValue("ro.knox.fuse_status");
+        if (fuse != null && !fuse.isEmpty() && !"0".equals(fuse))
+            return new CheckResult("Knox Status","Knox fuse: "+fuse,
+                "Samsung Knox warranty bit is tripped when root is attempted. Cannot be reset.",
+                true, 8);
+        if (warranty == null && fuse == null)
+            return new CheckResult("Knox Status","Could not determine (restricted on this Android version)",
+                "Samsung Knox warranty bit is tripped when root is attempted. Cannot be reset.",
+                false, 0);
         return new CheckResult("Knox Status","Knox not tripped or not Samsung",
             "Samsung Knox warranty bit is tripped when root is attempted. Cannot be reset.",
             false, 8);
     }
 
     private CheckResult checkAntiRollback() {
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","ro.boot.avb_version"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            boolean hasArp = val != null && !val.trim().isEmpty();
-            return new CheckResult("Anti-Rollback Protection",
-                hasArp ? "AVB version: "+val.trim() : "Not detected",
+        String val = getPropValue("ro.boot.avb_version");
+        if (val == null)
+            return new CheckResult("Anti-Rollback Protection","Could not determine (restricted on this Android version)",
                 "Anti-rollback protection prevents downgrading to vulnerable older OS versions.",
-                !hasArp, 5);
-        } catch (Exception e) {}
-        return new CheckResult("Anti-Rollback Protection","Could not determine",
+                false, 0);
+        boolean hasArp = !val.isEmpty();
+        return new CheckResult("Anti-Rollback Protection",
+            hasArp ? "AVB version: "+val : "Not detected",
             "Anti-rollback protection prevents downgrading to vulnerable older OS versions.",
-            false, 5);
+            !hasArp, 5);
     }
 
     private CheckResult checkTreble() {
-        try {
-            Process p = Runtime.getRuntime().exec(
-                new String[]{"/system/bin/getprop","ro.treble.enabled"});
-            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            String val = br.readLine(); br.close(); p.destroy();
-            boolean treble = "true".equals(val!=null?val.trim():"");
-            return new CheckResult("Treble Support",
-                treble ? "Project Treble enabled" : "Treble not enabled",
+        String val = getPropValue("ro.treble.enabled");
+        if (val == null)
+            return new CheckResult("Treble Support","Could not determine (restricted on this Android version)",
                 "Project Treble separates vendor implementation from Android OS for faster updates.",
-                !treble, 3);
-        } catch (Exception e) {}
-        return new CheckResult("Treble Support","Could not determine",
+                false, 0);
+        boolean treble = "true".equals(val);
+        return new CheckResult("Treble Support",
+            treble ? "Project Treble enabled" : "Treble not enabled",
             "Project Treble separates vendor implementation from Android OS for faster updates.",
-            false, 3);
+            !treble, 3);
     }
 
     private CheckResult checkNativeRoot() {

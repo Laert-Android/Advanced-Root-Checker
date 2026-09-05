@@ -54,6 +54,7 @@ public class AntiTamper {
         results.add(checkManifestIntegrity(ctx));
         results.add(checkClassLoader());
         results.add(checkAppComponentFactory(ctx));
+        results.add(checkVirtualEnvironment(ctx));
 
         return results.toArray(new TamperResult[0]);
     }
@@ -247,46 +248,33 @@ public class AntiTamper {
         String[] suspicious = {
                 "frida-agent",
                 "frida-gadget",
-                "xposed",
-                "substrate",
-                "cydia",
-                "lsplant",
-                "riru",
-                "zygisk_loader",
-                "lspatch",
-                "yahfa",
-                "sandhook",
-                "epic_hook",
-                "whale.so",
-                "lspatch",
-                "lspd",
-                "zygisk",
-                "magisk",
-                "shamiko",
-                "kernelsu",
-                "apatch",
-                "frida-agent",
-                "frida-gadget",
                 "gum-js-loop",
                 "xposed",
                 "lsposed",
                 "lspatch",
                 "lspd",
+                "lsplant",
+                "substrate",
+                "cydia",
                 "riru",
                 "zygisk",
                 "zygisk_loader",
                 "libzygisk",
+                "yahfa",
+                "sandhook",
+                "epic_hook",
+                "whale.so",
                 "magisk",
                 "shamiko",
                 "kernelsu",
                 "apatch",
-                "substrate",
-                "cydia",
-                "yahfa",
-                "lsplant",
-                "sandhook",
-                "epic_hook",
-                "whale.so"
+                "gameguardian",
+                "libgg",
+                "gg_temp",
+                "cheatengine",
+                "ce_server",
+                "speedhack",
+                "luckypatcher"
         };
 
         try (BufferedReader br =
@@ -503,7 +491,6 @@ public class AntiTamper {
 
     private TamperResult checkLSPatch() {
 
-        // Kontrollo klasa karakteristike të LSPatch
         String[] classNames = {
                 "org.lsposed.lspatch.LSPAppComponentFactory",
                 "org.lsposed.lspatch.LSPApplication",
@@ -524,7 +511,6 @@ public class AntiTamper {
             }
         }
 
-        // Kontrollo emrin e ClassLoader
         try {
 
             ClassLoader loader = getClass().getClassLoader();
@@ -656,78 +642,31 @@ public class AntiTamper {
 
     }
 
-    private TamperResult checkClassesDexHash(Context ctx) {
+    private TamperResult checkVirtualEnvironment(Context ctx) {
 
         try {
-
-            java.util.zip.ZipFile zip =
-                    new java.util.zip.ZipFile(ctx.getPackageCodePath());
-
-            java.util.zip.ZipEntry entry =
-                    zip.getEntry("classes.dex");
-
-            if (entry == null) {
-
-                zip.close();
-
-                return new TamperResult(
-                        "classes.dex",
-                        "classes.dex not found",
-                        true
-                );
+            String dataDir = ctx.getApplicationInfo().dataDir;
+            String lower = dataDir == null ? "" : dataDir.toLowerCase();
+            String[] indicators = {"/virtual/", "/vs/", "multiapp", "parallel", "dual_", "shadow", "/va/"};
+            for (int i = 0; i < indicators.length; i++) {
+                if (lower.contains(indicators[i])) {
+                    return new TamperResult(
+                            "Virtual/Cloned Environment",
+                            "Data directory looks virtualized: " + dataDir,
+                            true
+                    );
+                }
             }
-
-            java.io.InputStream is =
-                    zip.getInputStream(entry);
-
-            MessageDigest md =
-                    MessageDigest.getInstance("SHA-256");
-
-            byte[] buffer = new byte[8192];
-
-            int read;
-
-            while ((read = is.read(buffer)) != -1) {
-                md.update(buffer, 0, read);
-            }
-
-            is.close();
-            zip.close();
-
-            byte[] digest = md.digest();
-
-            StringBuilder sb = new StringBuilder();
-
-            for (byte b : digest) {
-                sb.append(String.format("%02X", b));
-            }
-
-            String currentHash = sb.toString();
-
-            String expectedHash =
-                    "PUT_CLASSES_DEX_HASH_HERE";
-
-            if (!expectedHash.equals(currentHash)) {
-
-                return new TamperResult(
-                        "classes.dex",
-                        "Hash mismatch",
-                        true
-                );
-            }
-
             return new TamperResult(
-                    "classes.dex",
-                    "Verified",
+                    "Virtual/Cloned Environment",
+                    "Normal data directory",
                     false
             );
-
         } catch (Exception e) {
-
             return new TamperResult(
-                    "classes.dex",
-                    e.toString(),
-                    true
+                    "Virtual/Cloned Environment",
+                    "Could not determine",
+                    false
             );
         }
     }

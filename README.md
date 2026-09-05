@@ -4,10 +4,10 @@ Advanced Root Checker
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 
-![Version](https://img.shields.io/badge/Version-3.3-teal.svg)
+![Version](https://img.shields.io/badge/Version-3.4-teal.svg)
 
 
-![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
+![Android](https://img.shields.io/badge/Android-4.4%2B-green.svg)
 
 
 A free, open-source Android app that detects root indicators 
@@ -16,9 +16,41 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 3.3
+## Latest Version: 3.4
 
 ### Changelog
+
+**Version 3.4**
+
+New detections targeting app-tampering and cheat tools, plus reliability
+and startup-performance improvements.
+
+New Features
+Added Billing Hijack Check: detects Lucky Patcher and similar tools
+intercepting the Google Play in-app purchase intent.
+Expanded the memory signature scan with GameGuardian and Cheat Engine
+indicators.
+Added Virtual/Cloned Environment check for apps run inside app-cloning
+sandboxes (used by some no-root cheat tools).
+
+Reliability Improvements
+Root Management/Dangerous/Cloaking App checks now use PackageManager
+in addition to filesystem checks - more reliable on modern Android,
+where reading other apps' private folders isn't possible.
+System-property checks (ADB, Developer Options, OTA, Verified Boot,
+Knox, Anti-Rollback, Treble, Dangerous Props) now distinguish
+"restricted by Android" from "checked and clean" instead of silently
+counting a restricted read as a pass.
+Fixed a false-positive warning in the User/Host device info field
+that flagged most non-Google-built devices.
+
+Performance
+Anti-Tamper and Device Info checks now run on a background thread
+instead of blocking app startup.
+
+Other
+Minimum supported Android version lowered to API 19.
+Fixed a release build failure related to the monochrome themed app icon.
 
 **Version 3.3**
 
@@ -167,7 +199,7 @@ Native capability check
 
 ## Features
 
-- 34 root detection checks
+- 35 root detection checks
 - Device Security Info section
 - Importance of Root educational section
 - Material You dark teal design
@@ -191,6 +223,7 @@ Native capability check
 | Root Management Apps | Checks for root manager packages |
 | Potentially Dangerous Apps | Detects Lucky Patcher and similar |
 | Root Cloaking Apps | Detects Shamiko and MagiskHide |
+| Billing Hijack Check | Detects non-Play apps intercepting the in-app purchase intent (Lucky Patcher) |
 | Test Keys | Checks build signing keys |
 | Fingerprint Check | Analyzes build fingerprint |
 | Dangerous Props | Checks system properties |
