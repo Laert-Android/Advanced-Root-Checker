@@ -394,7 +394,7 @@ Connect your Android phone via USB with USB debugging enabled, then click the gr
 - [GitHub Releases](https://github.com/Laert-Android/Advanced-Root-Checker/releases)
 - [SourceForge](https://sourceforge.net/projects/advanced-root-checker)
 - [XDA Forums](https://xdaforums.com/t/advanced-root-checker-free-open-source-root-detection-app-no-ads-no-tracking-17-checks.4791052/)
-- [Appteka](https://appteka.store/app/df9r306774)
+- [Appteka](https://appteka.store/app/1b2r317178)
 - F-Droid (submission pending)
 
 ## Community
