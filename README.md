@@ -123,7 +123,7 @@ New device information fields:
 Risk Score (0-100 security rating)
 Scan History (last 3 scans saved)
 Check Explanations (tap any result)
-NEW CHECKS (34 total):
+NEW CHECKS (35 total):
 
 Verified Boot status
 Knox status (Samsung)
@@ -143,7 +143,7 @@ Native capability check
 - Added ADB Status check
 - Added Developer Options check
 - Added OTA Updates check
-- Total checks increased from 17 to 34
+- Total checks increased from 17 to 35
 
 **Version 2.2**
 - Added Potentially Dangerous Apps detection
@@ -167,7 +167,7 @@ Native capability check
 
 **Version 1.0**
 - Initial release
-  - 34 root detection checks
+  - 35 root detection checks
 
 ---
 
