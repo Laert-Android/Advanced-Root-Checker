@@ -1,0 +1,158 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:2:1-59:12
+INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:2:1-59:12
+	package
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:4:5-36
+		INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:6:5-30
+		INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml
+	xmlns:tools
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:3:5-51
+	xmlns:android
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:2:11-69
+	android:versionCode
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:5:5-29
+		INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml
+uses-sdk
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:7:5-9:41
+INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:7:5-9:41
+INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:7:5-9:41
+	android:targetSdkVersion
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:9:9-38
+		INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:8:9-35
+		INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml
+queries
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:14:5-41:15
+package#com.noshufou.android.su
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:15:9-59
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:15:18-56
+package#eu.chainfire.supersu
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:16:9-56
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:16:18-53
+package#com.koushikdutta.superuser
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:17:9-62
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:17:18-59
+package#com.thirdparty.superuser
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:18:9-60
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:18:18-57
+package#com.topjohnwu.magisk
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:19:9-56
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:19:18-53
+package#com.kingroot.kinguser
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:9-57
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:20:18-54
+package#com.kingo.root
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:9-50
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:21:18-47
+package#com.smedialink.oneclickroot
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:22:9-63
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:22:18-60
+package#com.alephzain.framaroot
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:23:9-59
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:23:18-56
+package#com.chelpus.lackypatch
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:24:9-58
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:24:18-55
+package#com.dimonvideo.luckypatcher
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:25:9-63
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:25:18-60
+package#com.forpda.lp
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:26:9-49
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:26:18-46
+package#com.chelpus.luckypatcher
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:27:9-60
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:27:18-57
+package#com.gameguardian.android
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:28:9-60
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:28:18-57
+package#com.devadvance.rootcloak
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:29:9-60
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:29:18-57
+package#com.devadvance.rootcloakplus
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:30:9-64
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:30:18-61
+package#de.robv.android.xposed.installer
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:31:9-68
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:31:18-65
+package#com.saurik.substrate
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:32:9-56
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:32:18-53
+package#com.amphoras.hidemyroot
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:33:9-59
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:33:18-56
+package#com.formyhm.hideroot
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:34:9-56
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:34:18-53
+package#me.phh.superuser
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:35:9-52
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:35:18-49
+package#org.lsposed.manager
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:36:9-55
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:36:18-52
+intent#action:name:com.android.vending.billing.InAppBillingService.BIND
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:38:9-40:18
+action#com.android.vending.billing.InAppBillingService.BIND
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:39:13-91
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:39:21-88
+application
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:43:5-58:19
+INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:43:5-58:19
+	android:extractNativeLibs
+		INJECTED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml
+	android:supportsRtl
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:48:9-35
+	android:label
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:44:9-46
+	android:roundIcon
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:46:9-48
+	android:icon
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:45:9-56
+	android:allowBackup
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:47:9-36
+activity#com.laert.rootchecker.RootCheckerActivity
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:49:9-57:20
+	android:windowSoftInputMode
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:52:13-54
+	android:exported
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:51:13-36
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:50:13-48
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:53:13-56:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:54:17-69
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:54:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:55:17-77
+	android:name
+		ADDED from C:\Users\Laert\AndroidStudioProjects\Advanced-Root-Checker\app\src\main\AndroidManifest.xml:55:27-74
