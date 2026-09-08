@@ -248,7 +248,7 @@ Native capability check
 
 ## Build from Source
 
-### Build on Android with Termux
+### Build on Android with Termux (old not recommended) 
 
 **Step 1 - Install Termux from F-Droid (not Play Store)**
 
