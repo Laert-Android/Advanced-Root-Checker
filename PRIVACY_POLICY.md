@@ -1,6 +1,6 @@
 # Privacy Policy for Advanced Root Checker
 
-Last updated: May 2025
+Last updated: 4 September 2026
 
 ## No Data Collection
 Advanced Root Checker does not collect, store, or 
