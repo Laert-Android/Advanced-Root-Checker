@@ -1,9 +1,0 @@
-com.laert.rootchecker:string/root_detected = 0x7f040002
-com.laert.rootchecker:string/no_root = 0x7f040001
-com.laert.rootchecker:string/app_name = 0x7f040000
-com.laert.rootchecker:color/ic_launcher_monochrome_color = 0x7f010001
-com.laert.rootchecker:mipmap/ic_launcher = 0x7f030000
-com.laert.rootchecker:drawable/ic_launcher_monochrome = 0x7f020001
-com.laert.rootchecker:drawable/ic_launcher_foreground = 0x7f020000
-com.laert.rootchecker:string/scan_button = 0x7f040003
-com.laert.rootchecker:color/ic_launcher_background = 0x7f010000
