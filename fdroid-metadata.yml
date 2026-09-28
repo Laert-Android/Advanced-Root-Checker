@@ -2,10 +2,8 @@ Categories:
  - Security
 License: GPL-3.0-only
 AuthorName: Laert
-SourceCode:
-  https://github.com/Laert-Android/Advanced-Root-Checker
-IssueTracker:
-  https://github.com/Laert-Android/Advanced-Root-Checker/issues
+SourceCode: https://github.com/Laert-Android/Advanced-Root-Checker
+IssueTracker: https://github.com/Laert-Android/Advanced-Root-Checker/issues
 
 AutoName: Advanced Root Checker
 
@@ -17,7 +15,7 @@ Binaries:
 Builds: 
   - versionName: '3.4'
     versionCode: 10
-    commit: 1d51dc6c0c7092e36a2192461d1a94b5c8065e51
+    commit: ce2932d99a2b42580d6944be34ed09393a412452
     subdir: app
     gradle: 
       - yes
