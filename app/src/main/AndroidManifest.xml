@@ -1,14 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.laert.rootchecker"
-    android:versionCode="8"
-    android:versionName="3.2">
+    android:versionCode="11"
+    android:versionName="3.5">
     <uses-sdk
-        android:minSdkVersion="21"
+        android:minSdkVersion="19"
         android:targetSdkVersion="34" />
+
+    <queries>
+        <package android:name="com.noshufou.android.su" />
+        <package android:name="eu.chainfire.supersu" />
+        <package android:name="com.koushikdutta.superuser" />
+        <package android:name="com.thirdparty.superuser" />
+        <package android:name="com.topjohnwu.magisk" />
+        <package android:name="com.kingroot.kinguser" />
+        <package android:name="com.kingo.root" />
+        <package android:name="com.smedialink.oneclickroot" />
+        <package android:name="com.alephzain.framaroot" />
+        <package android:name="com.chelpus.lackypatch" />
+        <package android:name="com.dimonvideo.luckypatcher" />
+        <package android:name="com.forpda.lp" />
+        <package android:name="com.chelpus.luckypatcher" />
+        <package android:name="com.gameguardian.android" />
+        <package android:name="com.devadvance.rootcloak" />
+        <package android:name="com.devadvance.rootcloakplus" />
+        <package android:name="de.robv.android.xposed.installer" />
+        <package android:name="com.saurik.substrate" />
+        <package android:name="com.amphoras.hidemyroot" />
+        <package android:name="com.formyhm.hideroot" />
+        <package android:name="me.phh.superuser" />
+        <package android:name="org.lsposed.manager" />
+        <package android:name="moe.shizuku.privileged.api" />
+        <package android:name="com.termux" />
+        <package android:name="bin.mt.plus" />
+
+        <intent>
+            <action android:name="com.android.vending.billing.InAppBillingService.BIND" />
+        </intent>
+    </queries>
+
     <application
         android:label="Advanced Root Checker"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_launcher_foreground"
         android:roundIcon="@mipmap/ic_launcher"
         android:allowBackup="false"
         android:supportsRtl="true">

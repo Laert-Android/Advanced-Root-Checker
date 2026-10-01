@@ -8,14 +8,14 @@
     <!-- Magnifying glass circle -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="@color/ic_launcher_monochrome_color"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="6"
         android:pathData="M48,48m-22,0a22,22 0,1 1,44 0a22,22 0,1 1,-44 0"/>
 
     <!-- Magnifying glass handle -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="@color/ic_launcher_monochrome_color"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="6"
         android:strokeLineCap="round"
         android:pathData="M64,64 L78,78"/>
@@ -23,7 +23,7 @@
     <!-- Checkmark -->
     <path
         android:fillColor="#00000000"
-        android:strokeColor="@color/ic_launcher_monochrome_color"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"

@@ -100,7 +100,7 @@ public class DeviceInfo {
         String host = Build.HOST;
         if (user == null) user = "Unknown";
         if (host == null) host = "Unknown";
-        boolean warn = "root".equals(user) || user.contains("android-build") == false;
+        boolean warn = "root".equals(user);
         return new InfoItem("User @ Host", user + " @ " + host, warn);
     }
 

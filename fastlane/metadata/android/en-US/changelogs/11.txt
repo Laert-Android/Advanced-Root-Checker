@@ -1,0 +1,27 @@
+Advanced Root Checker v3.5
+
+New Detections
+Added Mount/Namespace Analysis: scans for overlay and
+debug_ramdisk mounts left by Magic Mount-style root hiding
+(Magisk, KernelSU, APatch) that older checks could miss.
+Added Kernel Freshness check: compares kernel build date
+against the claimed security patch level.
+Added Hardware Key Attestation: generates a test key in the
+Android Keystore and verifies it's actually backed by secure
+hardware (TEE/StrongBox) - a much stronger signal than
+software-only checks.
+Added Power-User Apps awareness (Shizuku, Termux, MT Manager)
+- shown for information only, never counted as root evidence.
+Added Raw APK Signature check: reads the signing certificate
+directly from the APK file on disk, bypassing PackageManager
+entirely. Catches tools like "Signature Verification Killer"
+that spoof PackageManager's own signature APIs.
+
+Anti-Tamper Improvements
+Every finding now has a severity level (Low/Medium/High),
+shown as a colored badge. Signature, manifest-integrity, and
+code-injection checks are marked High; soft heuristics like
+the virtualization check are marked Low.
+
+Other
+37 root checks, 18 anti-tamper checks total.
