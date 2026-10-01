@@ -43,7 +43,11 @@ public class AntiTamper {
         public TamperResult(String name,
                             String detail,
                             boolean detected,
-                            Severity severity) {
+                            Severity severity) 
+        public TamperResult(String name,
+                            String detail,
+                            boolean detected) {
+
 
             this.name = name;
             this.detail = detail;
@@ -103,6 +107,8 @@ public class AntiTamper {
                             "SigningInfo is null",
                             true,
                             Severity.HIGH
+                            true
+
                     );
                 }
 
@@ -129,6 +135,8 @@ public class AntiTamper {
                         "No signatures found",
                         true,
                         Severity.HIGH
+                        true
+
                 );
             }
 
@@ -154,12 +162,15 @@ public class AntiTamper {
                                 + "... got " + currentSignature.substring(0, 12) + "...",
                         true,
                         Severity.HIGH
+                        "Signature mismatch",
+                        true
                 );
             }
 
             return new TamperResult(
                     "APK Signature",
                     "Signature verified (matches " + currentSignature.substring(0, 12) + "...)",
+                    "Signature verified",
                     false
             );
 
@@ -170,6 +181,7 @@ public class AntiTamper {
                     e.toString(),
                     true,
                     Severity.HIGH
+                    true
             );
         }
     }
@@ -390,6 +402,66 @@ public class AntiTamper {
                 if (name.startsWith("META-INF/") &&
                         (name.endsWith(".RSA") || name.endsWith(".DSA") || name.endsWith(".EC"))) {
                     sigEntry = e;
+    private TamperResult checkPackageName(Context ctx) {
+
+        final String expectedPackage = "com.laert.rootchecker";
+        String actualPackage = ctx.getPackageName();
+
+        if (!expectedPackage.equals(actualPackage)) {
+
+            return new TamperResult(
+                    "Package Name",
+                    "Package name mismatch: " + actualPackage,
+                    true
+            );
+        }
+
+        return new TamperResult(
+                "Package Name",
+                actualPackage,
+                false
+        );
+    }
+
+    // Check 6 - Debugger
+    private TamperResult checkDebugger() {
+
+        boolean debugger =
+                android.os.Debug.isDebuggerConnected() ||
+                        android.os.Debug.waitingForDebugger();
+
+        return new TamperResult(
+                "Debugger",
+                debugger ? "Debugger detected" : "No debugger",
+                debugger
+        );
+    }
+
+    // Check 7 - Process tracing
+    private TamperResult checkEmulatorProcess() {
+
+        try (BufferedReader br =
+                     new BufferedReader(
+                             new FileReader("/proc/self/status"))) {
+
+            String line;
+
+            while ((line = br.readLine()) != null) {
+
+                if (line.startsWith("TracerPid:")) {
+
+                    int tracerPid =
+                            Integer.parseInt(
+                                    line.split(":")[1].trim());
+
+                    if (tracerPid != 0) {
+
+                        return new TamperResult(
+                                "Process Trace",
+                                "Tracer PID: " + tracerPid,
+                                true
+                        );
+                    }
                     break;
                 }
             }
@@ -523,6 +595,16 @@ public class AntiTamper {
                     break;
                 }
             }
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "Process Trace",
+                "No tracing detected",
+                false
+        );
+    }
 
         } catch (Exception ignored) {
         }
@@ -762,6 +844,7 @@ public class AntiTamper {
                             "Data directory looks virtualized: " + dataDir,
                             true,
                             Severity.LOW
+                            true
                     );
                 }
             }
@@ -869,7 +952,7 @@ public class AntiTamper {
                             ctx.getPackageName(),
                             0
                     );
-
+                    
             if (!"com.laert.rootchecker".equals(packageInfo.packageName)) {
 
                 return new TamperResult(
@@ -880,6 +963,9 @@ public class AntiTamper {
                 );
             }
 
+                        true
+                );
+            }
             if ((appInfo.flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
 
                 return new TamperResult(
@@ -897,6 +983,7 @@ public class AntiTamper {
                         "allowBackup is enabled",
                         true,
                         Severity.LOW
+                        true
                 );
             }
 
@@ -913,6 +1000,7 @@ public class AntiTamper {
                     e.toString(),
                     true,
                     Severity.MEDIUM
+                    true
             );
         }
     }
@@ -936,6 +1024,7 @@ public class AntiTamper {
                             "Suspicious: " + name,
                             true,
                             Severity.HIGH
+                            true
                     );
                 }
 
@@ -969,6 +1058,7 @@ public class AntiTamper {
                             factory,
                             true,
                             Severity.HIGH
+                            true
                     );
                 }
             }

@@ -1,5 +1,5 @@
 Categories:
-  - Security
+ - Security
 License: GPL-3.0-only
 AuthorName: Laert
 SourceCode: https://github.com/Laert-Android/Advanced-Root-Checker
@@ -9,6 +9,8 @@ AutoName: Advanced Root Checker
 Summary: Offline root detection, no ads, no tracking
 RepoType: git
 Repo: https://github.com/Laert-Android/Advanced-Root-Checker
+Binaries:
+  - https://github.com/Laert-Android/Advanced-Root-Checker/releases/download/v%v/Advanced.Root.Checker_v%v.apk
 
 AllowedAPKSigningKeys: 177d0b6ac00a4d5dd3fe8269ec86951fcffa134ead8cbb13b6ae227ad03b4078
 
@@ -17,8 +19,10 @@ Builds:
     versionCode: 11
     commit: v3.5
     subdir: app
-    gradle:
+    gradle: 
       - yes
+
+AllowedAPKSigningKeys: 177d0b6ac00a4d5dd3fe8269ec86951fcffa134ead8cbb13b6ae227ad03b4078
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags

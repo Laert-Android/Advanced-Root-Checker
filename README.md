@@ -173,7 +173,7 @@ Native capability check
 - Added ADB Status check
 - Added Developer Options check
 - Added OTA Updates check
-- Total checks increased from 17 to 34
+- Total checks increased from 17 to 37
 
 **Version 2.2**
 - Added Potentially Dangerous Apps detection
@@ -197,7 +197,7 @@ Native capability check
 
 **Version 1.0**
 - Initial release
-  - 34 root detection checks
+  - 37 root detection checks
 
 ---
 
@@ -281,7 +281,7 @@ Native capability check
 
 ## Build from Source
 
-### Build on Android with Termux
+### Build on Android with Termux (old not recommended) 
 
 **Step 1 - Install Termux from F-Droid (not Play Store)**
 
