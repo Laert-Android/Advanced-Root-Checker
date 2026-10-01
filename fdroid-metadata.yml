@@ -12,8 +12,6 @@ Repo: https://github.com/Laert-Android/Advanced-Root-Checker
 Binaries:
   - https://github.com/Laert-Android/Advanced-Root-Checker/releases/download/v%v/Advanced.Root.Checker_v%v.apk
 
-AllowedAPKSigningKeys: 177d0b6ac00a4d5dd3fe8269ec86951fcffa134ead8cbb13b6ae227ad03b4078
-
 Builds:
   - versionName: '3.5'
     versionCode: 11
