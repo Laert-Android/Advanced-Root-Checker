@@ -107,7 +107,6 @@ public class AntiTamper {
                             "SigningInfo is null",
                             true,
                             Severity.HIGH
-                            true
 
                     );
                 }
@@ -135,7 +134,6 @@ public class AntiTamper {
                         "No signatures found",
                         true,
                         Severity.HIGH
-                        true
 
                 );
             }
@@ -181,7 +179,6 @@ public class AntiTamper {
                     e.toString(),
                     true,
                     Severity.HIGH
-                    true
             );
         }
     }
@@ -844,7 +841,6 @@ public class AntiTamper {
                             "Data directory looks virtualized: " + dataDir,
                             true,
                             Severity.LOW
-                            true
                     );
                 }
             }
@@ -962,8 +958,6 @@ public class AntiTamper {
                         Severity.HIGH
                 );
             }
-
-                        true
                 );
             }
             if ((appInfo.flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
@@ -983,7 +977,6 @@ public class AntiTamper {
                         "allowBackup is enabled",
                         true,
                         Severity.LOW
-                        true
                 );
             }
 
@@ -1000,7 +993,6 @@ public class AntiTamper {
                     e.toString(),
                     true,
                     Severity.MEDIUM
-                    true
             );
         }
     }
@@ -1024,7 +1016,6 @@ public class AntiTamper {
                             "Suspicious: " + name,
                             true,
                             Severity.HIGH
-                            true
                     );
                 }
 
@@ -1058,7 +1049,6 @@ public class AntiTamper {
                             factory,
                             true,
                             Severity.HIGH
-                            true
                     );
                 }
             }
