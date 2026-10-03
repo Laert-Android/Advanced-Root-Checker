@@ -982,4 +982,209 @@ public class AntiTamper {
                 false
         );
     }
+
+    private TamperResult checkMountNamespace() {
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader("/proc/self/mountinfo"));
+            String line;
+            List<String> suspicious = new ArrayList<>();
+            while ((line = br.readLine()) != null) {
+                String lower = line.toLowerCase();
+                boolean overlayOnSystem = lower.contains(" overlay ") &&
+                        (lower.contains(" /system") || lower.contains(" /vendor")
+                                || lower.contains(" /product") || lower.contains(" /apex"));
+                boolean debugRamdisk = lower.contains("/debug_ramdisk");
+                boolean tmpfsOnSystem = lower.contains(" tmpfs ") && lower.contains(" /system");
+                if (overlayOnSystem || debugRamdisk || tmpfsOnSystem) {
+                    suspicious.add(line.trim());
+                    if (suspicious.size() >= 3) break;
+                }
+            }
+            if (!suspicious.isEmpty()) {
+                String sample = suspicious.get(0);
+                if (sample.length() > 90) sample = sample.substring(0, 90) + "...";
+                return new TamperResult(
+                        "Mount Namespace",
+                        suspicious.size() + " suspicious mount(s), e.g.: " + sample,
+                        true,
+                        Severity.HIGH
+                );
+            }
+            return new TamperResult(
+                    "Mount Namespace",
+                    "No overlay/tmpfs mounts found on /system, /vendor, /product, /apex",
+                    false
+            );
+        } catch (Exception e) {
+            return new TamperResult(
+                    "Mount Namespace",
+                    "Could not read mount namespace",
+                    false,
+                    Severity.INFO
+            );
+        } finally {
+            if (br != null) { try { br.close(); } catch (Exception ignored) {} }
+        }
+    }
+
+    private TamperResult checkPowerUserApps(Context ctx) {
+        String[][] apps = {
+                {"moe.shizuku.privileged.api", "Shizuku"},
+                {"com.termux", "Termux"},
+                {"bin.mt.plus", "MT Manager"}
+        };
+        List<String> found = new ArrayList<>();
+        if (ctx != null) {
+            PackageManager pm = ctx.getPackageManager();
+            for (int i = 0; i < apps.length; i++) {
+                try {
+                    pm.getPackageInfo(apps[i][0], 0);
+                    found.add(apps[i][1]);
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        if (found.isEmpty()) {
+            return new TamperResult(
+                    "Power-User Apps",
+                    "None of the common developer/power-user tools detected",
+                    false,
+                    Severity.INFO
+            );
+        }
+        return new TamperResult(
+                "Power-User Apps",
+                "Detected: " + found + " - legitimate developer tools, not treated as root evidence",
+                false,
+                Severity.INFO
+        );
+    }
+
+    private TamperResult checkManifestIntegrity(Context ctx) {
+
+        try {
+
+            android.content.pm.ApplicationInfo appInfo =
+                    ctx.getApplicationInfo();
+
+            PackageInfo packageInfo =
+                    ctx.getPackageManager().getPackageInfo(
+                            ctx.getPackageName(),
+                            0
+                    );
+                    
+            if (!"com.laert.rootchecker".equals(packageInfo.packageName)) {
+
+                return new TamperResult(
+                        "Manifest Integrity",
+                        "Package name modified",
+                        true,
+                        Severity.HIGH
+                );
+            }
+                );
+            }
+            if ((appInfo.flags & android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
+
+                return new TamperResult(
+                        "Manifest Integrity",
+                        "Application is debuggable",
+                        true,
+                        Severity.MEDIUM
+                );
+            }
+
+            if ((appInfo.flags & android.content.pm.ApplicationInfo.FLAG_ALLOW_BACKUP) != 0) {
+
+                return new TamperResult(
+                        "Manifest Integrity",
+                        "allowBackup is enabled",
+                        true,
+                        Severity.LOW
+                );
+            }
+
+            return new TamperResult(
+                    "Manifest Integrity",
+                    "Verified",
+                    false
+            );
+
+        } catch (Exception e) {
+
+            return new TamperResult(
+                    "Manifest Integrity",
+                    e.toString(),
+                    true,
+                    Severity.MEDIUM
+            );
+        }
+    }
+    private TamperResult checkClassLoader() {
+
+        try {
+
+            ClassLoader loader = getClass().getClassLoader();
+
+            while (loader != null) {
+
+                String name = loader.getClass().getName().toLowerCase();
+
+                if (name.contains("lsposed") ||
+                        name.contains("lspatch") ||
+                        name.contains("xposed") ||
+                        name.contains("zygisk")) {
+
+                    return new TamperResult(
+                            "ClassLoader",
+                            "Suspicious: " + name,
+                            true,
+                            Severity.HIGH
+                    );
+                }
+
+                loader = loader.getParent();
+            }
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "ClassLoader",
+                "Normal",
+                false
+        );
+    }
+    private TamperResult checkAppComponentFactory(Context ctx) {
+
+        try {
+
+            ApplicationInfo ai = ctx.getApplicationInfo();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+
+                String factory = ai.appComponentFactory;
+
+                if (factory != null &&
+                        factory.toLowerCase().contains("lspatch")) {
+
+                    return new TamperResult(
+                            "AppComponentFactory",
+                            factory,
+                            true,
+                            Severity.HIGH
+                    );
+                }
+            }
+
+        } catch (Exception ignored) {
+        }
+
+        return new TamperResult(
+                "AppComponentFactory",
+                "Normal",
+                false
+        );
+    }
 }
