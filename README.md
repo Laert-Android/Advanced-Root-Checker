@@ -173,7 +173,7 @@ Native capability check
 - Added ADB Status check
 - Added Developer Options check
 - Added OTA Updates check
-- Total checks increased from 17 to 34
+- Total checks increased from 17 to 37
 
 **Version 2.2**
 - Added Potentially Dangerous Apps detection
@@ -197,7 +197,7 @@ Native capability check
 
 **Version 1.0**
 - Initial release
-  - 34 root detection checks
+  - 37 root detection checks
 
 ---
 
@@ -281,7 +281,7 @@ Native capability check
 
 ## Build from Source
 
-### Build on Android with Termux
+### Build on Android with Termux (old not recommended) 
 
 **Step 1 - Install Termux from F-Droid (not Play Store)**
 
@@ -427,7 +427,7 @@ Connect your Android phone via USB with USB debugging enabled, then click the gr
 - [GitHub Releases](https://github.com/Laert-Android/Advanced-Root-Checker/releases)
 - [SourceForge](https://sourceforge.net/projects/advanced-root-checker)
 - [XDA Forums](https://xdaforums.com/t/advanced-root-checker-free-open-source-root-detection-app-no-ads-no-tracking-17-checks.4791052/)
-- [Appteka](https://appteka.store/app/df9r306774)
+- [Appteka](https://appteka.store/app/618r326108)
 - F-Droid (submission pending)
 
 ## Community
