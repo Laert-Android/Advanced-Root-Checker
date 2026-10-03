@@ -28,6 +28,7 @@ public class RootCheckerActivity extends Activity {
 
     private LinearLayout resultsLayout;
     private LinearLayout deviceInfoLayout;
+    private LinearLayout tamperLayout;
     private LinearLayout historyLayout;
     private TextView summaryTitle;
     private TextView summarySubtitle;
@@ -56,6 +57,7 @@ public class RootCheckerActivity extends Activity {
         mainHandler = new Handler(Looper.getMainLooper());
         prefs = getSharedPreferences("scan_history", Context.MODE_PRIVATE);
         buildUI();
+        loadTamperAndDeviceInfoInBackground();
     }
 
     private void buildUI() {
@@ -212,17 +214,10 @@ public class RootCheckerActivity extends Activity {
         root.addView(tamperHint);
         root.addView(spacer(8));
 
-        LinearLayout tamperLayout = new LinearLayout(this);
+        tamperLayout = new LinearLayout(this);
         tamperLayout.setOrientation(LinearLayout.VERTICAL);
         root.addView(tamperLayout);
-
-// Run anti tamper checks
-        AntiTamper antiTamper = new AntiTamper();
-        AntiTamper.TamperResult[] tamperResults = antiTamper.runAllChecks(this);
-        for (int i = 0; i < tamperResults.length; i++) {
-            final AntiTamper.TamperResult result = tamperResults[i];
-            addTamperRow(tamperLayout, result);
-        }
+        addLoadingRow(tamperLayout, "Running anti-tamper checks…");
 
         // Device security info section
         root.addView(makeDivider("DEVICE SECURITY INFO"));
@@ -230,7 +225,7 @@ public class RootCheckerActivity extends Activity {
         deviceInfoLayout = new LinearLayout(this);
         deviceInfoLayout.setOrientation(LinearLayout.VERTICAL);
         root.addView(deviceInfoLayout);
-        loadDeviceInfo();
+        addLoadingRow(deviceInfoLayout, "Reading device info…");
         root.addView(spacer(24));
 
         // Importance of root section
@@ -241,7 +236,7 @@ public class RootCheckerActivity extends Activity {
 
         // Footer
         TextView footer = new TextView(this);
-        footer.setText("All checks run locally. No data sent anywhere.\nv3.2");
+        footer.setText("All checks run locally. No data sent anywhere.\nv3.5");
         footer.setTextColor(TEXT_HINT);
         footer.setTextSize(10f);
         footer.setGravity(Gravity.CENTER);
@@ -350,7 +345,7 @@ public class RootCheckerActivity extends Activity {
         learnMore.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://keepandroidopen.org/sq/"));
+                    Uri.parse("https://keepandroidopen.org/en/"));
                 startActivity(intent);
             }
         });
@@ -446,11 +441,39 @@ public class RootCheckerActivity extends Activity {
         parent.addView(card, lp);
     }
 
-    private void loadDeviceInfo() {
-        DeviceInfo.InfoItem[] items = DeviceInfo.getDeviceInfo(this);
-        for (int i = 0; i < items.length; i++) {
-            addInfoRow(items[i]);
-        }
+    private void addLoadingRow(LinearLayout parent, String text) {
+        TextView loading = new TextView(this);
+        loading.setText(text);
+        loading.setTextColor(TEXT_HINT);
+        loading.setTextSize(12f);
+        loading.setGravity(Gravity.CENTER);
+        loading.setPadding(0, dp(8), 0, dp(8));
+        parent.addView(loading);
+    }
+
+    private void loadTamperAndDeviceInfoInBackground() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final AntiTamper antiTamper = new AntiTamper();
+                final AntiTamper.TamperResult[] tamperResults = antiTamper.runAllChecks(RootCheckerActivity.this);
+                final DeviceInfo.InfoItem[] deviceItems = DeviceInfo.getDeviceInfo(RootCheckerActivity.this);
+
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tamperLayout.removeAllViews();
+                        for (int i = 0; i < tamperResults.length; i++) {
+                            addTamperRow(tamperLayout, tamperResults[i]);
+                        }
+                        deviceInfoLayout.removeAllViews();
+                        for (int i = 0; i < deviceItems.length; i++) {
+                            addInfoRow(deviceItems[i]);
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     private void addInfoRow(DeviceInfo.InfoItem item) {
@@ -533,7 +556,7 @@ public class RootCheckerActivity extends Activity {
 
         Thread t = new Thread(new Runnable() {
             public void run() {
-                RootDetector detector = new RootDetector();
+                RootDetector detector = new RootDetector(RootCheckerActivity.this);
                 final RootDetector.CheckResult[] checks = detector.runAllChecks();
                 final int total = checks.length;
                 int rootCount = 0;
@@ -599,12 +622,31 @@ public class RootCheckerActivity extends Activity {
             0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         card.addView(info, infoLp);
 
+        LinearLayout nameRow = new LinearLayout(this);
+        nameRow.setOrientation(LinearLayout.HORIZONTAL);
+        nameRow.setGravity(Gravity.CENTER_VERTICAL);
+        info.addView(nameRow);
+
         TextView name = new TextView(this);
         name.setText(check.name);
         name.setTextColor(TEXT_PRIMARY);
         name.setTextSize(13f);
         name.setTypeface(Typeface.DEFAULT_BOLD);
-        info.addView(name);
+        nameRow.addView(name);
+
+        if (check.detected && check.severity != Severity.INFO) {
+            TextView sevBadge = new TextView(this);
+            sevBadge.setText(" " + check.severity.name() + " ");
+            sevBadge.setTextSize(8f);
+            sevBadge.setTypeface(Typeface.DEFAULT_BOLD);
+            sevBadge.setTextColor(Color.WHITE);
+            setRoundedBg(sevBadge, severityColor(check.severity), 10);
+            LinearLayout.LayoutParams sevLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+            sevLp.setMargins(dp(6), 0, 0, 0);
+            nameRow.addView(sevBadge, sevLp);
+        }
 
         TextView detail = new TextView(this);
         detail.setText(check.detail);
@@ -636,6 +678,15 @@ public class RootCheckerActivity extends Activity {
             LinearLayout.LayoutParams.WRAP_CONTENT);
         lp.setMargins(0, 0, 0, dp(8));
         resultsLayout.addView(card, lp);
+    }
+
+    private int severityColor(Severity s) {
+        switch (s) {
+            case HIGH: return RED_FAIL;
+            case MEDIUM: return ORANGE_WARN;
+            case LOW: return TEAL_PRIMARY;
+            default: return TEXT_HINT;
+        }
     }
 
     private void showExplanation(RootDetector.CheckResult check) {
@@ -765,12 +816,31 @@ public class RootCheckerActivity extends Activity {
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         card.addView(info, infoLp);
 
+        LinearLayout nameRow = new LinearLayout(this);
+        nameRow.setOrientation(LinearLayout.HORIZONTAL);
+        nameRow.setGravity(Gravity.CENTER_VERTICAL);
+        info.addView(nameRow);
+
         TextView name = new TextView(this);
         name.setText(result.name);
         name.setTextColor(TEXT_PRIMARY);
         name.setTextSize(13f);
         name.setTypeface(Typeface.DEFAULT_BOLD);
-        info.addView(name);
+        nameRow.addView(name);
+
+        if (result.detected && result.severity != Severity.INFO) {
+            TextView sevBadge = new TextView(this);
+            sevBadge.setText(" " + result.severity.name() + " ");
+            sevBadge.setTextSize(8f);
+            sevBadge.setTypeface(Typeface.DEFAULT_BOLD);
+            sevBadge.setTextColor(Color.WHITE);
+            setRoundedBg(sevBadge, severityColor(result.severity), 10);
+            LinearLayout.LayoutParams sevLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+            sevLp.setMargins(dp(6), 0, 0, 0);
+            nameRow.addView(sevBadge, sevLp);
+        }
 
         TextView detail = new TextView(this);
         detail.setText(result.detail);

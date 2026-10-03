@@ -4,9 +4,10 @@ Advanced Root Checker
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 
-![Version](https://img.shields.io/badge/Version-3.1-teal.svg)
+![Version](https://img.shields.io/badge/Version-3.5-teal.svg)
 
-![Android](https://img.shields.io/badge/Android-5.0%2B-green.svg)
+
+![Android](https://img.shields.io/badge/Android-4.4%2B-green.svg)
 
 
 A free, open-source Android app that detects root indicators 
@@ -15,9 +16,123 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 3.1
+## Latest Version: 3.5
 
 ### Changelog
+
+**Version 3.5**
+
+New detections inspired by Duck Detector, plus severity levels across
+all findings.
+
+New Detections
+Added Mount/Namespace Analysis: scans for overlay and debug_ramdisk
+mounts left by Magic Mount-style root hiding (Magisk, KernelSU,
+APatch).
+Added Kernel Freshness check: compares kernel build date against the
+claimed security patch level.
+Added Hardware Key Attestation: generates a test key in the Android
+Keystore and verifies it's actually backed by secure hardware
+(TEE/StrongBox).
+Added Power-User Apps awareness (Shizuku, Termux, MT Manager) -
+informational only, never counted as root evidence.
+Added Raw APK Signature check: reads the signing certificate directly
+from the APK file on disk, bypassing PackageManager entirely. Catches
+tools like "Signature Verification Killer" that spoof PackageManager's
+own signature APIs.
+
+Anti-Tamper Improvements
+Every finding now has a severity level (Low/Medium/High), shown as a
+colored badge. Signature, manifest-integrity, and code-injection
+checks are marked High; soft heuristics like the virtualization check
+are marked Low.
+
+Other
+37 root checks, 18 anti-tamper checks total.
+
+**Version 3.4**
+
+New detections targeting app-tampering and cheat tools, plus reliability
+and startup-performance improvements.
+
+New Features
+Added Billing Hijack Check: detects Lucky Patcher and similar tools
+intercepting the Google Play in-app purchase intent.
+Expanded the memory signature scan with GameGuardian and Cheat Engine
+indicators.
+Added Virtual/Cloned Environment check for apps run inside app-cloning
+sandboxes (used by some no-root cheat tools).
+
+Reliability Improvements
+Root Management/Dangerous/Cloaking App checks now use PackageManager
+in addition to filesystem checks - more reliable on modern Android,
+where reading other apps' private folders isn't possible.
+System-property checks (ADB, Developer Options, OTA, Verified Boot,
+Knox, Anti-Rollback, Treble, Dangerous Props) now distinguish
+"restricted by Android" from "checked and clean" instead of silently
+counting a restricted read as a pass.
+Fixed a false-positive warning in the User/Host device info field
+that flagged most non-Google-built devices.
+
+Performance
+Anti-Tamper and Device Info checks now run on a background thread
+instead of blocking app startup.
+
+Other
+Minimum supported Android version lowered to API 19.
+Fixed a release build failure related to the monochrome themed app icon.
+
+**Version 3.3**
+
+In this version, improvements have been made regarding anti-tampering, application integrity check, and detection of Android hooking frameworks.
+
+New Features
+Anti-Tamper
+Improved APK signature validation using SigningInfo API for Android 9+.
+Introduced application integrity validation.
+Improved package name validation.
+Improved debugger validation.
+Improved process tracer validation.
+Hooking Framework Validation
+Improved Xposed validation.
+Improved LSPosed validation.
+Introduced LSPatch validation.
+Improved Frida validation by performing:
+Process memory mapping check
+Detection of suspicious native libraries
+Detection of default port used by Frida.
+Added ClassLoader validation.
+Added AppComponentFactory validation.
+Improved detection of other hooking frameworks at runtime.
+Other Security Improvements
+Improved detection of runtime tampering.
+Improved detection performance and reliability.
+
+Notes
+This version makes significant improvement in terms of integrity validation and detection of well-known Android hooking frameworks.
+
+**Version 3.2**
+
+NEW - Anti-Tamper Section:
+- Xposed hook detection in process
+- Frida detection in process maps
+- Suspicious library detection
+- Stack trace hook analysis
+- APK signature verification
+- Package name verification
+- Debugger detection
+- Process trace detection
+- Hooking framework detection
+- Frida port detection
+
+NEW - System Path Scan:
+- Scans 90+ system paths
+- Detects su, Magisk, KernelSU, APatch
+- Detects Xposed, LSPosed, Riru
+- Detects root cloaking modules
+- Detects dangerous apps
+
+No ads. No tracking. GPL-3.0.
 
 **Version 3.1**
 
@@ -38,7 +153,7 @@ New device information fields:
 Risk Score (0-100 security rating)
 Scan History (last 3 scans saved)
 Check Explanations (tap any result)
-NEW CHECKS (33 total):
+NEW CHECKS (34 total):
 
 Verified Boot status
 Knox status (Samsung)
@@ -58,7 +173,7 @@ Native capability check
 - Added ADB Status check
 - Added Developer Options check
 - Added OTA Updates check
-- Total checks increased from 17 to 28
+- Total checks increased from 17 to 34
 
 **Version 2.2**
 - Added Potentially Dangerous Apps detection
@@ -82,7 +197,7 @@ Native capability check
 
 **Version 1.0**
 - Initial release
-  - 28 root detection checks
+  - 34 root detection checks
 
 ---
 
@@ -114,7 +229,8 @@ Native capability check
 
 ## Features
 
-- 33 root detection checks
+- 37 root detection checks, 18 anti-tamper checks
+- Severity levels (Low/Medium/High) on every finding
 - Device Security Info section
 - Importance of Root educational section
 - Material You dark teal design
@@ -138,6 +254,7 @@ Native capability check
 | Root Management Apps | Checks for root manager packages |
 | Potentially Dangerous Apps | Detects Lucky Patcher and similar |
 | Root Cloaking Apps | Detects Shamiko and MagiskHide |
+| Billing Hijack Check | Detects non-Play apps intercepting the in-app purchase intent (Lucky Patcher) |
 | Test Keys | Checks build signing keys |
 | Fingerprint Check | Analyzes build fingerprint |
 | Dangerous Props | Checks system properties |
@@ -158,11 +275,13 @@ Native capability check
 | ADB Status | Checks if ADB is enabled |
 | Developer Options | Checks USB ADB configuration |
 | OTA Updates | Checks if OTA updates are disabled |
+| Kernel Freshness | Compares kernel build date to claimed security patch level |
+| Hardware Key Attestation | Verifies a test key is backed by secure hardware (TEE/StrongBox) |
 ---
 
 ## Build from Source
 
-### Build on Android with Termux (recommended)
+### Build on Android with Termux
 
 **Step 1 - Install Termux from F-Droid (not Play Store)**
 
@@ -262,7 +381,7 @@ Then open your file manager, go to Downloads and tap RootChecker.apk to install.
 - If you get 'sdkmanager: command not found' run Steps 6 and 7 again before Step 8. The SDK path must be set before running sdkmanager.
 - If the build fails in the last step type echo "android.aapt2FromMavenOverride=/data/data/com.termux/files/usr/bin/aapt2" > ~/Advanced-Root-Checker/gradle.properties and try again.
 
-## Build on PC (Windows,Linux)
+## Build on PC (Windows,Linux) (recommended) 
 
 ### Android Studio
 
@@ -308,7 +427,7 @@ Connect your Android phone via USB with USB debugging enabled, then click the gr
 - [GitHub Releases](https://github.com/Laert-Android/Advanced-Root-Checker/releases)
 - [SourceForge](https://sourceforge.net/projects/advanced-root-checker)
 - [XDA Forums](https://xdaforums.com/t/advanced-root-checker-free-open-source-root-detection-app-no-ads-no-tracking-17-checks.4791052/)
-- [Appteka](https://appteka.store/apps/529r297537?from=search&q=Advanced%20Root%20Checker)
+- [Appteka](https://appteka.store/app/df9r306774)
 - F-Droid (submission pending)
 
 ## Community
