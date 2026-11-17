@@ -1,5 +1,5 @@
 Advanced Root Checker detects root indicators on your
-Android device. 37 root checks plus 18 anti-tamper checks
+Android device. 36 root checks plus 18 anti-tamper checks
 run entirely offline. No internet connection required,
 no data sent anywhere.
 
@@ -15,7 +15,6 @@ WHAT IT DETECTS:
 - Known root manager apps
 - Potentially dangerous apps (Lucky Patcher etc)
 - Root cloaking apps (Shamiko, MagiskHide)
-- In-app-billing hijack (Lucky Patcher purchase interception)
 - Dangerous system properties
 - Read-write /system mount
 - Writable /system partition

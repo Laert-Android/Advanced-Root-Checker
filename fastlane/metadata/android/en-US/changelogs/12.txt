@@ -1,0 +1,7 @@
+Advanced Root Checker v3.6
+
+Added Albanian (Shqip) Language.
+Removed the Billing Hijack Check, which added little value
+in practice.
+
+36 root checks, 18 anti-tamper checks total.

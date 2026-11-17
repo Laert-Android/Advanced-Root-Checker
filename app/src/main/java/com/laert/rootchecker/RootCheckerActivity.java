@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -41,6 +43,7 @@ public class RootCheckerActivity extends Activity {
     private Handler mainHandler;
     private SharedPreferences prefs;
 
+    private static final int MENU_SETTINGS = 1;
     private static final int BG_PRIMARY   = 0xFF0F1923;
     private static final int BG_CARD      = 0xFF1A2733;
     private static final int TEAL_PRIMARY = 0xFF4DB6AC;
@@ -54,6 +57,7 @@ public class RootCheckerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Lang.init(this);
         mainHandler = new Handler(Looper.getMainLooper());
         prefs = getSharedPreferences("scan_history", Context.MODE_PRIVATE);
         buildUI();
@@ -71,7 +75,7 @@ public class RootCheckerActivity extends Activity {
 
         // Title
         TextView appTitle = new TextView(this);
-        appTitle.setText("Advanced Root Checker");
+        appTitle.setText(Lang.t("Advanced Root Checker"));
         appTitle.setTextSize(22f);
         appTitle.setTextColor(TEAL_PRIMARY);
         appTitle.setTypeface(Typeface.DEFAULT_BOLD);
@@ -79,7 +83,7 @@ public class RootCheckerActivity extends Activity {
         root.addView(appTitle);
 
         TextView appSub = new TextView(this);
-        appSub.setText("No Ads  |  No Tracking  |  Open Source");
+        appSub.setText(Lang.t("No Ads  |  No Tracking  |  Open Source"));
         appSub.setTextSize(11f);
         appSub.setTextColor(TEXT_HINT);
         appSub.setGravity(Gravity.CENTER);
@@ -98,7 +102,7 @@ public class RootCheckerActivity extends Activity {
         setRoundedBg(summaryCard, BG_CARD, 24);
 
         summaryTitle = new TextView(this);
-        summaryTitle.setText("Ready to Scan");
+        summaryTitle.setText(Lang.t("Ready to Scan"));
         summaryTitle.setTextSize(20f);
         summaryTitle.setTextColor(TEXT_PRIMARY);
         summaryTitle.setTypeface(Typeface.DEFAULT_BOLD);
@@ -106,7 +110,7 @@ public class RootCheckerActivity extends Activity {
         summaryCard.addView(summaryTitle);
 
         summarySubtitle = new TextView(this);
-        summarySubtitle.setText("Tap SCAN FOR ROOT to check your device");
+        summarySubtitle.setText(Lang.t("Tap SCAN FOR ROOT to check your device"));
         summarySubtitle.setTextSize(12f);
         summarySubtitle.setTextColor(TEXT_SEC);
         summarySubtitle.setGravity(Gravity.CENTER);
@@ -131,7 +135,7 @@ public class RootCheckerActivity extends Activity {
         progressContainer.setVisibility(View.GONE);
 
         progressText = new TextView(this);
-        progressText.setText("Scanning... 0%");
+        progressText.setText(Lang.t("Scanning... 0%"));
         progressText.setTextSize(12f);
         progressText.setTextColor(TEAL_PRIMARY);
         progressText.setGravity(Gravity.CENTER);
@@ -150,7 +154,7 @@ public class RootCheckerActivity extends Activity {
 
         // Scan button
         scanButton = new Button(this);
-        scanButton.setText("SCAN FOR ROOT");
+        scanButton.setText(Lang.t("SCAN FOR ROOT"));
         scanButton.setTextColor(BG_PRIMARY);
         scanButton.setTextSize(14f);
         scanButton.setTypeface(Typeface.DEFAULT_BOLD);
@@ -168,7 +172,7 @@ public class RootCheckerActivity extends Activity {
         });
 
         // Scan history section
-        root.addView(makeDivider("SCAN HISTORY"));
+        root.addView(makeDivider(Lang.t("SCAN HISTORY")));
         root.addView(spacer(12));
         historyLayout = new LinearLayout(this);
         historyLayout.setOrientation(LinearLayout.VERTICAL);
@@ -177,11 +181,11 @@ public class RootCheckerActivity extends Activity {
         root.addView(spacer(24));
 
         // Check results section
-        root.addView(makeDivider("CHECK RESULTS"));
+        root.addView(makeDivider(Lang.t("CHECK RESULTS")));
         root.addView(spacer(8));
 
         TextView tapHint = new TextView(this);
-        tapHint.setText("Tap any result to learn more");
+        tapHint.setText(Lang.t("Tap any result to learn more"));
         tapHint.setTextSize(11f);
         tapHint.setTextColor(TEXT_HINT);
         tapHint.setGravity(Gravity.CENTER);
@@ -192,7 +196,7 @@ public class RootCheckerActivity extends Activity {
         resultsLayout.setOrientation(LinearLayout.VERTICAL);
 
         TextView emptyHint = new TextView(this);
-        emptyHint.setText("No results yet. Run a scan to see details.");
+        emptyHint.setText(Lang.t("No results yet. Run a scan to see details."));
         emptyHint.setTextColor(TEXT_HINT);
         emptyHint.setTextSize(12f);
         emptyHint.setGravity(Gravity.CENTER);
@@ -202,12 +206,12 @@ public class RootCheckerActivity extends Activity {
         root.addView(spacer(24));
 
         // Anti-tamper section
-        root.addView(makeDivider("ANTI-TAMPER CHECKS"));
+        root.addView(makeDivider(Lang.t("ANTI-TAMPER CHECKS")));
         root.addView(spacer(12));
 
 // Show anti tamper hint
         TextView tamperHint = new TextView(this);
-        tamperHint.setText("Checks if this app is being hooked or modified");
+        tamperHint.setText(Lang.t("Checks if this app is being hooked or modified"));
         tamperHint.setTextSize(11f);
         tamperHint.setTextColor(TEXT_HINT);
         tamperHint.setGravity(Gravity.CENTER);
@@ -217,26 +221,31 @@ public class RootCheckerActivity extends Activity {
         tamperLayout = new LinearLayout(this);
         tamperLayout.setOrientation(LinearLayout.VERTICAL);
         root.addView(tamperLayout);
-        addLoadingRow(tamperLayout, "Running anti-tamper checks…");
+        addLoadingRow(tamperLayout, Lang.t("Running anti-tamper checks…"));
 
         // Device security info section
-        root.addView(makeDivider("DEVICE SECURITY INFO"));
+        root.addView(makeDivider(Lang.t("DEVICE SECURITY INFO")));
         root.addView(spacer(12));
         deviceInfoLayout = new LinearLayout(this);
         deviceInfoLayout.setOrientation(LinearLayout.VERTICAL);
         root.addView(deviceInfoLayout);
-        addLoadingRow(deviceInfoLayout, "Reading device info…");
+        addLoadingRow(deviceInfoLayout, Lang.t("Reading device info…"));
         root.addView(spacer(24));
 
         // Importance of root section
-        root.addView(makeDivider("IMPORTANCE OF ROOT"));
+        root.addView(makeDivider(Lang.t("IMPORTANCE OF ROOT")));
         root.addView(spacer(12));
         root.addView(buildImportanceSection());
         root.addView(spacer(24));
 
         // Footer
         TextView footer = new TextView(this);
-        footer.setText("All checks run locally. No data sent anywhere.\nv3.5");
+        String versionName = "";
+        try {
+            versionName = getPackageManager()
+                .getPackageInfo(getPackageName(), 0).versionName;
+        } catch (Exception ignored) {}
+        footer.setText(Lang.t("All checks run locally. No data sent anywhere.") + "\nv" + versionName);
         footer.setTextColor(TEXT_HINT);
         footer.setTextSize(10f);
         footer.setGravity(Gravity.CENTER);
@@ -254,7 +263,7 @@ public class RootCheckerActivity extends Activity {
 
         if (h1.isEmpty() && h2.isEmpty() && h3.isEmpty()) {
             TextView empty = new TextView(this);
-            empty.setText("No previous scans yet.");
+            empty.setText(Lang.t("No previous scans yet."));
             empty.setTextColor(TEXT_HINT);
             empty.setTextSize(12f);
             empty.setGravity(Gravity.CENTER);
@@ -275,7 +284,7 @@ public class RootCheckerActivity extends Activity {
         setRoundedBg(row, BG_CARD, 12);
 
         TextView text = new TextView(this);
-        text.setText(entry);
+        text.setText(Lang.t(entry));
         text.setTextColor(TEXT_SEC);
         text.setTextSize(12f);
         row.addView(text);
@@ -323,22 +332,22 @@ public class RootCheckerActivity extends Activity {
         inner.addView(textArea, taLp);
 
         TextView bannerTitle = new TextView(this);
-        bannerTitle.setText("Android Freedom at Risk!");
+        bannerTitle.setText(Lang.t("Android Freedom at Risk!"));
         bannerTitle.setTextSize(13f);
         bannerTitle.setTextColor(ORANGE_WARN);
         bannerTitle.setTypeface(Typeface.DEFAULT_BOLD);
         textArea.addView(bannerTitle);
 
         TextView bannerMsg = new TextView(this);
-        bannerMsg.setText("Android is becoming a locked-down platform. " +
-            "Sideloading and open source apps are under threat.");
+        bannerMsg.setText(Lang.t("Android is becoming a locked-down platform. " +
+            "Sideloading and open source apps are under threat."));
         bannerMsg.setTextSize(11f);
         bannerMsg.setTextColor(TEXT_SEC);
         bannerMsg.setPadding(0, dp(4), 0, dp(8));
         textArea.addView(bannerMsg);
 
         TextView learnMore = new TextView(this);
-        learnMore.setText("Learn more and take action \u2192");
+        learnMore.setText(Lang.t("Learn more and take action \u2192"));
         learnMore.setTextSize(11f);
         learnMore.setTextColor(TEAL_PRIMARY);
         learnMore.setTypeface(Typeface.DEFAULT_BOLD);
@@ -408,13 +417,13 @@ public class RootCheckerActivity extends Activity {
         titleRow.setGravity(Gravity.CENTER_VERTICAL);
 
         TextView dot = new TextView(this);
-        dot.setText("\u25cf  ");
+        dot.setText(Lang.t("\u25cf  "));
         dot.setTextColor(accentColor);
         dot.setTextSize(12f);
         titleRow.addView(dot);
 
         TextView titleView = new TextView(this);
-        titleView.setText(title);
+        titleView.setText(Lang.t(title));
         titleView.setTextColor(accentColor);
         titleView.setTextSize(14f);
         titleView.setTypeface(Typeface.DEFAULT_BOLD);
@@ -429,7 +438,7 @@ public class RootCheckerActivity extends Activity {
         card.addView(div, divLp);
 
         TextView contentView = new TextView(this);
-        contentView.setText(content);
+        contentView.setText(Lang.t(content));
         contentView.setTextColor(TEXT_SEC);
         contentView.setTextSize(12f);
         contentView.setLineSpacing(dp(3), 1f);
@@ -484,7 +493,7 @@ public class RootCheckerActivity extends Activity {
         setRoundedBg(card, BG_CARD, 14);
 
         TextView dot = new TextView(this);
-        dot.setText(" \u25cf ");
+        dot.setText(Lang.t(" \u25cf "));
         dot.setTextSize(10f);
         dot.setTextColor(item.isWarning ? ORANGE_WARN : TEAL_PRIMARY);
         card.addView(dot);
@@ -496,14 +505,14 @@ public class RootCheckerActivity extends Activity {
         card.addView(info, infoLp);
 
         TextView label = new TextView(this);
-        label.setText(item.label);
+        label.setText(Lang.t(item.label));
         label.setTextColor(TEXT_HINT);
         label.setTextSize(10f);
         label.setTypeface(Typeface.DEFAULT_BOLD);
         info.addView(label);
 
         TextView value = new TextView(this);
-        value.setText(item.value);
+        value.setText(Lang.t(item.value));
         value.setTextColor(item.isWarning ? ORANGE_WARN : TEXT_PRIMARY);
         value.setTextSize(12f);
         info.addView(value);
@@ -543,14 +552,14 @@ public class RootCheckerActivity extends Activity {
     private void startScan() {
         scanButton.setEnabled(false);
         setRoundedBg(scanButton, TEXT_HINT, 50);
-        scanButton.setText("SCANNING...");
+        scanButton.setText(Lang.t("SCANNING..."));
         resultsLayout.removeAllViews();
         progressContainer.setVisibility(View.VISIBLE);
         progressBar.setProgress(0);
         setRoundedBg(summaryCard, BG_CARD, 24);
-        summaryTitle.setText("Scanning...");
+        summaryTitle.setText(Lang.t("Scanning..."));
         summaryTitle.setTextColor(TEAL_PRIMARY);
-        summarySubtitle.setText("Running all checks on your device");
+        summarySubtitle.setText(Lang.t("Running all checks on your device"));
         summarySubtitle.setTextColor(TEXT_SEC);
         scoreText.setText("");
 
@@ -570,7 +579,7 @@ public class RootCheckerActivity extends Activity {
                     mainHandler.post(new Runnable() {
                         public void run() {
                             progressBar.setProgress(progress);
-                            progressText.setText("Scanning... "+progress+"%  ("+idx+"/"+total+")");
+                            progressText.setText(Lang.f("Scanning... %d%%  (%d/%d)", progress, idx, total));
                             addResultRow(check);
                         }
                     });
@@ -584,7 +593,7 @@ public class RootCheckerActivity extends Activity {
                         progressContainer.setVisibility(View.GONE);
                         scanButton.setEnabled(true);
                         setRoundedBg(scanButton, TEAL_PRIMARY, 50);
-                        scanButton.setText("SCAN AGAIN");
+                        scanButton.setText(Lang.t("SCAN AGAIN"));
                         updateSummary(detected, total, score);
                         saveHistory(detected, total, score);
                         loadHistory();
@@ -603,7 +612,7 @@ public class RootCheckerActivity extends Activity {
         setRoundedBg(card, BG_CARD, 14);
 
         TextView pill = new TextView(this);
-        pill.setText(check.detected ? " FAIL " : " PASS ");
+        pill.setText(" " + Lang.t(check.detected ? "FAIL" : "PASS") + " ");
         pill.setTextSize(9f);
         pill.setTypeface(Typeface.DEFAULT_BOLD);
         pill.setTextColor(Color.WHITE);
@@ -628,7 +637,7 @@ public class RootCheckerActivity extends Activity {
         info.addView(nameRow);
 
         TextView name = new TextView(this);
-        name.setText(check.name);
+        name.setText(Lang.t(check.name));
         name.setTextColor(TEXT_PRIMARY);
         name.setTextSize(13f);
         name.setTypeface(Typeface.DEFAULT_BOLD);
@@ -636,7 +645,7 @@ public class RootCheckerActivity extends Activity {
 
         if (check.detected && check.severity != Severity.INFO) {
             TextView sevBadge = new TextView(this);
-            sevBadge.setText(" " + check.severity.name() + " ");
+            sevBadge.setText(" " + Lang.t(check.severity.name()) + " ");
             sevBadge.setTextSize(8f);
             sevBadge.setTypeface(Typeface.DEFAULT_BOLD);
             sevBadge.setTextColor(Color.WHITE);
@@ -649,7 +658,7 @@ public class RootCheckerActivity extends Activity {
         }
 
         TextView detail = new TextView(this);
-        detail.setText(check.detail);
+        detail.setText(Lang.t(check.detail));
         detail.setTextColor(TEXT_SEC);
         detail.setTextSize(11f);
         info.addView(detail);
@@ -689,15 +698,51 @@ public class RootCheckerActivity extends Activity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem item = menu.add(0, MENU_SETTINGS, 0, Lang.t("Settings"));
+        item.setIcon(android.R.drawable.ic_menu_preferences);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == MENU_SETTINGS) {
+            showSettingsDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showSettingsDialog() {
+        final String[] languages = {"English", "Shqip"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(Lang.t("Settings") + " - " + Lang.t("Language"));
+        builder.setSingleChoiceItems(languages, Lang.isSq() ? 1 : 0,
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    boolean albanian = (which == 1);
+                    dialog.dismiss();
+                    if (albanian != Lang.isSq()) {
+                        Lang.set(RootCheckerActivity.this, albanian);
+                        recreate();
+                    }
+                }
+            });
+        builder.setNegativeButton(Lang.t("Close"), null);
+        builder.show();
+    }
+
     private void showExplanation(RootDetector.CheckResult check) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(check.name);
+        builder.setTitle(Lang.t(check.name));
         builder.setMessage(
-            "Status: " + (check.detected ? "DETECTED" : "NOT DETECTED") + "\n\n" +
-            "Detail: " + check.detail + "\n\n" +
-            "What this means:\n" + check.explanation
+            Lang.t("Status: ") + Lang.t(check.detected ? "DETECTED" : "NOT DETECTED") + "\n\n" +
+            Lang.t("Detail: ") + Lang.t(check.detail) + "\n\n" +
+            Lang.t("What this means:\n") + Lang.t(check.explanation)
         );
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(Lang.t("OK"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
@@ -717,23 +762,23 @@ public class RootCheckerActivity extends Activity {
 
         if (detected == 0) {
             setRoundedBg(summaryCard, 0xFF0D2B1A, 24);
-            summaryTitle.setText("Device is Clean");
+            summaryTitle.setText(Lang.t("Device is Clean"));
             summaryTitle.setTextColor(GREEN_PASS);
-            summarySubtitle.setText("All "+total+" checks passed");
+            summarySubtitle.setText(Lang.f("All %d checks passed", total));
             summarySubtitle.setTextColor(0xFF81C784);
             scoreText.setTextColor(GREEN_PASS);
         } else if (detected <= 3) {
             setRoundedBg(summaryCard, 0xFF2B1F0D, 24);
-            summaryTitle.setText("Possible Root");
+            summaryTitle.setText(Lang.t("Possible Root"));
             summaryTitle.setTextColor(ORANGE_WARN);
-            summarySubtitle.setText(detected+" of "+total+" checks flagged");
+            summarySubtitle.setText(Lang.f("%d of %d checks flagged", detected, total));
             summarySubtitle.setTextColor(0xFFFFCC80);
             scoreText.setTextColor(ORANGE_WARN);
         } else {
             setRoundedBg(summaryCard, 0xFF2B0D0D, 24);
-            summaryTitle.setText("Root Detected!");
+            summaryTitle.setText(Lang.t("Root Detected!"));
             summaryTitle.setTextColor(RED_FAIL);
-            summarySubtitle.setText(detected+" of "+total+" checks flagged");
+            summarySubtitle.setText(Lang.f("%d of %d checks flagged", detected, total));
             summarySubtitle.setTextColor(0xFFEF9A9A);
             scoreText.setTextColor(RED_FAIL);
         }
@@ -742,26 +787,26 @@ public class RootCheckerActivity extends Activity {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Thanks for using Advanced Root Checker!");
-        builder.setMessage(
+        builder.setTitle(Lang.t("Thanks for using Advanced Root Checker!"));
+        builder.setMessage(Lang.t(
             "If you like this app please share my " +
             "GitHub project with your friends and family!\n\n" +
             "github.com/Laert-Android/Advanced-Root-Checker\n\n" +
-            "Have a good day!");
-        builder.setPositiveButton("Share", new DialogInterface.OnClickListener() {
+            "Have a good day!"));
+        builder.setPositiveButton(Lang.t("Share"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Advanced Root Checker");
-                shareIntent.putExtra(Intent.EXTRA_TEXT,
+                shareIntent.putExtra(Intent.EXTRA_TEXT, Lang.t(
                     "Check out Advanced Root Checker - free open source " +
                     "root detection app for Android!\n\n" +
                     "https://github.com/Laert-Android/Advanced-Root-Checker\n\n" +
-                    "No ads. No tracking. Fully open source!");
-                startActivity(Intent.createChooser(shareIntent, "Share via"));
+                    "No ads. No tracking. Fully open source!"));
+                startActivity(Intent.createChooser(shareIntent, Lang.t("Share via")));
             }
         });
-        builder.setNegativeButton("Close App", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(Lang.t("Close App"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 finish();
@@ -797,7 +842,7 @@ public class RootCheckerActivity extends Activity {
         setRoundedBg(card, BG_CARD, 14);
 
         TextView pill = new TextView(this);
-        pill.setText(result.detected ? " WARN " : " SAFE ");
+        pill.setText(" " + Lang.t(result.detected ? "WARN" : "SAFE") + " ");
         pill.setTextSize(9f);
         pill.setTypeface(Typeface.DEFAULT_BOLD);
         pill.setTextColor(Color.WHITE);
@@ -822,7 +867,7 @@ public class RootCheckerActivity extends Activity {
         info.addView(nameRow);
 
         TextView name = new TextView(this);
-        name.setText(result.name);
+        name.setText(Lang.t(result.name));
         name.setTextColor(TEXT_PRIMARY);
         name.setTextSize(13f);
         name.setTypeface(Typeface.DEFAULT_BOLD);
@@ -830,7 +875,7 @@ public class RootCheckerActivity extends Activity {
 
         if (result.detected && result.severity != Severity.INFO) {
             TextView sevBadge = new TextView(this);
-            sevBadge.setText(" " + result.severity.name() + " ");
+            sevBadge.setText(" " + Lang.t(result.severity.name()) + " ");
             sevBadge.setTextSize(8f);
             sevBadge.setTypeface(Typeface.DEFAULT_BOLD);
             sevBadge.setTextColor(Color.WHITE);
@@ -843,7 +888,7 @@ public class RootCheckerActivity extends Activity {
         }
 
         TextView detail = new TextView(this);
-        detail.setText(result.detail);
+        detail.setText(Lang.t(result.detail));
         detail.setTextColor(TEXT_SEC);
         detail.setTextSize(11f);
         info.addView(detail);

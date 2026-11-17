@@ -4,7 +4,7 @@ Advanced Root Checker
 ![License: GPL-3.0](https://img.shields.io/badge/License-GPL%203.0-blue.svg)
 
 
-![Version](https://img.shields.io/badge/Version-3.5-teal.svg)
+![Version](https://img.shields.io/badge/Version-3.6-teal.svg)
 
 
 ![Android](https://img.shields.io/badge/Android-4.4%2B-green.svg)
@@ -16,9 +16,17 @@ No internet permission. No ads. No tracking.
 
 ---
 
-## Latest Version: 3.5
+## Latest Version: 3.6
 
 ### Changelog
+
+**Version 3.6**
+
+Added Albanian (Shqip) Language.
+Removed the Billing Hijack Check (it added little value in practice).
+
+Other
+36 root checks, 18 anti-tamper checks total.
 
 **Version 3.5**
 
@@ -48,7 +56,9 @@ checks are marked High; soft heuristics like the virtualization check
 are marked Low.
 
 Other
-37 root checks, 18 anti-tamper checks total.
+36 root checks, 18 anti-tamper checks total.
+Removed temporary install/signature diagnostics added during v3.4
+debugging.
 
 **Version 3.4**
 
@@ -173,7 +183,7 @@ Native capability check
 - Added ADB Status check
 - Added Developer Options check
 - Added OTA Updates check
-- Total checks increased from 17 to 37
+- Total checks increased from 17 to 36
 
 **Version 2.2**
 - Added Potentially Dangerous Apps detection
@@ -197,7 +207,7 @@ Native capability check
 
 **Version 1.0**
 - Initial release
-  - 37 root detection checks
+  - 36 root detection checks
 
 ---
 
@@ -229,7 +239,7 @@ Native capability check
 
 ## Features
 
-- 37 root detection checks, 18 anti-tamper checks
+- 36 root detection checks, 18 anti-tamper checks
 - Severity levels (Low/Medium/High) on every finding
 - Device Security Info section
 - Importance of Root educational section
@@ -254,7 +264,6 @@ Native capability check
 | Root Management Apps | Checks for root manager packages |
 | Potentially Dangerous Apps | Detects Lucky Patcher and similar |
 | Root Cloaking Apps | Detects Shamiko and MagiskHide |
-| Billing Hijack Check | Detects non-Play apps intercepting the in-app purchase intent (Lucky Patcher) |
 | Test Keys | Checks build signing keys |
 | Fingerprint Check | Analyzes build fingerprint |
 | Dangerous Props | Checks system properties |
@@ -281,9 +290,9 @@ Native capability check
 
 ## Build from Source
 
-### Build on Android with Termux (old not recommended) 
+### Build on Android with Termux
 
-**Step 1 - Install Termux from F-Droid (not Play Store)**
+**Step 1 - Install Termux from F-Droid (not Play Store) (old method not recommended)**
 
 **Step 2 - Install dependencies:**
 pkg update && pkg upgrade -y

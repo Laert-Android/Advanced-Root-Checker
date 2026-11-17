@@ -1,9 +1,7 @@
 package com.laert.rootchecker;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyInfo;
@@ -42,8 +40,6 @@ public class RootDetector {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         } catch (Exception e) {
-            // Permission/visibility issue (e.g. missing <queries> entry) - fall back
-            // to the caller also checking the filesystem, don't crash the scan.
             return false;
         }
     }
@@ -58,8 +54,6 @@ public class RootDetector {
             proc.waitFor();
             return line == null ? "" : line.trim();
         } catch (Exception e) {
-            // getprop could not be executed at all - restricted by SELinux/policy.
-            // Distinct from a successfully-read empty value.
             return null;
         } finally {
             try { if (reader != null) reader.close(); } catch (Exception ignored) {}
@@ -108,7 +102,6 @@ public class RootDetector {
         results.add(checkKnownRootApps());
         results.add(checkPotentiallyDangerousApps());
         results.add(checkRootCloakingApps());
-        results.add(checkBillingHijack());
         results.add(checkBuildTags());
         results.add(checkTestKeys());
         results.add(checkDangerousProps());
@@ -566,37 +559,6 @@ public class RootDetector {
         return new CheckResult("Root Cloaking Apps","None detected",
             "Root cloaking apps hide root from other apps like banking apps and game anti-cheat.",
             false, 8);
-    }
-
-    private CheckResult checkBillingHijack() {
-        if (context == null)
-            return new CheckResult("Billing Hijack Check","Could not determine (no context)",
-                "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
-                false, 0);
-        try {
-            Intent intent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
-            List<ResolveInfo> resolved = context.getPackageManager().queryIntentServices(intent, 0);
-            List<String> hijackers = new ArrayList<>();
-            for (int i = 0; i < resolved.size(); i++) {
-                ResolveInfo ri = resolved.get(i);
-                String pkg = (ri != null && ri.serviceInfo != null) ? ri.serviceInfo.packageName : null;
-                if (pkg != null && !"com.android.vending".equals(pkg)) {
-                    hijackers.add(pkg);
-                }
-            }
-            if (!hijackers.isEmpty())
-                return new CheckResult("Billing Hijack Check",
-                    "Non-Play app(s) registered to handle billing: " + hijackers,
-                    "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
-                    true, 8);
-            return new CheckResult("Billing Hijack Check","Only Google Play resolves the billing intent",
-                "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
-                false, 8);
-        } catch (Exception e) {
-            return new CheckResult("Billing Hijack Check","Could not determine",
-                "Lucky Patcher intercepts the in-app purchase intent to fake successful payments in other apps.",
-                false, 0);
-        }
     }
 
     private CheckResult checkBuildTags() {
